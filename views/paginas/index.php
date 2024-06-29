@@ -1,6 +1,6 @@
-<div id="carritoDeCompras">
+<!-- <div id="carritoDeCompras">
     <div class="contenedorCarritoCompras"></div>
-</div>
+</div> -->
 <h1 class="nombre-pagina">Cuadros personalizados</h1>
 
 <section class="contenedor cuadros section" id="cuadros">

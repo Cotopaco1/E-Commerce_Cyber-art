@@ -11,10 +11,19 @@ function iniciarApp(){
     subrayarPaginaActual(); //menu Header
     eventoCarritoUserBoton(); //menu Header
     eventoCuadros();
-   
     consultarApiCuadros();
 }
 
+
+
+
+
+
+
+
+
+//Cuadros //
+//Mostrar Resultados ....
 //Consultar la api
 async function consultarApiCuadros(){
     try {
@@ -27,7 +36,6 @@ async function consultarApiCuadros(){
     }
 
 }
-//Mostrar Resultados ....
 function imprimirResultadosApi(json){
 
     json.forEach( cuadro =>{
@@ -67,17 +75,6 @@ function imprimirResultadosApi(json){
 
     })
 }
-
-//evento Click carrito de compra, usuario boton HEADER.
-function eventoCarritoUserBoton(){
-    const carritoCompra = document.querySelector('.carritoCompra');
-    const userBoton = document.querySelector('.userBoton');
-    carritoCompra.addEventListener('click', mostrarInterfazCarritoCompras);
-    userBoton.addEventListener('click', mostrarInterfazCarritoCompras);
-
-    
-}
-
 function eventoCuadros(){
     cuadros = document.querySelectorAll('.imagenCuadroDiv');
     cuadros.forEach( cuadro=>{
@@ -110,85 +107,55 @@ function agregarAlCarrito(cuadro){
     actualizarInterfazCarritoCompra();
 }
 
-
-//CrearBotonAnterior
-function crearBotonComprar(e){
-    let nombreProducto = e.target.firstElementChild.firstElementChild/* .textContent */
-    let precioProducto = e.target.childNodes[1].childNodes[3]/* .textContent */
-    console.log(nombreProducto)
-
-    targetParent = e.srcElement;
-    botonDIV = document.createElement('DIV');
-    botonDIV.classList.add('botonAgregarCarrito2');
-    boton = document.createElement('BUTTON');
-    boton.classList.add('boton');
-    boton.textContent = 'Agregalo al carrito';
-    botonDIV.appendChild(boton);
-    targetParent.appendChild(botonDIV);
-
-    //evento boton.
-    boton.addEventListener('click', function(){
-        let interfaz = document.querySelector('.interfaz');
-        let nombreP = nombreProducto.cloneNode(true);
-        let precioP = precioProducto.cloneNode(true);
-        div = document.createElement('DIV');
-        div.classList.add('contenedor', 'interfazCampo');
-        div.appendChild(nombreP);
-        div.appendChild(precioP);
-        interfaz.appendChild(div);
-        
-        
-    })
+// Termina cuadros //
 
 
-}
-
-
-function eliminarBotonComprar(e){
-    botonCompra = document.querySelector('.botonAgregarCarrito2')
-    if(botonCompra){
-        botonCompra.remove();
-    }
-
-}
-//Carrito compras
-function mostrarInterfazCarritoCompras(){
-    crearModal();
-
-    const modal = document.querySelector('.modalCarrito');
-    const interfazCarritoCompras = document.querySelector('#carritoDeCompras')
-    modal.appendChild(interfazCarritoCompras);
-    esconderScroll();
-}
-function mostrarScroll(){
-    const contenedor = document.querySelector('body');
-    contenedor.style.overflowY = 'scroll';
-}
-function esconderScroll(){
-    const contenedor = document.querySelector('body');
-    contenedor.style.overflowY = 'hidden';
-    
-}
-
-//Remueve interfaz si no se clickea dentro de ella...
-function removeInterfaz(event){
-    eventClass = event.target.closest('.interfaz')
-    if(!eventClass){
-        interfaz.classList.add('ocultar');
-        document.removeEventListener('click', removeInterfaz)
-        interfazExiste = false;
-    }
-}
 
 function removeInterfazDinamico(event, interfaz){
     interfaz.remove();
     event.target.removeEventListener('click', removeInterfaz);
 }
 
+
+
+
+//Crea un modal en toda la pantalla..., si ya existe solo le quita la clase ocultar y termina la ejecucion...
+//Carrito compras
+//evento Click carrito de compra, usuario boton HEADER.
+function eventoCarritoUserBoton(){
+    const carritoCompra = document.querySelector('.carritoCompra');
+    const userBoton = document.querySelector('.userBoton');
+    carritoCompra.addEventListener('click', mostrarInterfazCarritoCompras);
+    userBoton.addEventListener('click', mostrarInterfazCarritoCompras);
+
+    
+}
+function mostrarInterfazCarritoCompras(){
+    actualizarInterfazCarritoCompra();
+
+    const modal = document.querySelector('.modalCarrito');
+    const interfazCarritoCompras = document.querySelector('#carritoDeCompras')
+    modal.appendChild(interfazCarritoCompras);
+    esconderScroll();
+}
 function actualizarInterfazCarritoCompra(){
+    //Si ya existe un modal, entonces solo le quita occultar..
+    const modalAnterior = document.querySelector('.modalCarrito');
+    if(modalAnterior){
+        modalAnterior.remove();
+    }
     crearModal();
-    if(carritoDeCompra.length >= 1){
-        const interfaz = document.querySelector('.contenedorCarritoCompras')
+
+    const interfaz = document.querySelector('.contenedorCarritoCompras')
+
+    if(!carritoDeCompra.length >= 1){
+        const parrafo = document.createElement('P');
+        parrafo.classList.add('parrafoCarritoVacio');
+        parrafo.textContent = 'El carrito esta vacio ...'
+        interfaz.appendChild(parrafo);
+        return
+    }
+        
 
         while(interfaz.firstChild){
             console.log(interfaz.firstChild)
@@ -207,11 +174,14 @@ function actualizarInterfazCarritoCompra(){
             precioProducto.textContent = precio.toLocaleString('es-ES');
             precioProducto.classList.add('precio-producto')
 
+            
+
             const divInfo = document.createElement('DIV');
             divInfo.classList.add('infoProductoCarrito');
             divInfo.appendChild(nombreProducto)
             divInfo.appendChild(precioProducto)
-            
+            crearBotonBorrar(divInfo, id );
+
             const imagenProducto = document.createElement('IMG');
             imagenProducto.src = `/img/${imagen}`;
 
@@ -221,17 +191,11 @@ function actualizarInterfazCarritoCompra(){
             
         })
 
-    }
+    
 }
-//Crea un modal en toda la pantalla..., si ya existe solo le quita la clase ocultar y termina la ejecucion...
 function crearModal(){
     esconderScroll();
-    //Si ya existe un modal, entonces solo le quita occultar..
-    const modalAnterior = document.querySelector('.modalCarrito');
-    if(modalAnterior){
-        modalAnterior.classList.remove('ocultar');
-        return
-    }
+    
     //este codigo solo se ejecuta una vez..
     const modal = document.createElement('DIV');
     modal.classList.add('modal', 'modalCarrito');
@@ -239,24 +203,57 @@ function crearModal(){
     modal.addEventListener('click', ocultarModal)
 
     const body = document.querySelector('body');
-    const carritoDeCompras = document.querySelector('#carritoDeCompras');
+    const carritoDeCompras = document.createElement('DIV')
+    carritoDeCompras.id = 'carritoDeCompras'
+    carritoDeCompras.innerHTML = `
+    <div class="contenedorCarritoCompras"></div>
+    `
     modal.appendChild(carritoDeCompras);
     body.appendChild(modal);
 }
 
+function crearBotonBorrar(contenedor, id){
+    //crear boton en el contenedor
+    const botonBorrar = document.createElement('BUTTON');
+    botonBorrar.classList.add('botonBorrar')
+    botonBorrar.textContent = 'Elimina el producto'
+    contenedor.appendChild(botonBorrar);
+
+    //borrar el producto en el carrito que tenga el id pasado...
+    botonBorrar.addEventListener('click', function(){
+        carritoDeCompra.forEach( producto =>{
+            if(producto.id === id){
+            const index = carritoDeCompra.indexOf(producto);
+            carritoDeCompra.splice(index, 1)
+                actualizarInterfazCarritoCompra();
+
+            }
+        })
+    })
+
+}
 function ocultarModal(event){
     
-   const modal = document.querySelector('.modalCarrito')
+const modal = document.querySelector('.modalCarrito')
     eventClass = event.target.closest('.contenedorCarritoCompras')
     if(!eventClass){
         mostrarScroll();
-        modal.classList.add('ocultar');
+        /* modal.classList.add('ocultar'); */
+        modal.remove();
         mostrarHeader();
         
     }
 }
-
-
+function mostrarScroll(){
+    const contenedor = document.querySelector('body');
+    contenedor.style.overflowY = 'scroll';
+}
+function esconderScroll(){
+    const contenedor = document.querySelector('body');
+    contenedor.style.overflowY = 'hidden';
+    
+}
+//Termina carrito compras//
 
 
 //Agrega evento al menuHamburgesa

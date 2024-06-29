@@ -81,3 +81,6 @@ textarea{
     @include m.boton(v.$rosadoOscuro, v.$azulOscuro);
     
 }
+.botonBorrar{
+    @include m.boton(v.$rojo, v.$blanco);
+}
