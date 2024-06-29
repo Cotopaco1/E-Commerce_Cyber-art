@@ -1,9 +1,4 @@
-const carritoDeCompra = [
-
-
-]
-
-
+const carritoDeCompra = []
 document.addEventListener('DOMContentLoaded', function(){
 iniciarApp();
 
@@ -156,96 +151,25 @@ function eliminarBotonComprar(e){
     }
 
 }
+//Carrito compras
 function mostrarInterfazCarritoCompras(){
     crearModal();
-    
+
     const modal = document.querySelector('.modalCarrito');
     const interfazCarritoCompras = document.querySelector('#carritoDeCompras')
     modal.appendChild(interfazCarritoCompras);
-
+    esconderScroll();
+}
+function mostrarScroll(){
+    const contenedor = document.querySelector('body');
+    contenedor.style.overflowY = 'scroll';
+}
+function esconderScroll(){
+    const contenedor = document.querySelector('body');
+    contenedor.style.overflowY = 'hidden';
+    
 }
 
-let insertHTML;
-//crea una interfaz en la pantalla...
-function agregarInterfaz(event ){
-    crearModal();
-    let eventoClikeadoClass;
-    //si el evento NO es igual a undefined entonces:
-    if(typeof event.isTrusted === 'boolean'){
-        console.log('el evento no es null..')
-        eventoClikeadoClass = event.target.attributes.class.value
-    }
-
-    if (typeof eventoClikeadoClass === 'undefined'){
-        console.log('El evento clickeado no existe..')
-        eventoClikeadoClass = document.querySelector('body');
-        target = document.querySelector('body');
-
-    }
-    interfazExiste = document.querySelector('.interfaz')
-    let interfazExisteOcultada = document.querySelector('.interfaz.ocultar')
-
-    if(interfazExiste && interfazExisteOcultada){
-        interfazExiste.classList.remove('ocultar');
-        setTimeout(() => {
-            document.addEventListener('click', removeInterfaz)
-            
-        }, 1);
-        
-        return;
-    }
-    if(interfazExiste && !interfazExisteOcultada){
-        interfazExiste.classList.add('ocultar');
-        return;
-    }
-
-    //Si existe ya la interfaz entonces la elimina...
-    /* interfazHTML = document.querySelector('.interfaz')
-    if(interfazHTML){
-        interfazHTML.remove();
-        return;
-    } */
-    target = document.querySelector('.buttonsHeader');
-    
-
-    //creo la etiqueta, clase y su html.
-    interfaz = document.createElement('DIV');
-    interfaz.classList.add('interfaz');
-    
-    /* if(eventoClikeadoClass === 'carritoCompra'){
-        insertHTML = `
-   
-    <button class='boton' >Pagar carrito</button>
-    `;
-    } else if(eventoClikeadoClass === 'userBoton'){
-        insertHTML = `
-    <div class='contenedor interfazCampo'>
-        <p class='user-name'>sergio silva</p>
-    </div>
-    <div class='contenedor interfazCampo'>
-        <p>Mi cuenta</p>
-    </div>
-    <p>Log Out ...</p>
-    `;
-    }
-    else{
-        insertHTML = `vacio ..`;
-        interfaz.innerHTML = insertHTML;
-        div = document.querySelector('.buttonsHeader');
-        div.appendChild(interfaz);
-        interfaz.classList.add('ocultar')
-        return
-    } */
-   
-    interfaz.innerHTML = insertHTML;
-    target.appendChild(interfaz);
-    
-    //Peque;o delay para agregar evento de remover interfaz.
-    setTimeout(() => {
-        document.addEventListener('click', removeInterfaz)
-        
-    }, 1);
-}
 //Remueve interfaz si no se clickea dentro de ella...
 function removeInterfaz(event){
     eventClass = event.target.closest('.interfaz')
@@ -282,7 +206,7 @@ function actualizarInterfazCarritoCompra(){
             const precioProducto = document.createElement('P');
             precioProducto.textContent = precio.toLocaleString('es-ES');
             precioProducto.classList.add('precio-producto')
-            
+
             const divInfo = document.createElement('DIV');
             divInfo.classList.add('infoProductoCarrito');
             divInfo.appendChild(nombreProducto)
@@ -301,12 +225,14 @@ function actualizarInterfazCarritoCompra(){
 }
 //Crea un modal en toda la pantalla..., si ya existe solo le quita la clase ocultar y termina la ejecucion...
 function crearModal(){
+    esconderScroll();
     //Si ya existe un modal, entonces solo le quita occultar..
     const modalAnterior = document.querySelector('.modalCarrito');
     if(modalAnterior){
         modalAnterior.classList.remove('ocultar');
         return
     }
+    //este codigo solo se ejecuta una vez..
     const modal = document.createElement('DIV');
     modal.classList.add('modal', 'modalCarrito');
     ocultarHeader();
@@ -319,9 +245,11 @@ function crearModal(){
 }
 
 function ocultarModal(event){
+    
    const modal = document.querySelector('.modalCarrito')
-    eventClass = event.target.closest('.interfaz')
+    eventClass = event.target.closest('.contenedorCarritoCompras')
     if(!eventClass){
+        mostrarScroll();
         modal.classList.add('ocultar');
         mostrarHeader();
         

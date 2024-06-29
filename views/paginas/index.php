@@ -7,9 +7,10 @@
     
 </section>
 
-<h2>Volvemos tu idea/Recuerdo en un cuadro personalizado</h2>
+
 
 <section class="contenedorContacto section">
+    <h2>Volvemos tu idea/Recuerdo en un cuadro personalizado</h2>
     <div class="contenedor contacto">
     <div class="imagenContacto">
         <img src="luffy.png" alt="imagenContacto">

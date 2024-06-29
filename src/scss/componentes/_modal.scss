@@ -53,6 +53,14 @@
     }
     
     .contenedorCarritoCompras{
+        width: 80%;
+        overflow-y: scroll;
+        @include m.telefono{
+            width: 60%;
+        }
+        @include m.tablet{
+            width: 40%;
+        }
         position: absolute;
         right: 0;
         height: 100%;
@@ -61,7 +69,12 @@
     }
     .interfazCampo{
         /* background-color: rgb(215, 220, 224); */
-        
+        border-bottom: 1px solid v.$gris;
+        margin-bottom: 3rem;
+        padding-bottom: 3rem;
+        &:last-of-type{
+            border-bottom: unset;
+        }
         display: flex;
         gap: 1rem;
         color: v.$azulClaro;
