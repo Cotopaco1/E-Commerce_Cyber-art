@@ -1,0 +1,83 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+    scroll-padding-top: 0rem;
+    /* font-family: "Exo 2", sans-serif; */
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+*, 
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+body{
+    min-height: 100vh;
+    margin: 0;
+    background-color: #B74E6A;
+    position: relative;
+}
+.contenedor {
+    width: 95%;
+    max-width: 100rem;
+    margin: 0 auto;
+}
+img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    display: block;
+}
+a{
+    text-decoration: none;
+}
+
+.displayNone{
+    display: none!important;
+}
+
+:root{
+    --separacion: .8rem;
+    --separacionGrande: 16rem;
+}  
+/* Globales parte 2 */
+
+
+.subrayarAmarillo{
+    color: rgb(182, 182, 19)!important;
+}
+.ocultar{
+    display: none!important;
+}
+.field{
+    margin-top: 2rem;
+}
+
+legend{
+    font-size: 2rem;
+    font-weight: bold;
+}
+fieldset{
+    padding: 2rem;
+    margin: 0 2rem 2rem 2rem;
+}
+textarea{
+    min-height: 20rem;
+    max-width: auto;
+    resize: none;
+    font-size: 2rem;
+    border-radius: 1rem;
+}
+.section{
+    margin-bottom: 6rem;
+    
+}
+.poisition-relative{
+    position: relative;
+}
+.boton{
+    @include m.boton(v.$rosadoOscuro, v.$azulOscuro);
+    
+}

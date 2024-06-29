@@ -1,0 +1,411 @@
+/** Media Queries **/
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+  scroll-padding-top: 0rem;
+  /* font-family: "Exo 2", sans-serif; */
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background-color: #B74E6A;
+  position: relative;
+}
+
+.contenedor {
+  width: 95%;
+  max-width: 100rem;
+  margin: 0 auto;
+}
+
+img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+}
+
+.displayNone {
+  display: none !important;
+}
+
+:root {
+  --separacion: .8rem;
+  --separacionGrande: 16rem;
+}
+
+/* Globales parte 2 */
+.subrayarAmarillo {
+  color: rgb(182, 182, 19) !important;
+}
+
+.ocultar {
+  display: none !important;
+}
+
+.field {
+  margin-top: 2rem;
+}
+
+legend {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+fieldset {
+  padding: 2rem;
+  margin: 0 2rem 2rem 2rem;
+}
+
+textarea {
+  min-height: 20rem;
+  max-width: auto;
+  resize: none;
+  font-size: 2rem;
+  border-radius: 1rem;
+}
+
+.section {
+  margin-bottom: 6rem;
+}
+
+.poisition-relative {
+  position: relative;
+}
+
+.boton {
+  background-color: #CC54D0;
+  padding: 1.5rem 4rem;
+  color: #21174B;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+  display: inline-block;
+  font-weight: 700;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 5rem 0;
+}
+@media (min-width: 768px) {
+  .boton {
+    width: auto;
+  }
+}
+.boton:hover {
+  background-color: #b934bd;
+  cursor: pointer;
+}
+
+/* Tipografia */
+h1, h2, h3 {
+  font-family: "Exo 2", sans-serif;
+  margin: 0 0 2.5rem 0;
+  font-weight: 900;
+  color: white;
+  text-align: center;
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+h2 {
+  font-size: 3.6rem;
+}
+
+h3 {
+  font-size: 3rem;
+  text-align: center;
+}
+
+p {
+  color: white;
+  font-size: 2rem;
+}
+
+label {
+  font-size: 2rem;
+}
+
+.bg-black {
+  opacity: 50%;
+}
+
+.modal {
+  z-index: 1000;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(65, 49, 49, 0.5);
+  /* background-color: rgba(red, green, blue, alpha); */
+}
+.modal .menu {
+  height: calc(100vh - 10rem);
+  margin: 5rem;
+  padding: 4rem;
+  background-color: rgb(215, 220, 224);
+  max-width: 40rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.menuHeader .icono {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.58);
+  padding: 2rem 1.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.menuCampo {
+  padding: 2rem;
+}
+.menuCampo a {
+  color: black;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.modalCarrito #carritoDeCompras {
+  /* max-width: 100%;
+  height: max-content;
+  display: grid;
+  justify-content: flex-end; */
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.modalCarrito .contenedorCarritoCompras {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  background-color: #21174B;
+  padding: 4rem;
+}
+.modalCarrito .interfazCampo {
+  /* background-color: rgb(215, 220, 224); */
+  display: flex;
+  gap: 1rem;
+  color: #6AAFF2;
+}
+.modalCarrito .interfazCampo img {
+  max-width: 15rem;
+}
+.modalCarrito .interfazCampo .infoProductoCarrito {
+  flex-basis: 50%;
+}
+.modalCarrito .interfazCampo .nombre-producto {
+  font-weight: 700;
+}
+.modalCarrito .interfazCampo .precio-producto {
+  color: #329f00;
+}
+
+/* paginas/index.php */
+.cuadros {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
+}
+
+.cuadro-info {
+  text-align: center;
+}
+.cuadro-info p {
+  margin: 1rem 0;
+}
+
+.imagenCuadroDiv {
+  background-position: center center;
+  background-size: cover;
+  width: 100%;
+  height: 40rem;
+  position: relative;
+}
+.imagenCuadroDiv:hover {
+  filter: drop-shadow(2px 4px 6px black);
+}
+.imagenCuadroDiv p {
+  margin: 0;
+}
+
+.botonAgregarCarrito2 {
+  position: absolute;
+  width: 10rem;
+  height: 5rem;
+  top: 45%;
+  left: 45%;
+}
+
+/* contacto index. */
+.contenedorContacto {
+  background-color: #21174B;
+  padding: 10rem 0;
+}
+
+.contacto {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.contacto input {
+  border: none;
+  padding: 1rem;
+  border-radius: 1rem;
+  width: 100%;
+  margin: 1rem 0;
+}
+.contacto label {
+  font-weight: bolder;
+  color: #6AAFF2;
+}
+.contacto legend {
+  color: #EBA4d2;
+}
+
+.imagenContacto img {
+  mask-image: linear-gradient(black 80%, transparent);
+}
+
+.informacionPersonal .contenedorNombre {
+  display: flex;
+  gap: 2rem;
+}
+
+.contactoField .contactoRadio {
+  display: flex;
+}
+.contactoField p {
+  margin: 0;
+}
+
+.fieldMensaje {
+  display: grid;
+}
+
+.caracteristicas {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+.caracteristicas p {
+  text-align: center;
+}
+
+.caracteristica {
+  flex-basis: 33%;
+  display: flex;
+  flex-direction: column;
+  max-height: 23rem;
+}
+/* UI.scss */
+.nombre-pagina {
+  text-align: center;
+  margin: 5rem 0;
+  font-weight: bold;
+}
+
+.descripcion-pagina {
+  text-align: center;
+}
+
+.header {
+  background-color: rgb(213, 229, 243);
+}
+
+.headerContenido {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+.headerContenido .buttonsHeader {
+  display: flex;
+  height: 4rem;
+  gap: 4rem;
+  z-index: 10;
+}
+
+.hamburgerMenu {
+  max-width: 4rem;
+}
+
+.redes {
+  display: flex;
+  gap: 4rem;
+  justify-content: center;
+  margin: 3.2rem auto;
+}
+.redes i {
+  flex-basis: 5rem;
+  font-size: 4rem;
+}
+
+.interfaz {
+  background-color: blueviolet;
+  width: 50vw;
+  height: max-content;
+  top: 6rem;
+  right: 10rem;
+  position: fixed;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.interfazCampo {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+.interfazCampo img {
+  max-width: 15rem;
+}
+
+.footer {
+  background-color: rgb(215, 220, 224);
+  /* position: absolute; */
+  bottom: 0;
+  width: 100%;
+  padding: 2rem 2rem 1rem 2rem;
+}
+.footer .categorias {
+  display: flex;
+  justify-content: space-around;
+  gap: 1.5rem;
+  margin: 1.5rem auto;
+}
+.footer .categorias a p {
+  color: black;
+  font-size: 2.5rem;
+}
+.footer p {
+  font-size: 1.5rem;
+  text-align: center;
+  color: black;
+  margin: 0;
+}
+
+.positionFixed {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 100;
+}

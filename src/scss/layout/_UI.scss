@@ -1,0 +1,99 @@
+/* UI.scss */
+.nombre-pagina{
+    text-align: center;
+    margin: 5rem 0;
+    font-weight: bold;
+}
+.descripcion-pagina{
+    text-align: center;
+}
+
+.header{
+    background-color: rgb(213, 229, 243);
+    
+}
+.headerContenido{
+    display: flex;
+    justify-content: space-between;
+    
+    padding: 1rem;
+    .buttonsHeader{
+        display: flex;
+        height: 4rem;
+        gap: 4rem;
+        z-index: 10;
+    }
+}
+.hamburgerMenu{
+    max-width: 4rem;
+    
+}
+.redes{
+    display: flex;
+    gap: 4rem;
+    justify-content: center;
+    margin: 3.2rem auto;
+    
+    i{
+        flex-basis: 5rem;
+        font-size: 4rem;
+        
+    }
+}
+.interfaz{
+    background-color: blueviolet;
+    width: 50vw;
+    height: max-content;
+    top: 6rem;
+    right: 10rem;
+    position: fixed;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+
+
+}
+.interfazCampo{
+    display: flex;
+    gap: 1rem;
+    
+    margin-bottom: 3rem;
+   
+    img{
+        max-width: 15rem;
+        
+    }
+}
+
+.footer{
+    background-color: rgb(215, 220, 224);
+    /* position: absolute; */
+    bottom: 0;
+    width: 100%;
+    padding: 2rem 2rem 1rem 2rem;
+    
+    .categorias{
+        display: flex;
+        justify-content: space-around;
+        gap: 1.5rem;
+        margin: 1.5rem auto;
+    }
+    .categorias a p{
+        color: black;
+        font-size:2.5rem;
+    }
+    p{
+        font-size: 1.5rem;
+        text-align: center;
+        color: black;
+        margin: 0;
+    }
+    
+}
+.positionFixed{
+    position: fixed ;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    
+}
