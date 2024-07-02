@@ -12,10 +12,13 @@
         <div class="campoFormulario">
             <label for="direccion" class="label">Direccion</label>
             <input type="text" id="direccion" placeholder="Tu direccion" name="user[direccion]">
-            <input type="text" id="ciudad" placeholder="Tu ciudad" name="user[ciudad]">
-            <select id="departamento" placeholder="Tu Departamento" name="user[departamento]" class="select">
+            <select id="departamento"  name="user[departamento]" class="select">
                 <option class="option" disabled selected>--Selecciona tu departamento--</option>
             </select>
+            <select name="user[ciudad]" disabled id="ciudad" class="select">
+                <option class="option" disabled selected>--Selecciona tu ciudad--</option>
+            </select>
+           <!--  <input type="text" id="ciudad" placeholder="Tu ciudad" name="user[ciudad]"> -->
         </div>
         <div class="campoFormulario">
             <label for="telefono" class="label">Telefono</label>

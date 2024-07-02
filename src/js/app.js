@@ -36,19 +36,52 @@ function iniciarApp(){
 //crear option en el selected
 function crearOpcionesEnSelected(){
     const select = document.querySelector('#departamento')
+   
     getDepartamentosColombia()
     .then(datos =>{
         datos.forEach(departamento => {
             const option = document.createElement('OPTION');
             option.textContent = departamento.name
             option.value = departamento.name
+            option.dataset.departamentoId = departamento.id
             select.appendChild(option);
         });
     })
 
-   
+    select.addEventListener('change', eventoSelect)
+}
+function eventoSelect(event){
+    const idDepartamento = event.target.options[event.target.selectedIndex].attributes['data-departamento-id'].value;
+    get_ciudades_de_un_departamento(idDepartamento)
+    .then(ciudades=>{
+        crear_options_de_ciudad(ciudades)
+        console.log(ciudades)
+    })
+
 }
 
+function crear_options_de_ciudad(ciudades){
+    const select = document.querySelector('#ciudad')
+    ciudades.forEach(ciudad => {
+        const option = document.createElement('OPTION');
+        option.textContent = ciudad.name
+        option.value = ciudad.name
+        option.dataset.ciudadId = ciudad.id
+        select.appendChild(option);
+    });
+    select.removeAttribute('disabled');
+}
+
+async function get_ciudades_de_un_departamento(id_departamento){
+    try {
+        const url = `https://api-colombia.com/api/v1/Department/${id_departamento}/cities`
+        const resultado = await fetch(url);
+        const json = await resultado.json()
+        return json;
+    } catch (error) {
+        console.log(error);
+    }
+}
 //Api departamentos Colombia:
     //crear peticion a api para obtener todos los departamentos de colombia.
 let departamentos = {};
