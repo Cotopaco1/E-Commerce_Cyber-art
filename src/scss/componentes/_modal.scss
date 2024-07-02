@@ -72,6 +72,7 @@
         border-bottom: 1px solid v.$gris;
         margin-bottom: 3rem;
         padding-bottom: 3rem;
+        max-width: 50rem;
         &:last-of-type{
             border-bottom: unset;
         }
@@ -79,10 +80,13 @@
         gap: 1rem;
         color: v.$azulClaro;
         img{
-            max-width: 15rem;
+            max-width: 50%;
+            object-fit: scale-down;
+            object-position: center center;
         }
         .infoProductoCarrito{
-        flex-basis: 50%;   
+        flex-basis: 50%; 
+         
         }
         .nombre-producto{
             font-weight: v.$bold;

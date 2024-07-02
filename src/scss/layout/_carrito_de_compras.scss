@@ -1,0 +1,43 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+.formulario_carrito_de_compras{
+    background-color: v.$azulOscuro;
+}
+.form{
+    padding: 3rem;
+    
+}
+.campoFormulario{
+    display: grid;
+    margin-bottom: calc(v.$separacion / 2);
+    .label{
+        color: v.$blanco;
+        margin: calc(v.$separacion / 4) 0;
+        font-weight: v.$bold;
+        &:first-of-type{
+            margin-top: 0;
+        }
+    }
+    input,
+    .textArea,
+    .select{
+        padding: 1rem;
+        font-size: 2rem;
+        &::placeholder{
+            font-size: 2rem;
+        }
+    }
+    .select{
+
+    }
+    .label_enviar_direccion_diferente{
+        display: flex;
+        gap: 2rem;
+        input{
+            width: 3rem;
+        }
+    }
+}
+.campo_nombre_and_apellido{
+  
+}

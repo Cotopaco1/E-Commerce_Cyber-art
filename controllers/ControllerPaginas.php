@@ -10,9 +10,16 @@ class ControllerPaginas{
 
     public static function index(Router $router){
         $cuadros = Productos::all();
+        $script = '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
         
         $router->render('paginas/index', [
-            'cuadros'=> $cuadros
+            'cuadros'=> $cuadros,
+            'script' => $script
         ]);
+    }
+    public static function carrito_de_compras(Router $router){
+
+        $router->render('paginas/carrito_de_compras');
+
     }
 }

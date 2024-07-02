@@ -1,4 +1,17 @@
-const carritoDeCompra = []
+let montoTotal = 0;
+const carritoDeCompra = [
+]
+const usuario = {
+    id : 1,
+    nombre : 'sergio silva',
+}
+
+const datos = {
+    carritoDeCompra : {},
+    usuario: {}
+}
+
+const path = window.location.pathname;
 document.addEventListener('DOMContentLoaded', function(){
 iniciarApp();
 
@@ -10,18 +23,104 @@ function iniciarApp(){
     agregarFixed(); //Menu Header
     subrayarPaginaActual(); //menu Header
     eventoCarritoUserBoton(); //menu Header
-    eventoCuadros();
-    consultarApiCuadros();
+    if(path === '/'){
+        eventoCuadros();
+        consultarApiCuadros();
+
+    }
+    if(path === '/carrito_de_compras'){
+        crearOpcionesEnSelected();
+    }
 }
 
+//crear option en el selected
+function crearOpcionesEnSelected(){
+    const select = document.querySelector('#departamento')
+    getDepartamentosColombia()
+    .then(datos =>{
+        datos.forEach(departamento => {
+            const option = document.createElement('OPTION');
+            option.textContent = departamento.name
+            option.value = departamento.name
+            select.appendChild(option);
+        });
+    })
 
+   
+}
 
+//Api departamentos Colombia:
+    //crear peticion a api para obtener todos los departamentos de colombia.
+let departamentos = {};
+async function getDepartamentosColombia(){
+    try {
+        const url = 'https://api-colombia.com/api/v1/Department';
+        const resultado = await fetch(url);
+        const json = await resultado.json()
+        return json;
+    } catch (error) {
+        console.log(error);
+    }  
+}
+//Enviar peticion para guardar pedido...
+async function enviarDatos (){
+    try {
+        const fecha = getFechaActualFormateada();
+        //Crear objeto que sera convertido a JSON y enviado por fetch POST
+        const datos = {
+            carritoDeCompra : carritoDeCompra,
+            userData : {
+                usuarioID : usuario.id
+            },
+            fecha : fecha,
+            status: 'pendiente',
+            monto_total : montoTotal
+        }
+        const url = 'http://localhost:3000/api/cuadros';
+        jsonData = JSON.stringify(datos);
 
+        const options = {
+            method : 'POST',
+            body : jsonData
+        }
+        //Envio del objeto a la DB
+        const respuesta = await fetch(url, options)
+        const resultado = await respuesta.json();
+        //Alerta si el resultado es exitoso.
+        if(resultado.resultado){
+            Swal.fire({
+                icon: "success",
+                title: "Pedido creado",
+                text: "El pedido ha sido guardado con exito",
+                button: 'OK'
+              }).then(() =>{
+                window.location.reload();       
+              })
+        }
 
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Ha habido un error",
+            text: "El pedido no se ha podido crear.."
+          });
+    }
+}
+function getFechaActualFormateada(){
+    const now = new Date();
 
+// Obtener las diferentes partes de la fecha y hora
+const year = now.getFullYear();
+const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son 0-11, así que sumamos 1
+const day = String(now.getDate()).padStart(2, '0');
+const hours = String(now.getHours()).padStart(2, '0');
+const minutes = String(now.getMinutes()).padStart(2, '0');
+const seconds = String(now.getSeconds()).padStart(2, '0');
 
-
-
+// Formatear la fecha y hora en el formato YYYY-MM-DD HH:MM:SS
+const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+return formattedDate;
+}
 //Cuadros //
 //Mostrar Resultados ....
 //Consultar la api
@@ -102,22 +201,33 @@ function crearBotonComprarActual(event, cuadro){
 }
 
 function agregarAlCarrito(cuadro){
-
-    carritoDeCompra.push(cuadro);
+   /*  let cantidad = 0;
+    carritoDeCompra = [...carritoDeCompra, cuadro] */
+    if('cantidad' in cuadro){
+        const {id } = cuadro;
+        let value;
+        carritoDeCompra.forEach(producto=>{
+            if(id === producto.id){
+                value = producto;
+            }
+        })
+        const index = carritoDeCompra.indexOf(value)
+        carritoDeCompra[index].cantidad = carritoDeCompra[index].cantidad + 1;
+    }else{
+        cuadro.cantidad = 1;
+        carritoDeCompra.push(cuadro)
+    }
+    
+    /* carritoDeCompra.push(cuadro); */
     actualizarInterfazCarritoCompra();
 }
 
 // Termina cuadros //
 
-
-
 function removeInterfazDinamico(event, interfaz){
     interfaz.remove();
     event.target.removeEventListener('click', removeInterfaz);
 }
-
-
-
 
 //Crea un modal en toda la pantalla..., si ya existe solo le quita la clase ocultar y termina la ejecucion...
 //Carrito compras
@@ -147,7 +257,7 @@ function actualizarInterfazCarritoCompra(){
     crearModal();
 
     const interfaz = document.querySelector('.contenedorCarritoCompras')
-
+    //si el carrito no tiene productos ..
     if(!carritoDeCompra.length >= 1){
         const parrafo = document.createElement('P');
         parrafo.classList.add('parrafoCarritoVacio');
@@ -156,13 +266,13 @@ function actualizarInterfazCarritoCompra(){
         return
     }
         
-
+        //borras toda la interfaz.
         while(interfaz.firstChild){
-            console.log(interfaz.firstChild)
             interfaz.removeChild(interfaz.firstChild);
         }
+        //Crear productos e insertar en interfaz..
         carritoDeCompra.forEach(producto =>{
-            const {id, nombre, precio, descripcion, size, disponible, imagen} = producto;
+            const {id, nombre, precio, descripcion, size, disponible, imagen, cantidad} = producto;
             
             const productoDiv = document.createElement('DIV');
             productoDiv.classList.add("interfazCampo");
@@ -171,8 +281,25 @@ function actualizarInterfazCarritoCompra(){
             nombreProducto.textContent = nombre;
             nombreProducto.classList.add('nombre-producto')
             const precioProducto = document.createElement('P');
-            precioProducto.textContent = precio.toLocaleString('es-ES');
+            precioProducto.textContent = precio;
             precioProducto.classList.add('precio-producto')
+            const cantidadProducto = document.createElement('P');
+            cantidadProducto.textContent = `Cantidad: ${cantidad}`;
+
+            const botonMas = document.createElement('BUTTON');
+            botonMas.classList.add('botonChico');
+            botonMas.textContent = '+';
+            botonMas.addEventListener('click', function(){
+                agregarCantidad(producto);
+            })
+
+            const botonMenos = document.createElement('BUTTON');
+            botonMenos.classList.add('botonChicoRojo');
+            botonMenos.textContent = '-';
+            botonMenos.addEventListener('click', function(){
+                restarCantidad(producto);
+            })
+
 
             
 
@@ -180,7 +307,10 @@ function actualizarInterfazCarritoCompra(){
             divInfo.classList.add('infoProductoCarrito');
             divInfo.appendChild(nombreProducto)
             divInfo.appendChild(precioProducto)
-            crearBotonBorrar(divInfo, id );
+            divInfo.appendChild(cantidadProducto)
+            divInfo.appendChild(botonMas)
+            divInfo.appendChild(botonMenos)
+            crearBotonBorrar(divInfo, id, producto );
 
             const imagenProducto = document.createElement('IMG');
             imagenProducto.src = `/img/${imagen}`;
@@ -190,8 +320,44 @@ function actualizarInterfazCarritoCompra(){
             interfaz.appendChild(productoDiv);
             
         })
+        //Muestra el montoTotal en carrito de compras.
+        const parrafoMontoTotal = document.createElement('P');
+        parrafoMontoTotal.classList.add('parrafoMontoTotal')
+        montoTotal = sumarProductosCarrito();
+        parrafoMontoTotal.textContent = `Monto Total: $${montoTotal.toLocaleString()} pesos Colombianos`;
+        interfaz.appendChild(parrafoMontoTotal)
 
+        //Boton de comprar en interfaz de carrito de compras.
+        const botonComprar = document.createElement('BUTTON');
+        botonComprar.classList.add('botonComprar')
+        botonComprar.textContent = `Comprar`
+        botonComprar.addEventListener('click', enviarDatos )
+        interfaz.appendChild(botonComprar);
+}
+
+function sumarProductosCarrito(){
+    let total = 0
+    carritoDeCompra.forEach(producto => {
+        let precio = parseInt(producto.precio) * producto.cantidad
+        total = total + precio;
+    });
+    return total;
+}
+
+function agregarCantidad(producto){
+
+    const index = carritoDeCompra.indexOf(producto);
+    carritoDeCompra[index].cantidad ++;
+    actualizarInterfazCarritoCompra();
+}
+function restarCantidad(producto){
+    const index = carritoDeCompra.indexOf(producto);
+    carritoDeCompra[index].cantidad --;
+    if(carritoDeCompra[index].cantidad < 1){
+        borrarProductoDeCarritoDeCompra(producto.id, producto);
+    }
     
+    actualizarInterfazCarritoCompra();
 }
 function crearModal(){
     esconderScroll();
@@ -212,7 +378,7 @@ function crearModal(){
     body.appendChild(modal);
 }
 
-function crearBotonBorrar(contenedor, id){
+function crearBotonBorrar(contenedor, id, objetoProducto){
     //crear boton en el contenedor
     const botonBorrar = document.createElement('BUTTON');
     botonBorrar.classList.add('botonBorrar')
@@ -225,12 +391,27 @@ function crearBotonBorrar(contenedor, id){
             if(producto.id === id){
             const index = carritoDeCompra.indexOf(producto);
             carritoDeCompra.splice(index, 1)
-                actualizarInterfazCarritoCompra();
+            //Formateo el objeto a por default... para que al agregarlo al carrito no tenga problemas..
+            delete objetoProducto.cantidad;
+            actualizarInterfazCarritoCompra();
 
             }
         })
     })
 
+}
+
+function borrarProductoDeCarritoDeCompra(id, objetoProducto){
+    carritoDeCompra.forEach( producto =>{
+        if(producto.id === id){
+        const index = carritoDeCompra.indexOf(producto);
+        carritoDeCompra.splice(index, 1)
+        //Formateo el objeto a por default... para que al agregarlo al carrito no tenga problemas..
+        delete objetoProducto.cantidad;
+        actualizarInterfazCarritoCompra();
+
+        }
+    })
 }
 function ocultarModal(event){
     

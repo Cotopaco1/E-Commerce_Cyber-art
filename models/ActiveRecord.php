@@ -149,6 +149,7 @@ class ActiveRecord {
         return [
            'resultado' =>  $resultado,
            'id' => self::$db->insert_id
+           
         ];
     }
 

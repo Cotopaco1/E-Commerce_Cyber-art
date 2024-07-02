@@ -64,7 +64,7 @@ fieldset{
     margin: 0 2rem 2rem 2rem;
 }
 textarea{
-    min-height: 20rem;
+    min-height: 10rem;
     max-width: auto;
     resize: none;
     font-size: 2rem;
@@ -83,4 +83,29 @@ textarea{
 }
 .botonBorrar{
     @include m.boton(v.$rojo, v.$blanco);
+}
+.botonChico{
+    width: 3rem;
+    height: 3rem;
+    background-color: v.$verde;
+    font-size: 3rem;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-weight: bolder;
+    cursor: pointer;
+}
+.botonChicoRojo{
+    width: 3rem;
+    height: 3rem;
+    background-color: v.$rojo;
+    font-size: 3rem;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-weight: bolder;
+    cursor: pointer;
+}
+.botonComprar{
+    @include m.boton(v.$azulClaro, v.$rosadoOscuro);
 }

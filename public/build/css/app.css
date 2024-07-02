@@ -71,7 +71,7 @@ fieldset {
 }
 
 textarea {
-  min-height: 20rem;
+  min-height: 10rem;
   max-width: auto;
   resize: none;
   font-size: 2rem;
@@ -137,6 +137,57 @@ textarea {
 }
 .botonBorrar:hover {
   background-color: #980000;
+  cursor: pointer;
+}
+
+.botonChico {
+  width: 3rem;
+  height: 3rem;
+  background-color: #329f00;
+  font-size: 3rem;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.botonChicoRojo {
+  width: 3rem;
+  height: 3rem;
+  background-color: #cb0000;
+  font-size: 3rem;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.botonComprar {
+  background-color: #6AAFF2;
+  padding: 1.5rem 4rem;
+  color: #CC54D0;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+  display: inline-block;
+  font-weight: 700;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 5rem 0;
+}
+@media (min-width: 768px) {
+  .botonComprar {
+    width: auto;
+  }
+}
+.botonComprar:hover {
+  background-color: #3b96ee;
   cursor: pointer;
 }
 
@@ -553,6 +604,7 @@ label {
   border-bottom: 1px solid #e1e1e1;
   margin-bottom: 3rem;
   padding-bottom: 3rem;
+  max-width: 50rem;
   display: flex;
   gap: 1rem;
   color: #6AAFF2;
@@ -561,7 +613,9 @@ label {
   border-bottom: unset;
 }
 .modalCarrito .interfazCampo img {
-  max-width: 15rem;
+  max-width: 50%;
+  object-fit: scale-down;
+  object-position: center center;
 }
 .modalCarrito .interfazCampo .infoProductoCarrito {
   flex-basis: 50%;
@@ -800,3 +854,43 @@ label {
   top: 0;
   z-index: 100;
 }
+
+.formulario_carrito_de_compras {
+  background-color: #21174B;
+}
+
+.form {
+  padding: 3rem;
+}
+
+.campoFormulario {
+  display: grid;
+  margin-bottom: 2.5rem;
+}
+.campoFormulario .label {
+  color: #FFFFFF;
+  margin: 1.25rem 0;
+  font-weight: 700;
+}
+.campoFormulario .label:first-of-type {
+  margin-top: 0;
+}
+.campoFormulario input,
+.campoFormulario .textArea,
+.campoFormulario .select {
+  padding: 1rem;
+  font-size: 2rem;
+}
+.campoFormulario input::placeholder,
+.campoFormulario .textArea::placeholder,
+.campoFormulario .select::placeholder {
+  font-size: 2rem;
+}
+.campoFormulario .label_enviar_direccion_diferente {
+  display: flex;
+  gap: 2rem;
+}
+.campoFormulario .label_enviar_direccion_diferente input {
+  width: 3rem;
+}
+/*# sourceMappingURL=app.css.map */
