@@ -5,7 +5,7 @@ namespace Model;
 class Pedidos extends ActiveRecord{
     
     protected static $tabla = 'pedidos';
-    protected static $columnasDB = ['id', 'usuarioID', 'fecha', 'status', 'monto_total', 'direccion', 'metodo_pago', 'coste_envio', 'informacion_adicional'];
+    protected static $columnasDB = ['id', 'usuarioID', 'fecha', 'status', 'monto_total', 'direccion','departamento','ciudad', 'metodo_pago', 'coste_envio', 'informacion_adicional'];
 
     public $id;
     public $usuarioID;
@@ -13,6 +13,8 @@ class Pedidos extends ActiveRecord{
     public $status;
     public $monto_total;
     public $direccion;
+    public $departamento;
+    public $ciudad;
     public $metodo_pago;
     public $coste_envio;
     public $informacion_adicional;
@@ -25,28 +27,53 @@ class Pedidos extends ActiveRecord{
         $this->status = $args['status'] ?? null;
         $this->monto_total = $args['monto_total'] ?? null;
         $this->direccion = $args['direccion'] ?? '';
+        $this->departamento = $args['departamento'] ?? '';
+        $this->ciudad = $args['ciudad'] ?? '';
         $this->metodo_pago = $args['metodo_pago'] ?? '';
         $this->coste_envio = $args['coste_envio'] ?? 0;
         $this->informacion_adicional = $args['informacion_adicional'] ?? '';
     }
-   /*  // crea un nuevo registro
-    public function crear() {
-        // Sanitizar los datos
-        $atributos = $this->sanitizarAtributos();
+    public function validar(){
 
-        // Insertar en la base de datos
-        $query = " INSERT INTO " . static::$tabla . " ( ";
-        $query .= join(', ', array_keys($atributos));
-        $query .= " ) VALUES (' "; 
-        $query .= join("', '", array_values($atributos));
-        $query .= " ') ";
+        if(!$this->fecha){
+            self::setAlerta('error', 'El nombre es obligatorio');
+        }
+        if(!$this->status){
+            self::setAlerta('error', 'El status hace falta');
+        }
+        if(!$this->monto_total){
+            self::setAlerta('error', 'El email es obligatorio');
+        }
+        if(!$this->direccion){
+            self::setAlerta('error', 'La direccion es obligatoria');
+        }
+        if(!$this->departamento){
+            self::setAlerta('error', 'El departamento es obligatorio');
+        }
+        
+        if(!$this->ciudad){
+            self::setAlerta('error', 'La ciudad es obligatoria');
+        }
+        if(!$this->metodo_pago){
+            self::setAlerta('error', 'El metodo de pago es obligatorio');
+        }
 
-        // Resultado de la consulta
-        $resultado = self::$db->query($query);
-        return [
-           'resultado' =>  $resultado,
-           'id' => self::$db->insert_id
-           'pedidoId'=> $this->
-        ];
-    } */
+        return self::$alertas;
+    }
+    public function validar_direccion(){
+
+        if(!$this->direccion){
+            self::setAlerta('error', 'La direccion es obligatoria');
+        }
+        if(!$this->departamento){
+            self::setAlerta('error', 'El departamento es obligatorio');
+        }
+        
+        if(!$this->ciudad){
+            self::setAlerta('error', 'La ciudad es obligatoria');
+        } 
+
+        return self::$alertas;
+    }
+   
 }

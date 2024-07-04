@@ -21,6 +21,10 @@ body {
   position: relative;
 }
 
+main {
+  margin-bottom: 5rem;
+}
+
 .contenedor {
   width: 95%;
   max-width: 100rem;
@@ -54,6 +58,10 @@ a {
 
 .ocultar {
   display: none !important;
+}
+
+.mostrar {
+  display: block !important;
 }
 
 .field {
@@ -189,6 +197,38 @@ textarea {
 .botonComprar:hover {
   background-color: #3b96ee;
   cursor: pointer;
+}
+
+.botonAzul {
+  background-color: #0da6f3;
+  padding: 1.5rem 4rem;
+  color: #FFFFFF;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+  display: inline-block;
+  font-weight: 700;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 5rem 0;
+  margin: 3rem 1rem 1rem 0;
+}
+@media (min-width: 768px) {
+  .botonAzul {
+    width: auto;
+  }
+}
+.botonAzul:hover {
+  background-color: #0a85c3;
+  cursor: pointer;
+}
+
+.hidden {
+  visibility: hidden;
 }
 
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -496,10 +536,9 @@ template {
 /**
  * Add the correct display in IE 10.
  */
-[hidden] {
-  display: none;
-}
-
+/*  [hidden] {
+   display: none;
+ } */
 /* Tipografia */
 h1, h2, h3 {
   font-family: "Exo 2", sans-serif;
@@ -625,6 +664,23 @@ label {
 }
 .modalCarrito .interfazCampo .precio-producto {
   color: #329f00;
+}
+
+.alerta {
+  margin-bottom: 2rem;
+  text-align: center;
+  padding: 1.25rem;
+  color: #FFFFFF;
+  width: 100%;
+  display: block;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.alerta.exito {
+  background-color: #329f00;
+}
+.alerta.error {
+  background-color: #cb0000;
 }
 
 .cuadros {
@@ -855,6 +911,144 @@ label {
   z-index: 100;
 }
 
+@media (min-width: 768px) {
+  .tabs {
+    display: flex;
+  }
+  .tabs button {
+    margin-right: 1rem;
+  }
+  .tabs button:last-child {
+    margin-right: 0;
+  }
+}
+.tabs button {
+  background-color: #0da6f3;
+  border: none;
+  color: #FFFFFF;
+  font-weight: 700;
+  padding: 2rem;
+  display: block;
+  width: 100%;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  transition: background-color 300ms ease;
+}
+.tabs button:hover {
+  cursor: pointer;
+  background-color: #0a85c3;
+}
+.tabs button.actual {
+  background-color: #FFFFFF;
+  color: #0da6f3;
+}
+
+.paginacion {
+  display: flex;
+  justify-content: space-between;
+}
+
+.resumen_carrito_compras {
+  width: 95%;
+  margin: 0 auto;
+  background-color: #e1e1e1;
+}
+.resumen_carrito_compras .contenedorProductosFormulario .parrafoCarritoVacio {
+  color: #1a1b15;
+  text-align: center;
+}
+.resumen_carrito_compras .contenedorProductosFormulario .parrafoMontoTotal {
+  color: #1a1b15;
+  text-align: end;
+}
+.resumen_carrito_compras .contenedorProductosFormulario .parrafoMontoTotal span {
+  color: #4A42AE;
+  font-weight: bold;
+}
+.resumen_carrito_compras .contenedorProductosFormulario .botonSiguienteDiv {
+  display: flex;
+  justify-content: end;
+}
+
+table {
+  border-spacing: 0;
+  width: 100%;
+  text-align: center;
+}
+table thead {
+  background-color: #329f00;
+  font-size: 3rem;
+}
+table tbody {
+  padding: 2rem;
+}
+table tbody .cantidad_producto,
+table tbody .precio-producto,
+table tbody .precio-total-produto {
+  color: #1a1b15;
+}
+table tbody .cantidad_producto_div {
+  display: grid;
+  row-gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+}
+table tbody .cantidad_producto_div .botonChico,
+table tbody .cantidad_producto_div .botonChicoRojo {
+  width: 100%;
+}
+table tbody img {
+  max-width: 15rem;
+  object-fit: scale-down;
+}
+table tbody tr {
+  padding: 2rem;
+}
+table tbody tr td {
+  margin-left: 3rem;
+}
+table tbody .iconoDiv {
+  grid-column: 1/3;
+}
+table tbody i {
+  font-size: 26px;
+  cursor: pointer;
+}
+table a {
+  color: black;
+  margin: 1rem;
+}
+
+.tabla_DetallesDelProducto {
+  max-width: 37rem;
+  display: flex;
+  gap: 4rem;
+}
+.tabla_DetallesDelProducto .infoProductoCarrito {
+  max-width: 30rem;
+}
+.tabla_DetallesDelProducto .infoProductoCarrito .nombre-producto {
+  font-weight: bold;
+}
+.tabla_DetallesDelProducto .infoProductoCarrito .descripcion-producto {
+  font-size: 1.5rem;
+}
+.tabla_DetallesDelProducto .infoProductoCarrito p {
+  color: #1a1b15;
+  text-align: left;
+}
+.tabla_DetallesDelProducto .infoProductoCarrito p span {
+  color: #4A42AE;
+  font-weight: bolder;
+}
+
+.contenedorProductosFormulario .interfazCampo {
+  display: flex;
+}
+.contenedorProductosFormulario .interfazCampo img {
+  max-width: 22rem;
+  object-fit: scale-down;
+}
+
 .formulario_carrito_de_compras {
   background-color: #21174B;
 }
@@ -892,5 +1086,47 @@ label {
 }
 .campoFormulario .label_enviar_direccion_diferente input {
   width: 3rem;
+}
+
+.card {
+  background-color: #e1e1e1;
+  padding: 2rem;
+}
+.card .contenedor_metodo_pago {
+  border: 1px solid black;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+.card .contenedor_metodo_pago .input_radio_metodo_pago {
+  width: 3.1rem;
+  height: 2.5rem;
+}
+
+.contenedor_crear_pedido {
+  width: 80%;
+  margin: 2rem auto;
+}
+.contenedor_crear_pedido .boton_crear_pedido {
+  display: block;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+.contenedor_crear_pedido p {
+  color: #1a1b15;
+}
+
+.div_instrucciones_pago {
+  background-color: #e1e1e1;
+  padding: 2rem;
+}
+.div_instrucciones_pago h1, .div_instrucciones_pago h2 {
+  color: #1a1b15;
+}
+.div_instrucciones_pago p {
+  color: #1a1b15;
+}
+.div_instrucciones_pago p span {
+  color: #4A42AE;
+  font-weight: bold;
 }
 /*# sourceMappingURL=app.css.map */

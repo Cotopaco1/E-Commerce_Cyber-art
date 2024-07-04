@@ -15,7 +15,7 @@
     <div class="imagenContacto">
         <img src="luffy.png" alt="imagenContacto">
     </div>
-    <form action="/" class="formulario">
+    <form action="/" class="formulario" id="formulario_informacion_usuario">
         <fieldset class="informacionPersonal">
             <legend>Informacion personal</legend>
             <div class="contenedorNombre">

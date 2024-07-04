@@ -1,16 +1,30 @@
+let validado = false;
+let formularioDatos;
 let montoTotal = 0;
-const carritoDeCompra = [
+let carritoDeCompra = [
 ]
 const usuario = {
-    id : 1,
-    nombre : 'sergio silva',
+    id : null,
+    nombre : '',
+    apellidos: '',
+    datos_de_contacto: {
+        telefono: '',
+        email: '',
+        direccion: '',
+        ciudad: '',
+        departamento: ''
+    }
 }
 
-const datos = {
+/* const datos = {
     carritoDeCompra : {},
-    usuario: {}
-}
+    usuario: {},
+    informacion_adicional: '',
+    metodo_pago: ''
+} */
 
+let metodo_pago = '';
+let paso = 1;
 const path = window.location.pathname;
 document.addEventListener('DOMContentLoaded', function(){
 iniciarApp();
@@ -30,9 +44,309 @@ function iniciarApp(){
     }
     if(path === '/carrito_de_compras'){
         crearOpcionesEnSelected();
+        recuperarCarritoCompras();
+        tabs();
+        mostrarSeccion();
+        agregar_evento_botones_paginacion();
+        inputMetodosDePago();
+        formulario_evento();
+        /* contenedorMetodoPagoEvento(); */
     }
 }
 
+//deshabilitado por el momento..
+function contenedorMetodoPagoEvento(){
+    document.querySelectorAll('.contenedor_metodo_pago').forEach(contenedor=>{
+        contenedor.addEventListener('click', evento=>{
+            const metodo = evento.target.dataset.metodoPago;
+            metodo_pago = metodo;
+            mostrar_informacion_metodo_pago();
+        })
+    })
+
+}
+//crear evento de inputs radio en metodos de pago...
+function inputMetodosDePago(){
+    const inputs = document.querySelectorAll('.input_radio_metodo_pago');
+    inputs.forEach(input=>{
+        input.addEventListener('click', event=>{
+            const metodo = event.target.dataset.metodoPago;
+            metodo_pago = metodo;
+            mostrar_informacion_metodo_pago();
+        })
+    })
+}
+
+//Muestra informacion dependiendo del metodo seleccionado por el usuario
+function mostrar_informacion_metodo_pago(){
+    const div = document.createElement('DIV')
+    div.classList.add('contenedor_crear_pedido')
+    //Elimina el contenedor anterior..
+    const contenedorAnterior = document.querySelector('.contenedor_crear_pedido');
+    if(contenedorAnterior){
+        contenedorAnterior.remove()
+    }
+    //Muestra html dependiedno del metodo de pago.
+    if(metodo_pago === 'transferencia'){
+        const contenedor = document.querySelector("[data-metodo-pago='transferencia'")
+        div.innerHTML = `<button class="boton_crear_pedido boton">Terminar pedido</button>
+            <p class="crear_pedido_descripcion">Listo... Selecciona crear pedido para
+                crear la orden, una vez tengas la orden realizada, solo falta realizar
+                el pago y empezaremos a realizar y despachar tu pedido... 😎
+            </p>`
+            /* console.log(contenedor) */
+            contenedor.appendChild(div);
+            metodo_pago = 'transferencia';
+            document.querySelector('.boton_crear_pedido').addEventListener('click', crear_pedido)
+            return
+    }
+    if(metodo_pago === 'pse'){
+        const contenedor = document.querySelector("[data-metodo-pago='pse'")
+        div.innerHTML = `<p>Todavia no hemos habilitado transferencia PSE... esperalo pronto :D</p>`
+        metodo_pago = 'pse';
+        contenedor.appendChild(div);
+        return
+    }
+
+}
+
+function obtenerValueElementById(element){
+    const elementHtml = document.getElementById(element)
+    const value = elementHtml.value
+    return value;
+}
+//Envio definitivo del pedido, para crear el pedido completo en la base de datos..
+async function crear_pedido(){
+
+    try {
+        const fecha = getFechaActualFormateada();
+        //Crear objeto que sera convertido a JSON y enviado por fetch POST
+        const datos = {
+            carritoDeCompra : carritoDeCompra,
+            /* formulario : formularioDatos,
+            fecha : fecha,
+            monto_total : montoTotal,
+            metodo_pago : metodo_pago, */
+            /* organizo para la DB */
+            pedidos : {
+                fecha : fecha,
+                direccion : formularioDatos.direccion,
+                monto_total : montoTotal,
+                departamento : formularioDatos.departamento,
+                ciudad : formularioDatos.ciudad,
+                metodo_pago : metodo_pago,
+                informacion_adicional : formularioDatos.informacion_extra
+            },
+            usuario: {
+                nombre : formularioDatos.nombre,
+                apellido : formularioDatos.apellido,
+                email : formularioDatos.email,
+                telefono : formularioDatos.telefono
+            }
+            
+        }
+        const url = 'http://localhost:3000/api/cuadros/crear_orden';
+        jsonData = JSON.stringify(datos);
+
+        const options = {
+            method : 'POST',
+            body : jsonData
+        }
+        console.log(datos);
+        //Envio del objeto a la DB
+        const respuesta = await fetch(url, options)
+        const resultado = await respuesta.json();
+        console.log(resultado);
+        //Alerta si el resultado es exitoso.
+        if(resultado.exito){
+            Swal.fire({
+                icon: "success",
+                title: "Pedido creado",
+                text: "El pedido ha sido guardado con exito",
+                button: 'OK'
+              }).then(() =>{
+                //crear un div con insutrcciones para el usuario... 
+                mostrar_instrucciones_despues_de_pago(resultado);  
+              })
+        }
+
+    } catch (error) {
+        console.log(error)
+        Swal.fire({
+            icon: "error",
+            title: "Ha habido un error",
+            text: "El pedido no se ha podido crear.."
+          });
+    }
+}
+//Crea instrucciones en el paso-3
+function mostrar_instrucciones_despues_de_pago(resultado){
+    const div = document.querySelector('main')
+    //crear div
+    div.innerHTML = `
+    <h1>Gracias por tu compra!</h1>
+    <div class="div_instrucciones_pago contenedor">
+    <h2>Instrucciones a seguir</h2>
+    <div class="contenedorInstrucciones">
+        <p>Consigna a nuestra cuenta bancolombia #: <span>412514</span></p>
+        <p>Manda un screenshot a nuestro wp #124123123312 con el pedido # <span>${resultado.pedidoId}</span></p>
+        <p>Recibe tus productos en la puerta de tu casa...!</p>
+    </div>
+    <div class="resumenCompra"></div>
+    <h2>Resumen de tu pedido</h2>
+    <p>El pedido quedo a nombre de : <span> ${resultado.nombre} </span>  </p>
+    <p>El costo total a pagar es de : <span> ${parseInt(resultado.costo_total).toLocaleString()} </span></p>
+    <p>Los productos que te mandaremos son: ....</p>
+    <p>La direccion a la que te mandaremos los productos es: <span>${resultado.direccion}</span> </p>
+    </div>
+    `
+    
+}
+
+function formulario_evento(){
+    const formulario = document.getElementById('formulario_carrito_de_compras');
+    formulario.addEventListener('submit',  event=>{
+
+        event.preventDefault()
+        //guardo del formulario en un objeto...
+        const data = crear_objeto_con_datos_de_formulario(event)
+        validar_formulario_informacion_para_pedido(data)
+        .then(resultado =>{
+             //Si el resultado es falso significa que no paso la validacion y cortamos el codigo
+            if(!resultado){
+                validado = false;
+                return
+            }
+            validado = true;
+            formularioDatos = data;
+            cambiarSeccionAdelante();
+        }) 
+    })
+}
+
+function crear_objeto_con_datos_de_formulario(event){
+    const data = Object.fromEntries(new FormData(event.target))
+    return data;
+}
+
+
+//Validar formulario de informacion para el pedido
+async function validar_formulario_informacion_para_pedido(data){
+
+    try {
+        jsonData = JSON.stringify(data);
+
+        const url = 'http://localhost:3000/api/cuadros/validar_formulario';
+        const options = {
+            method : 'POST',
+            body : jsonData
+        }
+        console.log(data);
+        const resultado = await fetch(url, options)
+        const respuesta = await resultado.json();
+
+        if(respuesta.error){
+            //eliminamos alertas anteriores
+            const divAlerta = document.querySelector('#alertas')
+            while(divAlerta.firstChild){
+                divAlerta.removeChild(divAlerta.firstChild);
+            }
+            respuesta.error.forEach(error=>{
+                const parrafo = document.createElement('P')
+                parrafo.classList.add('alerta', 'error')
+                parrafo.textContent = error
+                divAlerta.appendChild(parrafo)
+                return false;
+            })
+        }else{
+            return true;
+        }
+
+    } catch (error) {
+        const divAlerta = document.querySelector('#alertas')
+        const parrafo = document.createElement('P')
+        parrafo.textContent = error
+        divAlerta.appendChild(parrafo)
+    }
+}
+//Evento botones Tabs:
+function tabs(){
+    let botones = document.querySelectorAll('.tabs button')
+    botones.forEach( (boton) => {
+        boton.addEventListener('click', function(e){
+            if(e.target.dataset.paso === '3'){
+                const resultado = activar_evento_submit_en_formulario_carrito_compras()
+                if(!resultado){
+                    return
+                }
+            }
+           
+            paso = parseInt(e.target.dataset.paso);
+           
+            mostrarSeccion();
+            /* botonesPaginador(); */
+            /* boton.classList.toggle('actual') */
+        })
+    })
+
+}
+//Mostrar seccion igual al paso:
+function mostrarSeccion(){
+
+    //quitar mostrar a seccion anterior
+    let seccionAnterior = document.querySelector('.actual');
+    const botonAnterior = document.querySelector('#anterior');
+    const botonSiguiente = document.querySelector('#siguiente');
+
+
+    /* let botonAnterior = document.querySelector('.actual'); */
+    if(paso === 3 ){
+        const divAlerta = document.querySelector('#alertas')
+        while(divAlerta.firstChild){
+            divAlerta.removeChild(divAlerta.firstChild);
+        }
+        //validar los campos del usuario...
+        
+        if(!validado){
+            const alertasDiv = document.getElementById('alertas')
+            alertasDiv.innerHTML = `<p class='alerta error'> Faltan datos por rellenar</p>`
+            return
+        }
+        console.log('el usuario esta validado, pasando a la seccion 3')
+        botonSiguiente.classList.add('hidden')
+        /* mostrarResumen(); */
+    }
+    
+    if(seccionAnterior){
+        seccionAnterior.classList.remove('actual');
+        seccionAnterior.classList.add('ocultar')
+        
+        const botonAnterior = document.querySelector('.hidden')
+        if(botonAnterior){
+            botonAnterior.classList.remove('ocultar')
+
+        }
+        /* botonAnterior.classList.remove('actual'); */
+    }
+    if(paso === 1){
+        botonAnterior.classList.add('hidden')
+    }
+    if(paso === 2){
+        botonAnterior.classList.remove('hidden')
+        botonSiguiente.classList.remove('hidden')
+        /* crearBotonAnterior();
+        crearBotonSiguiente(); */
+    }
+    //Agrega mostrar a seccion seleccionada.
+    let seccion = document.querySelector(`#paso-${paso}`)
+    console.log(seccion, paso)
+    seccion.classList.add('actual');
+    seccion.classList.remove('ocultar')
+
+    //Resalto seccion actual.
+    /* boton = document.querySelector(`[data-paso='${paso}']`);
+    boton.classList.add('actual'); */
+}
 //crear option en el selected
 function crearOpcionesEnSelected(){
     const select = document.querySelector('#departamento')
@@ -95,8 +409,236 @@ async function getDepartamentosColombia(){
         console.log(error);
     }  
 }
-//Enviar peticion para guardar pedido...
-async function enviarDatos (){
+
+//Recuperar carrito de compras...
+async function recuperarCarritoCompras (){
+    try {
+        const url = 'http://localhost:3000/api/cuadros/guardar_carrito_compras';
+        //Envio de peticion a la DB
+        const respuesta = await fetch(url)
+        const resultado = await respuesta.json();
+        carritoDeCompra=resultado.carritoDeCompra
+        montoTotal = resultado.montoTotal;
+        mostrarCarritoDeCompras();
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function mostrarCarritoDeCompras(){
+    const interfaz = document.querySelector('.contenedorProductosFormulario')
+    const contenedorBig = document.querySelector('#tbody')
+    
+        
+        //borras todos todos los producots y los vuelvo a crear.... (actualizar)
+        while(contenedorBig.firstChild){
+            contenedorBig.removeChild(contenedorBig.firstChild);
+            if(interfaz.firstChild){
+                interfaz.removeChild(interfaz.firstChild)
+
+            }
+        }
+        //si el carrito no tiene productos ..
+        if(!carritoDeCompra.length >= 1){
+            const parrafo = document.createElement('P');
+            parrafo.classList.add('parrafoCarritoVacio');
+            parrafo.innerHTML = `El carrito esta vacio ... <br /> Lo sentimos selecciona algo para poder seguir con alguna compra ...  😭`
+            interfaz.appendChild(parrafo);
+            return
+        }
+        //Crear productos e insertar en interfaz..
+        const tbody = document.getElementById('tbody');
+        carritoDeCompra.forEach(producto =>{
+            const {id, nombre, precio, descripcion, size, disponible, imagen, cantidad} = producto;
+
+            const productoDiv = document.createElement('DIV');
+            productoDiv.classList.add("interfazCampo");
+
+            const nombreProducto = document.createElement('P');
+            nombreProducto.textContent = nombre;
+            nombreProducto.classList.add('nombre-producto')
+
+            const precioProducto = document.createElement('P');
+            precioProducto.textContent = `$${parseInt(precio).toLocaleString()}`;
+            
+            precioProducto.classList.add('precio-producto')
+
+            const cantidadProducto = document.createElement('P');
+            cantidadProducto.textContent = `Cantidad: ${cantidad}`;
+            cantidadProducto.classList.add('cantidad_producto');
+
+            const botonMas = document.createElement('BUTTON');
+            botonMas.classList.add('botonChico');
+            botonMas.textContent = '+';
+            botonMas.addEventListener('click', function(){
+                agregarCantidad(producto, true);
+            })
+
+            const botonMenos = document.createElement('BUTTON');
+            botonMenos.classList.add('botonChicoRojo');
+            botonMenos.textContent = '-';
+            botonMenos.addEventListener('click', function(){
+                restarCantidad(producto, true);
+            })
+
+
+            const sizeProducto = document.createElement('P');
+            sizeProducto.innerHTML = `<span>Tamaño: </span> ${size}`;
+
+            const descripcionProducto = document.createElement('P');
+            descripcionProducto.classList.add('descripcion-producto')
+            descripcionProducto.textContent = descripcion;
+
+            const iconoDiv = document.createElement('DIV');
+            iconoDiv.classList.add('iconoDiv');
+
+            const icono = document.createElement('I');
+            icono.classList.add('fa-solid', 'fa-trash');
+            icono.dataset.idProducto = id;
+            icono.addEventListener('click', function(e){
+                const id_producto_a_eliminar = e.target.dataset.idProducto;
+                eliminarProducto(id_producto_a_eliminar)
+            })
+
+            iconoDiv.appendChild(icono)
+            
+            const divInfo = document.createElement('DIV');
+            divInfo.classList.add('infoProductoCarrito');
+            divInfo.appendChild(nombreProducto)
+            divInfo.appendChild(sizeProducto)
+            divInfo.appendChild(descripcionProducto)
+
+            const divBotonesCantidad = document.createElement('DIV');
+            divBotonesCantidad.classList.add('cantidad_producto_div')
+            divBotonesCantidad.appendChild(botonMas)
+            divBotonesCantidad.appendChild(botonMenos)
+            divBotonesCantidad.appendChild(iconoDiv);
+
+            const imagenProducto = document.createElement('IMG');
+            imagenProducto.src = `/img/${imagen}`;
+
+
+            const precioTotal = precio * cantidad;
+            const precioTotalParrafo = document.createElement('P')
+            precioTotalParrafo.textContent = `$${precioTotal.toLocaleString()}`
+            precioTotalParrafo.classList.add('precio-total-produto')
+           
+            //Creo row de tabla e ingreso los datos a la fila...
+            const traw = document.createElement('TR');
+            const tdDetalles = document.createElement('TD');
+            tdDetalles.classList.add('tabla_DetallesDelProducto')
+            tdDetalles.appendChild(imagenProducto)
+            tdDetalles.appendChild(divInfo);
+
+            const tdCantidad = document.createElement('TD');
+            tdCantidad.appendChild(cantidadProducto);
+            tdCantidad.appendChild(divBotonesCantidad);
+            
+
+            const tdPrecio = document.createElement('TD');
+            tdPrecio.appendChild(precioProducto)
+
+            const tdTotal = document.createElement('TD');
+            tdTotal.appendChild(precioTotalParrafo);
+            
+            traw.appendChild(tdDetalles)
+            traw.appendChild(tdCantidad)
+            traw.appendChild(tdPrecio)
+            traw.appendChild(tdTotal)
+            tbody.appendChild(traw);
+            
+        })
+        //Muestra el montoTotal en carrito de compras.
+        const parrafoMontoTotal = document.createElement('P');
+        parrafoMontoTotal.classList.add('parrafoMontoTotal')
+        montoTotal = sumarProductosCarrito();
+        parrafoMontoTotal.innerHTML = `<span>Monto Total:</span> $${montoTotal.toLocaleString()} COP`;
+        interfaz.appendChild(parrafoMontoTotal)
+        //Crea boton para seguir a la siguiente seccion...
+    
+
+       /*  const botonSiguiente = document.createElement('BUTTON');
+        botonSiguiente.classList.add('botonAzul');
+        botonSiguiente.setAttribute('id', 'botonSiguiente')
+        botonSiguiente.textContent = 'Siguiente..'
+        botonSiguiente.onclick = cambiarSeccionAdelante;
+
+        const botonSiguienteDiv = document.createElement('DIV');
+        botonSiguienteDiv.classList.add('botonSiguienteDiv')
+        botonSiguienteDiv.appendChild(botonSiguiente); */
+
+        /* interfaz.appendChild(botonSiguienteDiv) */
+
+
+}
+//evento botones}
+function agregar_evento_botones_paginacion(){
+    anterior = document.querySelector('#anterior')
+    siguiente = document.querySelector('#siguiente')
+
+    siguiente.addEventListener('click', cambiarSeccionAdelante)
+    anterior.addEventListener('click', cambiarSeccionAtras)
+
+}
+
+//Activa el evento submit en el formulario
+function activar_evento_submit_en_formulario_carrito_compras(){
+    //Creo evento de submit y se lo aplico al formulario...
+    const form = document.getElementById('formulario_carrito_de_compras');
+    const event = new Event('submit', {
+        'bubbles': true,
+        'cancelable': true
+    });
+    form.dispatchEvent(event);
+}
+
+//Cambiar seccion
+function cambiarSeccionAdelante(e){
+    const ultimoPaso = 3;
+    if(paso === 2 ){
+        activar_evento_submit_en_formulario_carrito_compras();
+        if(!validado){
+            return
+        }
+    }
+
+    /* if(paso === 2 && validado === false){
+        const alertasDiv = document.getElementById('alertas')
+        alertasDiv.innerHTML = `<p class='alerta error'> Faltan datos por rellenar</p>`
+        return
+    } */
+
+    if(paso === ultimoPaso){
+        return
+    }
+    paso++;
+    mostrarSeccion();
+}
+function cambiarSeccionAtras(){
+    const primerPaso = 1;
+    if(paso === primerPaso){
+        return
+    }
+    paso--;
+    mostrarSeccion();
+}
+
+//Eliminar producto id
+function eliminarProducto(id){
+
+    carritoDeCompra.forEach(producto =>{
+        if(producto.id === id){
+            const index_producto = carritoDeCompra.indexOf(producto.id);
+            carritoDeCompra.splice(index_producto, 1);
+            console.log(carritoDeCompra);
+            mostrarCarritoDeCompras();
+        }
+    })
+
+}
+//Enviar peticion para guardar el carrito con la sesion del usuario....
+async function guardar_carrito_en_session (){
     try {
         const fecha = getFechaActualFormateada();
         //Crear objeto que sera convertido a JSON y enviado por fetch POST
@@ -107,31 +649,35 @@ async function enviarDatos (){
             },
             fecha : fecha,
             status: 'pendiente',
-            monto_total : montoTotal
+            monto_total : montoTotal,
+            metodo_pago : metodo_pago
         }
-        const url = 'http://localhost:3000/api/cuadros';
+        const url = 'http://localhost:3000/api/cuadros/guardar_carrito_compras';
         jsonData = JSON.stringify(datos);
 
         const options = {
             method : 'POST',
             body : jsonData
         }
+        console.log(datos)
         //Envio del objeto a la DB
         const respuesta = await fetch(url, options)
         const resultado = await respuesta.json();
+        console.log(resultado);
         //Alerta si el resultado es exitoso.
         if(resultado.resultado){
             Swal.fire({
                 icon: "success",
-                title: "Pedido creado",
-                text: "El pedido ha sido guardado con exito",
+                title: "Pedido creado correctamente",
+                text: "El pedido ah sido creado crrectamente, a continuacion lee lo siguiente",
                 button: 'OK'
               }).then(() =>{
-                window.location.reload();       
+                window.location.href = '/carrito_de_compras';       
               })
         }
 
     } catch (error) {
+        console.log(error);
         Swal.fire({
             icon: "error",
             title: "Ha habido un error",
@@ -364,7 +910,7 @@ function actualizarInterfazCarritoCompra(){
         const botonComprar = document.createElement('BUTTON');
         botonComprar.classList.add('botonComprar')
         botonComprar.textContent = `Comprar`
-        botonComprar.addEventListener('click', enviarDatos )
+        botonComprar.addEventListener('click', guardar_carrito_en_session )
         interfaz.appendChild(botonComprar);
 }
 
@@ -377,19 +923,31 @@ function sumarProductosCarrito(){
     return total;
 }
 
-function agregarCantidad(producto){
+function actualizar_resumen_de_carrito_compras(){
+
+}
+
+function agregarCantidad(producto, compras = false){
 
     const index = carritoDeCompra.indexOf(producto);
     carritoDeCompra[index].cantidad ++;
+    if(compras){
+        mostrarCarritoDeCompras()  
+        return
+    }
     actualizarInterfazCarritoCompra();
 }
-function restarCantidad(producto){
+//Si compra es true, significa que se usara carrito_de_compras
+function restarCantidad(producto, compras = false){
     const index = carritoDeCompra.indexOf(producto);
     carritoDeCompra[index].cantidad --;
     if(carritoDeCompra[index].cantidad < 1){
         borrarProductoDeCarritoDeCompra(producto.id, producto);
     }
-    
+    if(compras){
+        mostrarCarritoDeCompras();
+        return
+    }
     actualizarInterfazCarritoCompra();
 }
 function crearModal(){
@@ -468,7 +1026,6 @@ function esconderScroll(){
     
 }
 //Termina carrito compras//
-
 
 //Agrega evento al menuHamburgesa
 function eventoMenu(){
@@ -563,6 +1120,5 @@ function mostrar (id){
         <input id="email" type="email" placeholder="Tu correo electronico" name="user[email]">
         `
     }
-    
 
 }

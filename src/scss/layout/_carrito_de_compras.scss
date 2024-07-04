@@ -1,5 +1,166 @@
 @use 'base/variables' as v;
 @use 'base/mixins' as m;
+
+
+
+//tabs{
+    .tabs{
+        @include m.tablet{
+            display: flex;
+            button{
+    
+                margin-right: 1rem;
+                &:last-child{
+                    margin-right: 0;
+                }
+            }
+        }
+        button{
+            background-color: v.$azul;
+            border: none;
+            color: v.$blanco;
+            font-weight: v.$bold;
+            padding: 2rem;
+            display: block;
+            width: 100%;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            transition: background-color 300ms ease;
+            
+            &:hover{
+                cursor: pointer;
+                background-color: darken(v.$azul, 10%);
+            }
+            &.actual{
+                background-color: v.$blanco;
+                color: v.$azul;
+            }
+    
+        }
+    }
+//Botones de paginacion:
+.paginacion {
+    display: flex;
+    justify-content: space-between;
+}
+
+//resumen carrito de compras::
+.resumen_carrito_compras{
+    width: 95%;
+    margin: 0 auto;
+    background-color: v.$gris;
+    //Contenedor final despues de la tabla
+    .contenedorProductosFormulario{
+        .parrafoCarritoVacio{
+            color: v.$negro;
+            text-align: center;
+        }
+        .parrafoMontoTotal{
+            color: v.$negro;
+            text-align: end;
+            span{
+                color: v.$azulMedio;
+                font-weight: bold;
+            }
+        }
+        .botonSiguienteDiv{
+            display: flex;
+            justify-content: end;
+        }
+    }
+}
+table{
+    
+    border-spacing: 0;
+    width: 100%;
+    text-align: center;
+    thead{
+        background-color: v.$verde;
+        font-size: 3rem;
+        
+
+    }
+    tbody{
+        padding: 2rem;
+        .cantidad_producto,
+        .precio-producto,
+        .precio-total-produto{
+            color: v.$negro;
+        }
+        .cantidad_producto_div{
+            display: grid;
+            row-gap: 1rem;
+            grid-template-columns: 1fr 1fr;
+            .botonChico,
+            .botonChicoRojo{
+                width: 100%;
+            }
+            
+        }
+        
+        img{
+            max-width: 15rem;
+            object-fit: scale-down;
+        }
+        tr{
+            padding: 2rem;
+            td{
+                margin-left: 3rem;
+            }
+        }
+        .iconoDiv{
+            grid-column: 1 / 3;
+        }
+        i{
+            font-size: 26px;
+            cursor: pointer;
+            
+            
+        }
+    }
+    a{
+        color: black;
+        margin: 1rem;
+        
+    }
+}
+.tabla_DetallesDelProducto{
+    max-width: 37rem;
+    display: flex;
+    gap: 4rem;
+    .infoProductoCarrito{
+        max-width: 30rem;
+        .nombre-producto{
+            font-weight: bold;
+        }
+        .descripcion-producto{
+            font-size: 1.5rem;
+        }
+        p{
+            color: v.$negro;
+            text-align: left;
+            span{
+                color: v.$azulMedio;
+                font-weight: bolder;
+            }
+        }
+        
+
+    }
+}
+.contenedorProductosFormulario{
+    .interfazCampo{
+        display: flex;
+        img{
+            max-width: 22rem;
+            object-fit: scale-down;
+        }
+    }
+}
+
+
+
+//seccion 2 paso 2
 .formulario_carrito_de_compras{
     background-color: v.$azulOscuro;
 }
@@ -40,4 +201,48 @@
 }
 .campo_nombre_and_apellido{
   
+}
+
+//seccion 3 paso 3
+
+.card{
+    background-color: v.$gris;
+    padding: 2rem;
+    .contenedor_metodo_pago{
+        border: 1px solid black;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        .input_radio_metodo_pago{
+            width: 3.1rem;
+            height: 2.5rem;
+        }
+    }
+}
+.contenedor_crear_pedido{
+    width: 80%;
+    margin: 2rem auto;
+    .boton_crear_pedido{
+        display: block;
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+    p{
+        color: v.$negro;
+    }
+}
+
+//instrucciones de pago...
+.div_instrucciones_pago{
+    background-color: v.$gris;
+    padding: 2rem;
+    h1,h2{
+        color: v.$negro;
+    }
+    p{
+        color: v.$negro;
+        span{
+            color: v.$azulMedio;
+            font-weight: bold;
+        }
+    }
 }

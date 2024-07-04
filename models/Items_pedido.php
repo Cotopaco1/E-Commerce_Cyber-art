@@ -22,7 +22,25 @@ class Items_pedido extends ActiveRecord{
         $this->cantidad = $args['cantidad'] ?? null;
         $this->precio = $args['precio'] ?? null;
         $this->precio_total = $args['precio_total'] ?? null;
-        
+
+    }
+    public function validar(){
+        if(!$this->pedidosId){
+            self::setAlerta('error', 'El pedido id es obligatorio');
+        }
+        if(!$this->productosId){
+            self::setAlerta('error', 'El productosId id es obligatorio');
+        }
+        if(!$this->cantidad){
+            self::setAlerta('error', 'El cantidad id es obligatorio');
+        }
+        if(!$this->precio){
+            self::setAlerta('error', 'El precio id es obligatorio');
+        }
+        if(!$this->precio_total){
+            self::setAlerta('error', 'El precio_total id es obligatorio');
+        }
+        return self::$alertas;
     }
     
 }

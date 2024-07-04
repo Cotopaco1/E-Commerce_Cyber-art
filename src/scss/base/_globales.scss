@@ -13,11 +13,15 @@ html {
 *:after {
     box-sizing: inherit;
 }
+
 body{
     min-height: 100vh;
     margin: 0;
     background-color: #B74E6A;
     position: relative;
+}
+main{
+    margin-bottom: 5rem;
 }
 .contenedor {
     width: 95%;
@@ -50,6 +54,9 @@ a{
 }
 .ocultar{
     display: none!important;
+}
+.mostrar{
+    display: block!important;
 }
 .field{
     margin-top: 2rem;
@@ -108,4 +115,12 @@ textarea{
 }
 .botonComprar{
     @include m.boton(v.$azulClaro, v.$rosadoOscuro);
+}
+.botonAzul{
+    @include m.boton(v.$azul, v.$blanco);
+    margin: 3rem 1rem 1rem 0;
+    
+}
+.hidden{
+    visibility: hidden;
 }
