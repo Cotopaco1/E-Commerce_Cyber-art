@@ -1,0 +1,89 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.card_login{
+    border-radius: 2rem;
+    margin-top: 2.4rem;
+    
+    background-color: v.$gris_login;
+    @include m.tablet{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 67rem;
+    }
+    overflow: hidden;
+    h1,h2,h3,p{
+        color: v.$negro_login;
+    }
+    a{
+        color: v.$azul_login;
+        font-size: 1.4rem;
+    }
+}
+.datos_login{
+    padding: 2.4rem;
+    .datos_header{
+        display: flex;
+        justify-content: space-between;
+    }
+    .datos_body{
+        margin:  4rem auto 2rem;
+        width: 80%;
+        text-align: end; //Solo sirve para el link de olvidaste password
+        p{
+            margin-top: 0.4rem;
+            font-size: 1.6rem;
+            text-align: center;
+        }
+        h1{
+            margin-bottom: 0;
+        }
+        input{
+            padding: 0.9rem;
+            display: block;
+            width: 100%;
+            margin-bottom: 1rem;
+            border-radius: 0.7rem;
+            border: 1px solid v.$gris_login_oscuro;
+            font-size: 1.6rem;
+            &::placeholder{
+                font-size: 1.4rem;
+                font-weight: v.$bold;
+            }
+        }
+        /* .link_olvidaste_password{
+            font-size: 1.4rem;
+        } */
+    }
+}
+.datos_footer{
+    .boton_login{
+        border-radius: 4rem;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+    }
+    p{
+        text-align: center;
+        margin-top: 0;
+    }
+}
+.imagen_card_login{
+    @include m.tablet{
+        padding: 2.4rem;
+        background-image: url('/img/login_imagen.png');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+
+    }
+
+}
+
+//configurando sweet alertas
+.swal2-title{
+    font-size: 3.6rem;
+}
+.swal2-html-container,
+.swal2-confirm{
+    font-size: 2rem!important;
+}

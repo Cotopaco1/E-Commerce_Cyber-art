@@ -1,0 +1,13 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.crear_cuenta_header{
+    p{
+        font-size:1.4rem ;
+    }
+}
+.mensaje_de_error{
+    color: v.$rojo!important;
+    text-align: center;
+    margin: 1rem;
+}

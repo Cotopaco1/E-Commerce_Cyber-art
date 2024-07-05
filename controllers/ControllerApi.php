@@ -7,7 +7,7 @@ use Model\Pedidos;
 use Model\Productos;
 use Model\Usuarios;
 
-class ControllerCuadros{
+class ControllerApi{
 
     public static function getCuadros(){
 
@@ -15,7 +15,7 @@ class ControllerCuadros{
 
         echo(json_encode($cuadros));
     }
-    public static function guardarOrden(){
+    public static function crear_orden(){
 
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $data = file_get_contents('php://input');
@@ -23,7 +23,7 @@ class ControllerCuadros{
 
             //Guardar registro del usuario....
             $usuario = new Usuarios($datos['usuario']);
-            $alertas = $usuario->validar();
+            $alertas = $usuario->validar_datos_para_formulario_crear_pedido();
 
             if(!empty($alertas['error'])){
                 $respuesta = [
@@ -149,7 +149,7 @@ class ControllerCuadros{
             $alertas = [];
             //Validar nombre, apellido, telefono, email
             $usuario = new Usuarios($datos);
-            $usuario->validar();
+            $usuario->validar_datos_para_formulario_crear_pedido();
 
             //validar direccion, departamento, ciudad.
             $pedido = new Pedidos($datos);
@@ -177,12 +177,72 @@ class ControllerCuadros{
         }
     }
 
-    public static function crear_orden(){
+    public static function crear_cuenta(){
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $error['error'] =  false;
+            $data = file_get_contents('php://input');
+            $datos = json_decode($data,true);
+
+            //crear usuario con los datos mandados desde el front-end
+            $usuario = new Usuarios($datos);
+            $alertas = $usuario->validarNuevaCuenta();
+            //Si no tiene password confirmar entonces hay error.
+            if(!$datos['password_confirmar']){
+                $alertas['error'] = 'La password de confirmar no existe..';
+            }
+            $alertas = $usuario->comprobar_igualdad_de_password($datos['password_confirmar']);
+            $resultado = $usuario->userExist();
+            /* echo json_encode($resultado->num_rows);
+            return; */
+            if($resultado->num_rows > 0){
+                $alertas['error'][] = 'El usuario existe';
+            }
+            if(empty($alertas)){
+                $usuario->hashearPassword();
+                $resultado = $usuario->guardar();
+
+                if($resultado['resultado']){
+                    $respuesta = [
+                        'respuesta'=> true,
+                        'mensaje'=> "Cuenta creada exitosamente, un correo de confirmacion ha sido enviado a $usuario->email",
+                        'alertas'=> $alertas
+                    ];
+                    echo json_encode($respuesta);
+                    return;
+                }else{
+                    $respuesta = [
+                        'respuesta'=>false,
+                        'mensaje'=> 'No se ha podido guardar la cuenta en la base de datos'
+                    ];
+                }
+
+            }
+            if(!empty($alertas['error'])){
+                $resultado = [
+                    'alertas'=> $alertas,
+                    'error'=> 'Ha habido un error...'
+                ];
+            }
+            //Si existe un error entonces imprimir ese error.
+            if($error['error']){
+
+                echo json_encode($error);
+                return;
+            }
+
+
+            echo json_encode($resultado);
+        }
+       
+
+    }
+
+   /*  public static function crear_orden(){
         iniciar_sesion_sino_esta_iniciada();
 
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            /* if(is_null(file_get_contents('php://input'))){
-            } */
+           
                 //extraemos el archivo json enviado..
             $data = file_get_contents('php://input');
             $datos = json_decode($data,true);
@@ -201,5 +261,5 @@ class ControllerCuadros{
             echo json_encode($respuesta);
             return;
         }
-    }
+    } */
 }

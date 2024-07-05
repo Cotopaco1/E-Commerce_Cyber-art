@@ -32,17 +32,19 @@ iniciarApp();
 })
 
 function iniciarApp(){
+    
     eventoInputs(); //Inputs radio
     eventoMenu(); //Menu header
-    agregarFixed(); //Menu Header
     subrayarPaginaActual(); //menu Header
     eventoCarritoUserBoton(); //menu Header
     if(path === '/'){
+        agregarFixed(); //Menu Header
         eventoCuadros();
         consultarApiCuadros();
 
     }
     if(path === '/carrito_de_compras'){
+        agregarFixed(); //Menu Header
         crearOpcionesEnSelected();
         recuperarCarritoCompras();
         tabs();
@@ -52,7 +54,134 @@ function iniciarApp(){
         formulario_evento();
         /* contenedorMetodoPagoEvento(); */
     }
+    if(path === '/crear_cuenta'){
+        eventos_crear_cuenta();
+        return
+    }
+    
 }
+
+//Empieza login
+
+function eventos_crear_cuenta(){
+    const formulario = document.getElementById('formulario');
+    formulario.addEventListener('submit', crear_cuenta)
+    const boton_crear_cuenta = document.getElementById('boton_crear_cuenta')
+    boton_crear_cuenta.addEventListener('click', activar_evento_submit_en_crear_cuenta)
+
+    document.querySelectorAll('.input').forEach(input=>{
+        input.addEventListener('blur', verificar_input )
+    })
+
+}
+
+//validacion del front-end con los datos..
+function verificar_input(e){
+    const value = e.target.value
+    const errorAnterior = document.querySelector(`#error${e.target.id}`)
+    if(value === ''){
+        if(errorAnterior){
+            return
+        }
+
+        const error = document.createElement('P')
+        error.setAttribute('id', `error${e.target.id}`)
+        error.textContent = `El ${e.target.id} es obligatorio`
+        e.target.insertAdjacentElement('afterend', error);
+    }else{
+        if(errorAnterior){
+            errorAnterior.remove()
+        }
+    }
+}
+
+
+
+//validacion con el back-end de los datos..
+function crear_cuenta(event){
+    console.log(event.target)
+    event.preventDefault()
+    const data = crear_objeto_con_datos_de_formulario(event)
+    
+    enviar_formulario_para_crear_cuenta(data)
+    .then(validar_respuesta_envio_formulario_crear_cuenta) 
+}
+
+function validar_respuesta_envio_formulario_crear_cuenta(respuesta){
+    if(respuesta.respuesta){
+        const div = document.querySelector('#mensaje')
+        div.innerHTML = '';
+        Swal.fire({
+            title: "Buen trabajo!",
+            text: `${respuesta.mensaje}`,
+            icon: "success",
+            fontsize: '5rem',
+          }).then(()=>{
+            window.location.href = 'http://localhost:3000/login'
+          })
+
+       }else{
+        const div = document.querySelector('#mensaje')
+        div.innerHTML = '';
+        respuesta.alertas.error.forEach(mensajeError => {
+            const errorParrafo = document.createElement('P');
+            errorParrafo.textContent = mensajeError;
+            errorParrafo.classList.add('mensaje_de_error')
+            div.appendChild(errorParrafo);
+        });
+        /* div.innerHTML = `<p>Ha fallado la autentificacion</p>` */
+       }
+}
+
+async function enviar_formulario_para_crear_cuenta(data){
+
+    try {
+        const fecha = getFechaActualFormateada();
+        const url = 'http://localhost:3000/api/login/crear_cuenta'
+        const json = JSON.stringify(data)
+        const options = {
+            method : 'post',
+            body : json
+        }
+        
+       const resultado =  await fetch(url, options);
+       const respuesta = await resultado.json();
+       //si la respuesta es true mandamos alerta
+       return respuesta;
+       /* if(respuesta.respuesta){
+        Swal.fire({
+            title: "Good job!",
+            text: `${respuesta.mensaje}`,
+            icon: "success"
+          });
+       }else{
+        const div = document.querySelector('#mensaje')
+        div.innerHTML = `<p>${respuesta.mensaje}</p>`
+       } */
+       
+        /* .this(resultado=>{
+            console.log(resultado.json)
+        }) */
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+function activar_evento_submit_en_crear_cuenta(){
+    //Creo evento de submit y se lo aplico al formulario...
+    const form = document.getElementById('formulario');
+    const event = new Event('submit', {
+        'bubbles': true,
+        'cancelable': true
+    });
+    form.dispatchEvent(event);
+}
+
+
+
+//Termina login
+
 
 //deshabilitado por el momento..
 function contenedorMetodoPagoEvento(){
@@ -145,7 +274,7 @@ async function crear_pedido(){
             }
             
         }
-        const url = 'http://localhost:3000/api/cuadros/crear_orden';
+        const url = 'http://localhost:3000/api/crear_orden';
         jsonData = JSON.stringify(datos);
 
         const options = {
@@ -236,7 +365,7 @@ async function validar_formulario_informacion_para_pedido(data){
     try {
         jsonData = JSON.stringify(data);
 
-        const url = 'http://localhost:3000/api/cuadros/validar_formulario';
+        const url = 'http://localhost:3000/api/validar_formulario';
         const options = {
             method : 'POST',
             body : jsonData
@@ -705,7 +834,7 @@ return formattedDate;
 //Consultar la api
 async function consultarApiCuadros(){
     try {
-        const url = 'http://localhost:3000/api/cuadros';
+        const url = 'http://localhost:3000/api/cuadros/getcuadros';
         const resultado = await fetch(url);
         const json = await resultado.json()
         imprimirResultadosApi(json);

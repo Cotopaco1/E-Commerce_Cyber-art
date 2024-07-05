@@ -32,6 +32,10 @@ class Usuarios extends ActiveRecord{
 
     public function validar(){
 
+    }
+
+    public function validar_datos_para_formulario_crear_pedido(){
+
         if(!$this->nombre){
             self::setAlerta('error', 'El nombre es obligatorio');
         }
@@ -55,4 +59,111 @@ class Usuarios extends ActiveRecord{
         return self::$alertas;
     }
    
+    public function validarNuevaCuenta(){
+
+        $minCharactersPassword = 6;
+
+        if(!$this->nombre){
+            /* self::$alertas['error'][] = 'El nombre es requisito'; */
+            self::setAlerta('error', 'El nombre es obligatorio...');
+        }
+        if(!$this->apellido){
+            self::$alertas['error'][] = 'El apellido es requisito';
+        }
+        /* if(!$this->telefono){
+            self::$alertas['error'][] = 'El telefono es requisito';
+        } */
+        if(!$this->email){
+            self::$alertas['error'][] = 'El email es requisito';
+        }
+        if(!$this->password){
+            self::$alertas['error'][] = 'El password es requisito';
+        }
+        if(strlen($this->password)< $minCharactersPassword && $this->password){
+            self::$alertas['error'][] = "El password debe tener minimo {$minCharactersPassword} caracteres";
+        }
+       
+        return self::$alertas;
+    }
+    public function validarLogin(){
+        if(!$this->email){
+            self::$alertas['error'][] = 'El email es obligatorio';
+        }
+        if(!$this->password){
+            self::$alertas['error'][] = 'La password es obligatoria';
+        }
+        return self::$alertas;
+    }
+    public function validarEmail(){
+        if(!$this->email){
+            self::$alertas['error'][] =  'El email es obligatorio';
+        }
+
+    }
+    public function validarPassword(){
+        $minCharactersPassword = 6;
+        if(!$this->password){
+            self::$alertas['error'][] = 'La password es obligatoria';
+        }
+        if(strlen($this->password) < $minCharactersPassword && $this->password){
+            self::$alertas['error'][] = "La password debe contener minimo {$minCharactersPassword} caracteres";
+        }
+        return self::$alertas;
+    }
+
+    public function userExist(){
+        $sanitizado = $this->sanitizarAtributos();
+        $email = $sanitizado['email'];
+        $query = "SELECT * FROM ";
+        $query .= self::$tabla;
+        $query .= " WHERE email = " . "'$email'";
+
+        $resultado = self::$db->query($query);
+
+        return $resultado;
+    }
+
+    public function hashearPassword(){
+        $this->password = password_hash($this->password, PASSWORD_BCRYPT);
+    }
+    public function crearToken(){
+        $this->token = uniqid();
+    }
+
+    public static function confirmarUsuario($token){
+        $user = Usuarios::where('token', $token);
+        if($user){
+            $user->token = NULL;
+            $user->confirmado = 1;
+            $user->guardar();
+            self::setAlerta('exito', 'Cuenta confirmada');
+        }
+        else{
+            self::setAlerta('error', 'Link invalido o la cuenta ya ha sido confirmada...');
+        }
+        
+    }
+
+    public function comprobarPasswordAndVerificado($passwordPost){
+
+        $resultado = password_verify($passwordPost, $this->password);
+  
+        if(!$resultado || !$this->confirmado){
+            self::$alertas['error'][] = 'Tu cuenta no ha sido confirmada o la password es incorrecta';
+            return false;
+        }else{
+            return true;
+        }
+
+    }
+
+    public function comprobar_igualdad_de_password($passwordInput){
+
+        if($this->password !== $passwordInput){
+            self::setAlerta('error', 'Las passwords no son iguales...');
+            
+        }
+        return self::$alertas;
+    }
+
 }

@@ -121,6 +121,33 @@ textarea {
   cursor: pointer;
 }
 
+.botonNegro {
+  background-color: #1a1b15;
+  padding: 1.5rem 4rem;
+  color: #FFFFFF;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+  display: inline-block;
+  font-weight: 700;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 5rem 0;
+}
+@media (min-width: 768px) {
+  .botonNegro {
+    width: auto;
+  }
+}
+.botonNegro:hover {
+  background-color: black;
+  cursor: pointer;
+}
+
 .botonBorrar {
   background-color: #cb0000;
   padding: 1.5rem 4rem;
@@ -1128,5 +1155,102 @@ table a {
 .div_instrucciones_pago p span {
   color: #4A42AE;
   font-weight: bold;
+}
+
+.card_login {
+  border-radius: 2rem;
+  margin-top: 2.4rem;
+  background-color: rgb(245, 245, 245);
+  overflow: hidden;
+}
+@media (min-width: 768px) {
+  .card_login {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 67rem;
+  }
+}
+.card_login h1, .card_login h2, .card_login h3, .card_login p {
+  color: rgb(28, 28, 28);
+}
+.card_login a {
+  color: rgb(0, 95, 255);
+  font-size: 1.4rem;
+}
+
+.datos_login {
+  padding: 2.4rem;
+}
+.datos_login .datos_header {
+  display: flex;
+  justify-content: space-between;
+}
+.datos_login .datos_body {
+  margin: 4rem auto 2rem;
+  width: 80%;
+  text-align: end;
+  /* .link_olvidaste_password{
+      font-size: 1.4rem;
+  } */
+}
+.datos_login .datos_body p {
+  margin-top: 0.4rem;
+  font-size: 1.6rem;
+  text-align: center;
+}
+.datos_login .datos_body h1 {
+  margin-bottom: 0;
+}
+.datos_login .datos_body input {
+  padding: 0.9rem;
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  border-radius: 0.7rem;
+  border: 1px solid rgb(211, 211, 211);
+  font-size: 1.6rem;
+}
+.datos_login .datos_body input::placeholder {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.datos_footer .boton_login {
+  border-radius: 4rem;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+.datos_footer p {
+  text-align: center;
+  margin-top: 0;
+}
+
+@media (min-width: 768px) {
+  .imagen_card_login {
+    padding: 2.4rem;
+    background-image: url("/img/login_imagen.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+  }
+}
+
+.swal2-title {
+  font-size: 3.6rem;
+}
+
+.swal2-html-container,
+.swal2-confirm {
+  font-size: 2rem !important;
+}
+
+.crear_cuenta_header p {
+  font-size: 1.4rem;
+}
+
+.mensaje_de_error {
+  color: #cb0000 !important;
+  text-align: center;
+  margin: 1rem;
 }
 /*# sourceMappingURL=app.css.map */
