@@ -1,3 +1,7 @@
+<?php
+    $auth = $_SESSION['login'] ?? false ;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,6 +47,10 @@
             <div class="buttonsHeader">
                 <img class="carritoCompra" src="img/iconos/carrito-compras.png" alt="imagenCarrito">
                 <img class="userBoton" src="img/iconos/usuario.png" alt="imagenUsuario">
+                
+                <?php if($auth ?? false): ?>
+                <a href="/logout" class="link_cerrar_sesion">Cerrar sesion</a>
+                <?php endif; ?>
             </div>
         </div>
     </header>
@@ -66,7 +74,3 @@
 
 </body>
 </html>
-
-
-
-

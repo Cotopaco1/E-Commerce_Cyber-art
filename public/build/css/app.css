@@ -938,6 +938,10 @@ label {
   z-index: 100;
 }
 
+.link_cerrar_sesion {
+  align-self: center;
+}
+
 @media (min-width: 768px) {
   .tabs {
     display: flex;
@@ -1252,5 +1256,72 @@ table a {
   color: #cb0000 !important;
   text-align: center;
   margin: 1rem;
+}
+
+.errorInput {
+  color: #cb0000 !important;
+  font-weight: 700;
+}
+
+.resaltarError {
+  animation: shake 0.5s;
+}
+
+.modal_crear_cuenta {
+  display: flex;
+  place-content: center;
+  align-items: center;
+}
+.modal_crear_cuenta .alertaCargando i {
+  animation: rotate_loading 1s linear infinite;
+  font-size: 58px;
+  color: cornsilk;
+}
+
+@keyframes rotate_loading {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+  75% {
+    transform: translateX(-10px);
+  }
+}
+.datos_login .datos_body_confirmar_cuenta {
+  width: auto;
+}
+.datos_login .datos_body_confirmar_cuenta p, .datos_login .datos_body_confirmar_cuenta a {
+  font-size: 2.2rem;
+}
+.datos_login .datos_body_confirmar_cuenta .boton_disfrutar_cuenta {
+  color: #FFFFFF;
+  font-size: 2rem;
+}
+
+.alerta.exito.alerta_confirmar_cuenta {
+  padding: 2rem;
+  background-color: rgba(16, 239, 42, 0.45);
+  border-radius: 9rem;
+  margin-bottom: 3.6rem;
+}
+
+.alerta.error.alerta_confirmar_cuenta {
+  padding: 2rem;
+  background-color: rgba(215, 45, 45, 0.71);
+  border-radius: 9rem;
+  margin-bottom: 3.6rem;
 }
 /*# sourceMappingURL=app.css.map */

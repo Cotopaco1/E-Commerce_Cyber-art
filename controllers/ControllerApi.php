@@ -2,6 +2,7 @@
 
 namespace Controller;
 
+use Classes\Email;
 use Model\Items_pedido;
 use Model\Pedidos;
 use Model\Productos;
@@ -200,13 +201,19 @@ class ControllerApi{
             }
             if(empty($alertas)){
                 $usuario->hashearPassword();
+                $usuario->crearToken();
                 $resultado = $usuario->guardar();
 
                 if($resultado['resultado']){
+                    //enviar email
+                    $mail = new Email($usuario->email, $usuario->nombre, $usuario->token );
+                    $resultadoEmail = $mail->enviarEmail('confirmacion');
+
                     $respuesta = [
                         'respuesta'=> true,
                         'mensaje'=> "Cuenta creada exitosamente, un correo de confirmacion ha sido enviado a $usuario->email",
-                        'alertas'=> $alertas
+                        'alertas'=> $alertas,
+                        'resultadoEmail'=> $resultadoEmail
                     ];
                     echo json_encode($respuesta);
                     return;
@@ -238,28 +245,61 @@ class ControllerApi{
 
     }
 
-   /*  public static function crear_orden(){
-        iniciar_sesion_sino_esta_iniciada();
+    public static function logIn_usuario(){
 
-        if($_SERVER['REQUEST_METHOD'] === 'POST'){
-           
-                //extraemos el archivo json enviado..
+        if($_SERVER['REQUEST_METHOD']  === 'POST'){
+
+            $error['error'] =  false;
             $data = file_get_contents('php://input');
             $datos = json_decode($data,true);
-            $_SESSION['datos'] = $datos;
-            if($_SESSION['datos'] !== ''){
+
+            $usuarioPost = new Usuarios($datos);
+            $alertas = $usuarioPost->validarLogin();
+
+            if(empty($alertas)){
+                
+                $resultado = Usuarios::where_con_sentencia_preparada('email', $usuarioPost->email);
+
+                if($resultado->num_rows === 0){
+                    $respuesta = ['resultado'=>'error', 'mensaje'=>'El email no existe'];
+                    echo json_encode($respuesta);
+                    return;
+                }
+                $usuarioDB = new Usuarios($resultado->fetch_assoc());
+
+                $resultado = $usuarioDB->comprobarPasswordAndVerificado($usuarioPost->password);
+                if(!$resultado){
+                    $respuesta = [
+                        'respuesta'=>'error',
+                        'mensaje'=> 'La contraseña es incorrecta'
+                    ];
+                    echo json_encode($respuesta);
+                    return;
+                } 
+
+                //dar acceso al usuario 
+                iniciar_sesion_sino_esta_iniciada();
+                $_SESSION['id'] = $usuarioDB->id;
+                $_SESSION['email'] = $usuarioDB->email;
+                $_SESSION['nombre'] = $usuarioDB->nombre . " " . $usuarioDB->apellido;
+                $_SESSION['login'] = true;
+
                 $respuesta = [
-                    'resultado'=> true,
-                    'server'=> $_SERVER
+                    'respuesta'=> 'exitoso',
+                    'mensaje'=> 'logIn exitoso',
+                    'sesionInfo'=> $_SESSION
                 ];
-            }else{
-                $respuesta = [
-                    'resultado' => false,
-                    'server'=> $_SERVER
-                ];
+                echo json_encode($respuesta);
+                return;
             }
+            $respuesta = [
+                'respuesta'=>'error',
+                'alertas'=> $alertas
+            ];
             echo json_encode($respuesta);
             return;
         }
-    } */
+    }
+  
+
 }

@@ -1,0 +1,25 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.datos_login .datos_body_confirmar_cuenta{
+    width: auto;
+    p,a{
+        font-size: 2.2rem;
+    }
+    .boton_disfrutar_cuenta{
+        color: v.$blanco;
+        font-size: 2rem;
+    }
+}
+.alerta.exito.alerta_confirmar_cuenta{
+    padding: 2rem;
+    background-color: v.$verde_alerta_login;
+    border-radius: 9rem;
+    margin-bottom: 3.6rem;  
+}
+.alerta.error.alerta_confirmar_cuenta{
+    padding: 2rem;
+    background-color: v.$rojo_alerta_login;
+    border-radius: 9rem;
+    margin-bottom: 3.6rem;  
+}

@@ -1,4 +1,5 @@
 let validado = false;
+let errorInput = true;
 let formularioDatos;
 let montoTotal = 0;
 let carritoDeCompra = [
@@ -16,12 +17,6 @@ const usuario = {
     }
 }
 
-/* const datos = {
-    carritoDeCompra : {},
-    usuario: {},
-    informacion_adicional: '',
-    metodo_pago: ''
-} */
 
 let metodo_pago = '';
 let paso = 1;
@@ -58,11 +53,137 @@ function iniciarApp(){
         eventos_crear_cuenta();
         return
     }
+    if(path === '/login'){
+        eventos_login();
+        return
+    }
     
 }
 
-//Empieza login
+//Empieza /login
+function eventos_login(){
+    document.getElementById('formulario').addEventListener('submit', logIn_usuario)
 
+    document.getElementById('boton_ingresar').addEventListener('click' , activar_evento_submit_en_crear_cuenta )
+
+    document.querySelectorAll('.input').forEach(input=>{
+        input.addEventListener('blur', verificar_input_login )
+    })
+
+}
+
+function logIn_usuario(event){
+    //capturar los datos del formulario en un objeto.
+    event.preventDefault()
+    const data = crear_objeto_con_datos_de_formulario(event)
+    //verificar el objeto antes de mandarlo al back-end
+    Object.entries(data).forEach(([key, value]) => {
+        if(value === ''){
+            crear_alerta_de_error_con_id(key)
+        }
+        
+    });
+    //Si en el objeto data hay algun campo que este vacio entonces...
+    if(errorInput){
+        resaltarErrores()
+        return
+    }
+    crear_alerta_de_cargando();
+    enviar_solicitud_login(data)
+    .then(eliminar_alerta_de_cargando)
+    .then(validar_respuesta_login)
+    
+    //enviar solicitud de login al backend.
+
+}
+
+function validar_respuesta_login(respuesta){
+
+    if(respuesta.respuesta === 'exitoso'){
+        window.location.href = 'http://localhost:3000/'
+    }
+    else{
+        console.log(respuesta);
+        crear_alerta_de_error_con_id('password',respuesta.mensaje,true)
+    }
+}
+async function enviar_solicitud_login(data){
+
+    try {
+
+        const json = JSON.stringify(data)
+
+        const options = {
+            method : 'POST',
+            body : json
+        }
+        const url = 'http://localhost:3000/api/login/login';
+
+        const resultado = await fetch(url, options);
+        const respuesta = await resultado.json()
+        return respuesta;
+        /* console.log(respuesta); */
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+function verificar_input_login(e){
+    const value = e.target.value
+    const errorAnterior = document.querySelector(`#error${e.target.id}`)
+    const idInput = e.target.id;
+    if(value === ''){
+        crear_alerta_de_error_con_id(idInput);
+        return
+    }
+    if(idInput === 'email'){
+        const esValido = validarEmail(value)
+        if(!esValido){
+            crear_alerta_de_error_con_id(idInput, 'Woops! parece que tu email no es valido', true)
+            return
+        }
+    }
+    if(errorAnterior){
+        errorAnterior.remove()
+    }
+    const existeOtroError = document.querySelector('.errorInput')
+    if(existeOtroError){
+        return
+    }
+    
+    errorInput = false;
+}
+function validarEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+}
+//verificacion de los input con el front-end
+    //Evento tipot blur en los input para verificar que no esten vacios--
+        //email debe ser un email valido y no puede estar vacio. --
+        //la password no puede estar vacia. ---
+    
+    //evento en el boton, para disparar el submit en el formulario
+    
+    //guardar en un objeto los datos entregados por el formulario.
+    //Verificar los datos de este objeto antes de mandar al backend
+        //Si no pasa la validacion, crear alerat.
+    //enviar datos al back-end
+    //validar datos en el back-end si estan correctos, logear al usuario.
+    //devolver respuesta.
+    //manejar la respuesta.
+    
+
+
+
+
+
+
+
+//Termina /login
+
+//Empieza crear_cuenta
+    //validacion del front-end con los datos..
 function eventos_crear_cuenta(){
     const formulario = document.getElementById('formulario');
     formulario.addEventListener('submit', crear_cuenta)
@@ -75,36 +196,139 @@ function eventos_crear_cuenta(){
 
 }
 
-//validacion del front-end con los datos..
-function verificar_input(e){
-    const value = e.target.value
-    const errorAnterior = document.querySelector(`#error${e.target.id}`)
-    if(value === ''){
-        if(errorAnterior){
-            return
-        }
-
-        const error = document.createElement('P')
-        error.setAttribute('id', `error${e.target.id}`)
-        error.textContent = `El ${e.target.id} es obligatorio`
-        e.target.insertAdjacentElement('afterend', error);
-    }else{
-        if(errorAnterior){
-            errorAnterior.remove()
-        }
+function crear_alerta_de_error_con_id(id, mensaje = '', alertaDiferente = false){
+    errorInput = true;
+    const errorAnterior = document.querySelector(`#error${id}`)
+    
+    const element = document.getElementById(id);
+    const error = document.createElement('P')
+    error.setAttribute('id', `error${id}`)
+    error.classList.add('errorInput')
+    error.textContent = `**Necesitamos que llenes este campo**`
+    if(alertaDiferente){
+        error.textContent = `**${mensaje}**`
+    }
+    element.insertAdjacentElement('afterend', error);
+    if(errorAnterior){
+        errorAnterior.remove();
     }
 }
 
 
+function verificar_input(e){
+    const value = e.target.value
+    const errorAnterior = document.querySelector(`#error${e.target.id}`)
+    const idInput = e.target.id;
+    if(value === ''){
+        crear_alerta_de_error_con_id(idInput);
+        return
+    }
+   
+    if(idInput === 'password'){
+        const estaVerificada = verificar_password(idInput);
+        if(!estaVerificada) return
+    
+    }
+    if(idInput ==='password_confirmar'){
+        const inputPassword = document.getElementById('password')
+        if(value !== inputPassword.value){
+            crear_alerta_de_error_con_id(idInput, 'Las contraseñas no coinciden', true)
+            return
+        }
+    }
+    if(errorAnterior){
+        errorAnterior.remove()
+    }
+    const existeOtroError = document.querySelector('.errorInput')
+    if(existeOtroError){
+        return
+    }
+    
+    errorInput = false;
 
-//validacion con el back-end de los datos..
+}
+function verificar_password(idInput){
+    const elemento = document.querySelector(`#${idInput}`)
+    const minPasswordCaracteres = 6
+    const inputPasswordCaracteres = elemento.value.length
+
+    const errorAnterior = document.querySelector(`#error${idInput}`)
+    
+    if(inputPasswordCaracteres < minPasswordCaracteres){
+        
+        const error = document.createElement('P')
+        error.setAttribute('id', `error${idInput}`)
+        error.classList.add('errorInput')
+        error.textContent = `**La contraseña debe tener minimo 6 caracteres**`
+        elemento.insertAdjacentElement('afterend', error);
+        if(errorAnterior){
+            errorAnterior.remove();
+        }
+        return false
+    }
+    return true
+
+}
+    //Termina validacion del front-end
+
+    //validacion con el back-end de los datos..
 function crear_cuenta(event){
-    console.log(event.target)
     event.preventDefault()
     const data = crear_objeto_con_datos_de_formulario(event)
-    
+    //Verificar el contenido de los inputs.
+    Object.entries(data).forEach(([key, value]) => {
+        if(value === ''){
+            crear_alerta_de_error_con_id(key)
+        }
+        
+    });
+    //Si en el objeto data hay algun campo que este vacio entonces...
+    if(errorInput){
+        resaltarErrores()
+        return
+    }
+    //crear alerta de cargando.
+    crear_alerta_de_cargando();
     enviar_formulario_para_crear_cuenta(data)
+    .then(eliminar_alerta_de_cargando)
     .then(validar_respuesta_envio_formulario_crear_cuenta) 
+}
+
+function crear_alerta_de_cargando(){
+    const modal = crear_modal_en_body()
+    insertar_alerta_cargando(modal);
+    //inserto alerta en el modal
+
+}
+function eliminar_alerta_de_cargando(resultado){
+    //eliminar modal que contiene la alerta.
+    const modal = document.getElementById('modal');
+    modal.remove();
+    return resultado
+}
+
+function crear_modal_en_body(){
+    const modal = document.createElement('DIV');
+    const body = document.querySelector('body')
+    modal.classList.add('modal', 'modal_crear_cuenta');
+    modal.id = 'modal';
+    body.appendChild(modal);
+    return modal;
+}
+function insertar_alerta_cargando(modal){
+    const alerta = document.createElement('DIV');
+    alerta.classList.add('alertaCargando')
+    alerta.innerHTML = `<i class="fa-solid fa-spinner fa-2xl"></i>`
+    modal.appendChild(alerta);
+}
+
+function resaltarErrores(){
+   document.querySelectorAll('.errorInput').forEach(error=>{
+    error.classList.add('resaltarError');
+    setTimeout(() => {
+        error.classList.remove('resaltarError')
+    }, 500);
+   })
 }
 
 function validar_respuesta_envio_formulario_crear_cuenta(respuesta){
@@ -178,9 +402,10 @@ function activar_evento_submit_en_crear_cuenta(){
     form.dispatchEvent(event);
 }
 
+    //Termina validacion del backend
 
+//Termina crear_cuenta
 
-//Termina login
 
 
 //deshabilitado por el momento..

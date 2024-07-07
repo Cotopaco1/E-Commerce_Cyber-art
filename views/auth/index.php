@@ -11,13 +11,16 @@
                 <p>Bienvenido al panel de inicio a nuestro tienda </p>
             </div>
             <div class="datos_body_inputs">
-                <input type="email" class="input" id="email" placeholder="Tu email">
-                <input type="password" class="input" id="password" placeholder="Tu contraseña">
+
+                <form class="formulario" id="formulario">
+                    <input autocomplete="email" name="email" type="email" class="input" id="email" placeholder="Tu email">
+                    <input autocomplete="current-password" name="password" type="password" class="input" id="password" placeholder="Tu contraseña">
+                </form>
                 <a href="http://localhost:3000/recuperar_password" class="link_olvidaste_password">¿Olvidaste la contraseña?</a>
             </div>
         </div>
         <div class="datos_footer">
-            <boton class="botonNegro boton_login">Ingresar</boton>
+            <boton class="botonNegro boton_login" id="boton_ingresar">Ingresar</boton>
             <p>No tienes una cuenta? <a href="#">Registrate</a></p>
         </div>
     </div>

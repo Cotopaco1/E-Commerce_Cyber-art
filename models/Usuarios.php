@@ -130,6 +130,21 @@ class Usuarios extends ActiveRecord{
         $this->token = uniqid();
     }
 
+    public static function confirmarUsuario_con_sentencia_preparada($token){
+        $resultado = self::where_con_sentencia_preparada('token', $token);
+        if($resultado->num_rows > 0){
+            $usuario = new Usuarios($resultado->fetch_assoc());
+            $usuario->token = '';
+            $usuario->confirmado = 1;
+            $usuario->guardar();
+            self::setAlerta('exito', 'El usuario ha sido confirmado con exito');
+            return self::$alertas;
+        }else{
+            self::setAlerta('error', 'Token invalido o la cuenta ya ha sido confirmada');
+            return self::$alertas;
+
+        }
+    }
     public static function confirmarUsuario($token){
         $user = Usuarios::where('token', $token);
         if($user){
@@ -147,13 +162,19 @@ class Usuarios extends ActiveRecord{
     public function comprobarPasswordAndVerificado($passwordPost){
 
         $resultado = password_verify($passwordPost, $this->password);
+
+        if(!$resultado){
+            self::$alertas['error'][] = 'La password es incorrecta';
+            return false;
+        }
+        return true;
   
-        if(!$resultado || !$this->confirmado){
+        /* if(!$resultado || !$this->confirmado){
             self::$alertas['error'][] = 'Tu cuenta no ha sido confirmada o la password es incorrecta';
             return false;
         }else{
             return true;
-        }
+        } */
 
     }
 
@@ -164,6 +185,25 @@ class Usuarios extends ActiveRecord{
             
         }
         return self::$alertas;
+    }
+
+    public static function where_con_sentencia_preparada($columna, $valor){
+
+        
+
+        $stmt = self::$db->prepare("SELECT * FROM usuarios WHERE $columna = ? LIMIT 1");
+        $stmt->bind_param("s", $valor );
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        return $resultado;
+        /* if($resultado->num_rows === 0){
+            return ['resultado'=>'error', 'mensaje'=>'No ha habido resulatdos',
+        'debugear'=>$valor,
+        'debugearResultado'=> $resultado];
+        }else{
+            return $resultado->fetch_assoc();
+        } */
+
     }
 
 }

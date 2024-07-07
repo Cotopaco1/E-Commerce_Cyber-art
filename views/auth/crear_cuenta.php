@@ -11,11 +11,11 @@
                 <p>Bienvenido al panel de inicio a nuestro tienda </p>
             </div>
             <form class="datos_body_inputs" id="formulario">
-                <input name="nombre" type="text" class="input" id="nombre" placeholder="Tu nombre">
-                <input name="apellido" type="text" class="input" id="apellidos" placeholder="Tus apellidos">
-                <input name="email" type="email" class="input" id="email" placeholder="Tu email">
-                <input name="password" type="password" class="input" id="password" placeholder="Tu contraseña">
-                <input name="password_confirmar" type="password" class="input" id="password_confirmar" placeholder="Confirma tu password">
+                <input autocomplete="username" name="nombre" type="text" class="input" id="nombre" placeholder="Tu nombre">
+                <input autocomplete="family-name" name="apellido" type="text" class="input" id="apellido" placeholder="Tus apellidos">
+                <input autocomplete="email" name="email" type="email" class="input" id="email" placeholder="Tu email">
+                <input autocomplete="new-password" name="password" type="password" class="input" id="password" placeholder="Tu contraseña">
+                <input autocomplete="new-password" name="password_confirmar" type="password" class="input" id="password_confirmar" placeholder="Confirma tu password">
                 
                 
             </form>

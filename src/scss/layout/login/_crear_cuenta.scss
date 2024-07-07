@@ -11,3 +11,49 @@
     text-align: center;
     margin: 1rem;
 }
+.errorInput{
+    color: v.$rojo!important;
+    font-weight: v.$bold;
+   
+}
+.resaltarError{
+    animation: shake 0.5s;
+    
+}
+
+.modal_crear_cuenta{
+    display: flex;
+    place-content: center;
+    align-items: center;
+    .alertaCargando{
+        i{
+            animation: rotate_loading 1s linear infinite ;
+            font-size: 58px;
+            color: cornsilk;
+        }
+    }
+}
+
+@keyframes rotate_loading {
+    0%{
+        transform: rotate(0);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-10px);
+    }
+    50% {
+        transform: translateX(10px);
+    }
+    75% {
+        transform: translateX(-10px);
+    }
+}

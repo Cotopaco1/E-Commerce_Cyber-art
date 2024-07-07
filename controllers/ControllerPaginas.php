@@ -9,7 +9,7 @@ use MVC\Router;
 class ControllerPaginas{
 
     public static function index(Router $router){
-        iniciar_sesion_sino_esta_iniciada();
+        
         $cuadros = Productos::all();
         $script = '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
         

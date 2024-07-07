@@ -23,6 +23,12 @@ $router->post('/crear_cuenta', [ControllerLogin::class, 'crear_cuenta']);
     //Recuperar Cuenta
 $router->get('/recuperar_password', [ControllerLogin::class, 'recuperar_password']);
 $router->post('/recuperar_password', [ControllerLogin::class, 'recuperar_password']);
+    //Confirmar cuenta
+$router->get('/confirmar_cuenta', [ControllerLogin::class, 'confirmar_cuenta']);
+/* $router->post('/recuperar_password', [ControllerLogin::class, 'recuperar_password']); */
+     
+    //logOut
+$router->get('/logout', [ControllerLogin::class, 'log_out']);
 
 
 //Api...
@@ -35,6 +41,7 @@ $router->post('/api/crear_orden', [ControllerApi::class, 'crear_orden']);
 
     //Login
 $router->post('/api/login/crear_cuenta', [ControllerApi::class, 'crear_cuenta']);
+$router->post('/api/login/login', [ControllerApi::class, 'logIn_usuario']);
 
 
 $router->comprobarRutas();
