@@ -22,14 +22,31 @@ class Router
         
         // Proteger Rutas...
         session_start();
-       /*  $auth = $_SESSION['login'] ?? false ; */
+       /*   */
         // Arreglo de rutas protegidas...
         // $rutas_protegidas = ['/admin', '/propiedades/crear', '/propiedades/actualizar', '/propiedades/eliminar', '/vendedores/crear', '/vendedores/actualizar', '/vendedores/eliminar'];
 
         // $auth = $_SESSION['login'] ?? null;
-
+        $rutas_login = ['/crear_cuenta', '/recuperar_password', '/reestablecer_password'];
         $currentUrl = $_SERVER['PATH_INFO'] ?? '/';
         $method = $_SERVER['REQUEST_METHOD'];
+
+        
+        //Si estas entrando a admin, entonces debes ser admin
+        /* $resultado_admin = strpos($currentUrl, '/admin') !== false;
+        if($resultado_admin){
+            if(!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
+                header('location: /');
+            }
+        } */
+        
+        //Si estas entrando a una ruta login que requiera no estar iniciado con sesion entonces...
+        if(in_array($currentUrl, $rutas_login)){
+            $auth = $_SESSION['login'] ?? false ;
+            if($auth){
+                header('location: /');
+            }
+        }
 
         if ($method === 'GET') {
             $fn = $this->getRoutes[$currentUrl] ?? null;
@@ -46,7 +63,7 @@ class Router
         }
     }
 
-    public function render($view, $datos = [])
+    public function render($view, $datos = [], $layout = 'layout')
     {
 
         // Leer lo que le pasamos  a la vista
@@ -59,6 +76,6 @@ class Router
         // entonces incluimos la vista en el layout
         include_once __DIR__ . "/views/$view.php";
         $contenido = ob_get_clean(); // Limpia el Buffer
-        include_once __DIR__ . '/views/layout.php';
+        include_once __DIR__ . "/views/$layout.php";
     }
 }

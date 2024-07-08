@@ -2,6 +2,7 @@
 
 require '../includes/app.php';
 
+use Controller\ControllerAdmin;
 use Controller\ControllerApi;
 use Controller\ControllerLogin;
 use Controller\ControllerPaginas;
@@ -9,7 +10,7 @@ use MVC\Router;
 
 $router = new Router();
 
-//Paginas publics
+//Paginas publicas
 $router->get('/', [ControllerPaginas::class, 'index']);
 $router->get('/carrito_de_compras', [ControllerPaginas::class, 'carrito_de_compras']);
 $router->post('/carrito_de_compras', [ControllerPaginas::class, 'carrito_de_compras']);
@@ -22,13 +23,22 @@ $router->get('/crear_cuenta', [ControllerLogin::class, 'crear_cuenta']);
 $router->post('/crear_cuenta', [ControllerLogin::class, 'crear_cuenta']);
     //Recuperar Cuenta
 $router->get('/recuperar_password', [ControllerLogin::class, 'recuperar_password']);
-$router->post('/recuperar_password', [ControllerLogin::class, 'recuperar_password']);
+$router->get('/reestablecer_password', [ControllerLogin::class, 'reestablecer_password']);
+
     //Confirmar cuenta
 $router->get('/confirmar_cuenta', [ControllerLogin::class, 'confirmar_cuenta']);
-/* $router->post('/recuperar_password', [ControllerLogin::class, 'recuperar_password']); */
+    //reenviar email de confirmar cuenta.
+$router->get('/reenviar_email', [ControllerLogin::class, 'reenviar_email']);
+$router->post('/reenviar_email', [ControllerLogin::class, 'reenviar_email']);
      
     //logOut
 $router->get('/logout', [ControllerLogin::class, 'log_out']);
+
+
+
+//Paginas privadas...
+
+$router->get('/admin/home', [ControllerAdmin::class, 'index']);
 
 
 //Api...
@@ -42,6 +52,10 @@ $router->post('/api/crear_orden', [ControllerApi::class, 'crear_orden']);
     //Login
 $router->post('/api/login/crear_cuenta', [ControllerApi::class, 'crear_cuenta']);
 $router->post('/api/login/login', [ControllerApi::class, 'logIn_usuario']);
+$router->post('/api/login/reenviar_email', [ControllerApi::class, 'reenviar_email']);
+$router->post('/api/login/recuperar_email', [ControllerApi::class, 'recuperar_password']);
+$router->post('/api/login/reestableccer_password', [ControllerApi::class, 'reestablecer_password']);
+
 
 
 $router->comprobarRutas();

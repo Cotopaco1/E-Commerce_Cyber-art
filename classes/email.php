@@ -49,13 +49,16 @@ class Email{
             $mail->Subject = 'Recupera tu cuenta...';
             $contenido = "<html>";
             $contenido .= "<p> <strong> Hola " . $this->nombre . "</strong> has solicitado recuperar tu cuenta, crea una nueva password presionando en el siguiente enlace: </p>";
-            $contenido .= "<a href='http://localhost:3000/recuperar?token=". $this->token ."'> Reestablece tu password </a> ";
+            $contenido .= "<a href='http://localhost:3000/reestablecer_password?token=". $this->token ."'> Reestablece tu password </a> ";
             $contenido .= "<p> si tu no solicitaste esta cuenta, puedes ignorar el mensaje </p>";
             $contenido .= "</html>";
 
             $mail->Body = $contenido;
             $mail->send();
+            return true;
         }
+        
+        
         return 'El tipo de email no fue encontrado';
 
     }

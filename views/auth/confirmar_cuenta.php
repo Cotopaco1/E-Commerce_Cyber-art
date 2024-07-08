@@ -21,7 +21,7 @@
                     </div>
                     <div class="datos_body_inputs">
                         <p>Quieres que te reenviemos el correo para confirmar tu cuenta?
-                        <a href="/reenviar_confirmacion" class="">Presiona aqui</a> </p>
+                        <a href="/reenviar_email" class="">Presiona aqui</a> </p>
                         
                     </div>
                     </div>

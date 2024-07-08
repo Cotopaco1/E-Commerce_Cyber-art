@@ -1,0 +1,72 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.body_admin{
+    display: flex;
+    gap: 5rem;
+    background-color: v.$gris_admin;
+}
+.menu_administrador{
+    width: 8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: v.$blanco_admin;
+    padding-bottom: 2rem;
+    .titulo_menu{
+        padding: 1rem;
+        background: antiquewhite;
+        
+    }
+    h3, i{
+        color: v.$dorado_admin;
+
+    }
+    .menu_campos{
+    display: grid;
+    gap: 6rem;    
+        
+    }
+}
+.campo_menu{
+    text-align: center;
+    i{
+        font-size: 3rem;
+    }
+    h3{
+        font-size: 2rem;
+        margin: 0;
+    }
+}
+
+.contenido_admin{
+    width: 100%;
+    .contenido_header{
+        min-height: 10rem;
+        display: flex;
+        justify-content: space-between;
+        padding: 4rem;
+        .nombre_admin{
+            width: 10rem;
+        }
+    }
+    .app{
+        .titulo_app{
+            h1{
+                text-align: left;
+
+            }
+        }
+        .main_admin{
+            min-height: 50rem;
+            background-color: v.$blanco_admin;
+            width: 95%;
+            margin: 2rem 0;
+            p,h1,h2,h3{
+                color: v.$negro_login;
+            }
+
+        }
+    }
+}
+

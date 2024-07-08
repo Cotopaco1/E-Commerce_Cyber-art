@@ -5,7 +5,7 @@ namespace Model;
 class Usuarios extends ActiveRecord{
     
     protected static $tabla = 'usuarios';
-    protected static $columnasDB = ['id', 'nombre', 'apellido', 'email', 'password', 'telefono', 'admin', 'confirmado', 'token'];
+    protected static $columnasDB = ['id', 'nombre', 'apellido', 'email', 'password', 'telefono', 'admin', 'confirmado', 'token', 'token_reset_password'];
 
     public $id;
     public $nombre;
@@ -16,6 +16,7 @@ class Usuarios extends ActiveRecord{
     public $admin;
     public $confirmado;
     public $token;
+    public $token_reset_password;
 
     public function __construct($args = [])
     {
@@ -28,6 +29,7 @@ class Usuarios extends ActiveRecord{
         $this->admin =  0;
         $this->confirmado = 0;
         $this->token = '';
+        $this->token_reset_password = '';
     }
 
     public function validar(){
@@ -129,6 +131,9 @@ class Usuarios extends ActiveRecord{
     public function crearToken(){
         $this->token = uniqid();
     }
+    public function crearTokenResetPassword(){
+        $this->token_reset_password = uniqid();
+    }
 
     public static function confirmarUsuario_con_sentencia_preparada($token){
         $resultado = self::where_con_sentencia_preparada('token', $token);
@@ -205,5 +210,22 @@ class Usuarios extends ActiveRecord{
         } */
 
     }
+
+    public static function reestablecer_password_con_sentencia_preparada($token){
+        $resultado = self::where_con_sentencia_preparada('token_reset_password', $token);
+        if($resultado->num_rows > 0){   
+            $usuario = new Usuarios($resultado->fetch_assoc());
+            $usuario->token_reset_password = '';
+
+            $usuario->guardar();
+            self::setAlerta('exito', 'El usuario ha sido confirmado con exito');
+            return self::$alertas;
+        }else{
+            self::setAlerta('error', 'Token invalido, puede ser que haya caducado..');
+            return self::$alertas;
+
+        }
+    }
+
 
 }

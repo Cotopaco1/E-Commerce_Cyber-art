@@ -21,7 +21,7 @@
         </div>
         <div class="datos_footer">
             <boton class="botonNegro boton_login" id="boton_ingresar">Ingresar</boton>
-            <p>No tienes una cuenta? <a href="#">Registrate</a></p>
+            <p>No tienes una cuenta? <a href="http://localhost:3000/crear_cuenta">Registrate</a></p>
         </div>
     </div>
     <div class="imagen_card_login"></div>

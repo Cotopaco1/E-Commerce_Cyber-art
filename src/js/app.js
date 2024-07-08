@@ -57,8 +57,240 @@ function iniciarApp(){
         eventos_login();
         return
     }
+    if(path === '/reenviar_email'){
+        eventos_reenviar_confirmacion();
+        return
+    }
+    if(path === '/recuperar_password'){
+        eventos_recuperar_password();
+        return
+    }
+    if(path === '/reestablecer_password'){
+        const inputPassword = document.getElementById('password');
+        if(!inputPassword) return;
+
+        eventos_reestablecer_password();
+        return
+    }
     
 }
+
+//Empieza reestablecer_password
+
+function eventos_reestablecer_password(){
+    document.querySelectorAll('.input').forEach(input=>{
+        input.addEventListener('input', verificar_input);
+    })
+    document.getElementById('recuperar_password').addEventListener('click', activar_evento_submit_en_crear_cuenta)
+
+    document.getElementById('formulario').addEventListener('submit', reestablecer_password )
+
+
+}
+function reestablecer_password(event){
+    event.preventDefault()
+    const data = crear_objeto_con_datos_de_formulario(event)
+    //verificar el objeto antes de mandarlo al back-end
+    Object.entries(data).forEach(([key, value]) => {
+        if(value === ''){
+            crear_alerta_de_error_con_id(key)
+        }
+        
+    });
+    if(errorInput){
+        resaltarErrores();
+        return;
+    }
+    
+    crear_alerta_de_cargando();
+    solicitar_reestablecer_password(data)
+    .then(eliminar_alerta_de_cargando)
+    .then(validar_respuesta_reestablecer_password);
+
+}
+async function solicitar_reestablecer_password(data){
+    const urlParams = new URLSearchParams(window.location.search);
+    const token_reset_password = urlParams.get('token')
+    data.token_reset_password = token_reset_password ;
+    if(!token_reset_password) return;
+
+    try {
+        const json = JSON.stringify(data)
+        const url = 'http://localhost:3000/api/login/reestableccer_password'
+        const options = {
+            method: 'POST',
+            body: json
+        }
+        const resultado = await fetch(url, options);
+        const respuesta = await resultado.json();
+
+        return respuesta;
+
+        
+    } catch (error) {
+        console.log(error)
+    }
+
+
+}
+function validar_respuesta_reestablecer_password(respuesta){
+    const divRespuesta = document.getElementById('respuesta_servidor')
+    divRespuesta.innerHTML = '';
+    if(respuesta.respuesta === 'exito'){
+        Swal.fire({
+            title: "Buen trabajo!",
+            text: `${respuesta.mensaje}`,
+            icon: "success",
+            fontsize: '5rem',
+          }).then(()=>{
+            window.location.href = 'http://localhost:3000/login'
+          })
+    }else{
+        divRespuesta.innerHTML = `
+        <p>${respuesta.mensaje}</p>
+        `
+    }
+}
+
+
+//Termina reestablecer_password
+
+
+//Empieza recuperar_password
+function eventos_recuperar_password(){
+    document.querySelector('#email').addEventListener('input', verificar_input_login)
+    document.querySelector('#recuperar_password').addEventListener('click', activar_evento_submit_en_crear_cuenta)
+    document.querySelector('#formulario').addEventListener('submit', recuperar_password)
+}
+
+function recuperar_password(event){
+//verificar value de los inputs.
+    event.preventDefault()
+    const data = crear_objeto_con_datos_de_formulario(event)
+    //verificar el objeto antes de mandarlo al back-end
+    Object.entries(data).forEach(([key, value]) => {
+        if(value === ''){
+            crear_alerta_de_error_con_id(key)
+        }
+        
+    });
+    if(errorInput){
+        resaltarErrores();
+        return;
+    }
+    crear_alerta_de_cargando();
+    solicitar_recuperar_password(data)
+    .then(eliminar_alerta_de_cargando)
+    .then(validar_respuesta_recuperar_password);
+}
+async function solicitar_recuperar_password(data){
+
+    try {
+        json = JSON.stringify(data)
+        const url = '/api/login/recuperar_email';
+        const options = {
+            method: 'post',
+            body: json
+        }
+        const resultado = await fetch(url,options)
+        const respuesta = await resultado.json();
+        return respuesta;
+        
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+function validar_respuesta_recuperar_password(respuesta){
+    const divRespuesta = document.getElementById('respuesta_servidor')
+    divRespuesta.innerHTML = '';
+    if(respuesta.respuesta === 'exito'){
+        Swal.fire({
+            title: "Correo enviado exitosamente!",
+            text: `${respuesta.mensaje}`,
+            icon: "success",
+            fontsize: '5rem',
+          })/* .then(()=>{
+            window.location.href = 'http://localhost:3000/login'
+          }) */
+    }else{
+        divRespuesta.innerHTML = `
+        <p>${respuesta.mensaje}</p>
+        `
+    }
+
+}
+
+//Termina recuperar_password
+
+//Empiza reenviar_confirmacion
+
+function eventos_reenviar_confirmacion(){
+    document.querySelector('#email').addEventListener('input', verificar_input_login)
+    document.querySelector('#boton_reenviar').addEventListener('click', activar_evento_submit_en_crear_cuenta)
+    document.querySelector('#formulario').addEventListener('submit', reenviar_confirmacion)
+}
+
+function reenviar_confirmacion(event){
+    //verificar value de los inputs.
+    event.preventDefault()
+    const data = crear_objeto_con_datos_de_formulario(event)
+    //verificar el objeto antes de mandarlo al back-end
+    Object.entries(data).forEach(([key, value]) => {
+        if(value === ''){
+            crear_alerta_de_error_con_id(key)
+        }
+        
+    });
+    if(errorInput){
+        resaltarErrores();
+        return;
+    }
+    crear_alerta_de_cargando();
+    solicitar_reenviar_confirmacion(data)
+    .then(eliminar_alerta_de_cargando)
+    .then(validar_respuesta_reenviar_email);
+    
+}
+function validar_respuesta_reenviar_email(respuesta){
+    const divRespuesta = document.getElementById('respuesta_servidor')
+    divRespuesta.innerHTML = '';
+    if(respuesta.respuesta === 'exito'){
+        Swal.fire({
+            title: "Correo reenviado exitosamente!",
+            text: `${respuesta.mensaje}`,
+            icon: "success",
+            fontsize: '5rem',
+          })/* .then(()=>{
+            window.location.href = 'http://localhost:3000/login'
+          }) */
+    }else{
+        divRespuesta.innerHTML = `
+        <p>${respuesta.mensaje}</p>
+        `
+    }
+
+}
+async function solicitar_reenviar_confirmacion(data){
+    
+    try {
+
+        const url = '/api/login/reenviar_email'
+        const json = JSON.stringify(data);
+        const options = {
+            method: 'POST',
+            body: json
+        }
+        
+        const resultado = await fetch(url,options);
+        const respuesta = await resultado.json();
+        return respuesta;
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+//Termina reenviar_confirmacion
 
 //Empieza /login
 function eventos_login(){
@@ -67,7 +299,7 @@ function eventos_login(){
     document.getElementById('boton_ingresar').addEventListener('click' , activar_evento_submit_en_crear_cuenta )
 
     document.querySelectorAll('.input').forEach(input=>{
-        input.addEventListener('blur', verificar_input_login )
+        input.addEventListener('input', verificar_input_login )
     })
 
 }
@@ -75,6 +307,7 @@ function eventos_login(){
 function logIn_usuario(event){
     //capturar los datos del formulario en un objeto.
     event.preventDefault()
+
     const data = crear_objeto_con_datos_de_formulario(event)
     //verificar el objeto antes de mandarlo al back-end
     Object.entries(data).forEach(([key, value]) => {
@@ -104,7 +337,13 @@ function validar_respuesta_login(respuesta){
     }
     else{
         console.log(respuesta);
-        crear_alerta_de_error_con_id('password',respuesta.mensaje,true)
+        if(respuesta.mensaje.includes('email')){
+            crear_alerta_de_error_con_id('email',respuesta.mensaje,true)
+
+        }else{
+
+            crear_alerta_de_error_con_id('password',respuesta.mensaje,true)
+        }
     }
 }
 async function enviar_solicitud_login(data){
@@ -158,27 +397,6 @@ function validarEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
 }
-//verificacion de los input con el front-end
-    //Evento tipot blur en los input para verificar que no esten vacios--
-        //email debe ser un email valido y no puede estar vacio. --
-        //la password no puede estar vacia. ---
-    
-    //evento en el boton, para disparar el submit en el formulario
-    
-    //guardar en un objeto los datos entregados por el formulario.
-    //Verificar los datos de este objeto antes de mandar al backend
-        //Si no pasa la validacion, crear alerat.
-    //enviar datos al back-end
-    //validar datos en el back-end si estan correctos, logear al usuario.
-    //devolver respuesta.
-    //manejar la respuesta.
-    
-
-
-
-
-
-
 
 //Termina /login
 
@@ -191,7 +409,7 @@ function eventos_crear_cuenta(){
     boton_crear_cuenta.addEventListener('click', activar_evento_submit_en_crear_cuenta)
 
     document.querySelectorAll('.input').forEach(input=>{
-        input.addEventListener('blur', verificar_input )
+        input.addEventListener('input', verificar_input )
     })
 
 }
@@ -222,6 +440,13 @@ function verificar_input(e){
     if(value === ''){
         crear_alerta_de_error_con_id(idInput);
         return
+    }
+    if(idInput === 'email'){
+        const esValido = validarEmail(value)
+        if(!esValido){
+            crear_alerta_de_error_con_id(idInput, 'Woops! parece que tu email no es valido', true)
+            return
+        }
     }
    
     if(idInput === 'password'){

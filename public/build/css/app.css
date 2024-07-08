@@ -1324,4 +1324,66 @@ table a {
   border-radius: 9rem;
   margin-bottom: 3.6rem;
 }
+
+.body_admin {
+  display: flex;
+  gap: 5rem;
+  background-color: #e5d9dc;
+}
+
+.menu_administrador {
+  width: 8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: rgb(255, 255, 255);
+  padding-bottom: 2rem;
+}
+.menu_administrador .titulo_menu {
+  padding: 1rem;
+  background: antiquewhite;
+}
+.menu_administrador h3, .menu_administrador i {
+  color: #9b9b21;
+}
+.menu_administrador .menu_campos {
+  display: grid;
+  gap: 6rem;
+}
+
+.campo_menu {
+  text-align: center;
+}
+.campo_menu i {
+  font-size: 3rem;
+}
+.campo_menu h3 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.contenido_admin {
+  width: 100%;
+}
+.contenido_admin .contenido_header {
+  min-height: 10rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 4rem;
+}
+.contenido_admin .contenido_header .nombre_admin {
+  width: 10rem;
+}
+.contenido_admin .app .titulo_app h1 {
+  text-align: left;
+}
+.contenido_admin .app .main_admin {
+  min-height: 50rem;
+  background-color: rgb(255, 255, 255);
+  width: 95%;
+  margin: 2rem 0;
+}
+.contenido_admin .app .main_admin p, .contenido_admin .app .main_admin h1, .contenido_admin .app .main_admin h2, .contenido_admin .app .main_admin h3 {
+  color: rgb(28, 28, 28);
+}
 /*# sourceMappingURL=app.css.map */

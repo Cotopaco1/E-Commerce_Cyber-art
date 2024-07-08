@@ -8,7 +8,7 @@
         <div class="datos_body">
             <div class="datos_body_titulo">
                 <h1>Bienvenido, crea tu cuenta!</h1>
-                <p>Bienvenido al panel de inicio a nuestro tienda </p>
+                <p>Escribe estos datos para obtener full acceso a nuestra tienda </p>
             </div>
             <form class="datos_body_inputs" id="formulario">
                 <input autocomplete="username" name="nombre" type="text" class="input" id="nombre" placeholder="Tu nombre">

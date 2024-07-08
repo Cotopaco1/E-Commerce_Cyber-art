@@ -284,6 +284,10 @@ class ControllerApi{
                 $_SESSION['nombre'] = $usuarioDB->nombre . " " . $usuarioDB->apellido;
                 $_SESSION['login'] = true;
 
+                if($usuarioDB->admin === 1){
+                    $_SESSION['admin'] = true;
+                }
+
                 $respuesta = [
                     'respuesta'=> 'exitoso',
                     'mensaje'=> 'logIn exitoso',
@@ -300,6 +304,162 @@ class ControllerApi{
             return;
         }
     }
-  
+    public static function reenviar_email(){
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $data = file_get_contents('php://input');
+            $datos = json_decode($data,true);
+
+            $resultado = Usuarios::where_con_sentencia_preparada('email', $datos['email']);
+            if($resultado->num_rows === 0){
+                $respuesta = [
+                    'respuesta'=>'error',
+                    'mensaje'=>'El correo no existe'
+                ];
+                echo json_encode($respuesta);
+                return;
+            }
+            $usuario = new Usuarios($resultado->fetch_assoc());
+            if($usuario->confirmado === 1){
+                $respuesta = [
+                    'respuesta'=>'error',
+                    'mensaje'=>'El correo ya se encuentra confirmado'
+                ];
+                echo json_encode($respuesta);
+                return;
+            }
+            //si llego aca significa que el correo existe y no esta confirmado..
+            $usuario->crearToken();
+            $usuario->guardar();
+            $mail = new Email($usuario->email, $usuario->nombre, $usuario->token);
+            $resultado = $mail->enviarEmail('confirmacion');
+            if($resultado === true){
+                $respuesta = [
+                    'respuesta'=>'exito',
+                    'mensaje'=>"Hemos reenviado el correo a $mail->email , revisa en tu bandeja de entrada"
+                ];
+                echo json_encode($respuesta);
+                return;
+            }else{
+                $respuesta = [
+                    'respuesta'=>'error',
+                    'mensaje'=>'No se pudo reenviar el correo...'
+                ];
+                echo json_encode($respuesta);
+                return;
+            }
+
+        }
+        
+    }
+    public static function recuperar_password(){
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $data = file_get_contents('php://input');
+            $datos = json_decode($data,true);
+
+            $resultado = Usuarios::where_con_sentencia_preparada('email', $datos['email']);
+            if($resultado->num_rows === 0){
+                $respuesta = [
+                    'respuesta'=>'error',
+                    'mensaje'=>'El correo no existe'
+                ];
+                echo json_encode($respuesta);
+                return;
+            }
+            $usuario = new Usuarios($resultado->fetch_assoc());
+
+            //si llego aca significa que el correo existe.
+            $usuario->crearTokenResetPassword();
+            $resultado = $usuario->guardar();
+            
+            $mail = new Email($usuario->email, $usuario->nombre, $usuario->token_reset_password);
+            $resultado = $mail->enviarEmail('olvide');
+            if($resultado === true){
+                $respuesta = [
+                    'respuesta'=>'exito',
+                    'mensaje'=>"Hemos enviado instrucciones al correo $mail->email , revisa en tu bandeja de entrada"
+                ];
+                echo json_encode($respuesta);
+                return;
+            }else{
+                $respuesta = [
+                    'respuesta'=>'error',
+                    'mensaje'=>$resultado
+                ];
+                echo json_encode($respuesta);
+                return;
+            }
+
+        }
+    }
+    public static function reestablecer_password(){
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+            $data = file_get_contents('php://input');
+            $datos = json_decode($data,true);
+
+            $resultado = Usuarios::where_con_sentencia_preparada('token_reset_password', $datos['token_reset_password']);
+
+            if($resultado->num_rows === 0){
+                $respuesta = [
+                    'respuesta'=> 'error',
+                    'mensaje'=> 'Token invalido'
+                ];
+                echo json_encode($respuesta);
+                return;
+            }
+            //Si las dos passwords no son iguales entonces return
+            if($datos['password'] !== $datos['password_confirmar']){
+                $respuesta = [
+                    'respuesta'=> 'error',
+                    'mensaje'=> 'Las passwords no coinciden'
+                ];
+                echo json_encode($respuesta);
+                return;
+            }
+            //existe usuaro y las passwords recibidas son iguales.
+            //existe usuario
+            $usuario = new Usuarios($resultado->fetch_assoc());
+            $usuario->password = $datos['password'];
+
+            $alertas = $usuario->validarPassword();
+
+            if(empty($alertas)){
+                $usuario->token_reset_password = '';
+                $usuario->hashearPassword();
+                $resultado = $usuario->guardar();
+                
+                if($resultado){
+                    $respuesta = [
+                        'respuesta'=> 'exito',
+                        'mensaje'=> 'La password ha sido reestablecida correctamente'
+                    ];
+                    echo json_encode($respuesta);
+                    return;
+                }else{
+                    $respuesta = [
+                        'respuesta'=> 'error',
+                        'mensaje'=> 'No se pudo reestablecer correctamente'
+                    ];
+                    echo json_encode($respuesta);
+                }
+
+            }
+            else{
+                $respuesta = [
+                    'respuesta'=> 'error',
+                    'mensaje'=> 'Las passwords no coinciden'
+                ];
+                echo json_encode($respuesta);
+            }
+
+
+        }
+
+        /* $respuesta = [
+            'debugear'=>$datos
+        ];
+        echo json_encode($respuesta); */
+    }
 
 }

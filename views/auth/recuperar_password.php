@@ -11,15 +11,17 @@
                 <p>No te preocupes, te mandaremos las intrucciones para recuperarla a tu Email </p>
             </div>
             <div class="datos_body_inputs">
-                <input type="email" class="input" id="email" placeholder="Ingresa tu email">
-                
+                <form id="formulario" class="datos_body_inputs" >
+                    <input name="email" type="email" class="input" id="email" placeholder="Ingresa tu email">
+                </form>
                 
             </div>
         </div>
         <div class="datos_footer">
-            <boton class="botonNegro boton_login" id="crear_cuenta">Recuperar contraseña</boton>
-            
+            <boton class="botonNegro boton_login" id="recuperar_password">Recuperar contraseña</boton>
+            <div id="respuesta_servidor"></div>
         </div>
     </div>
     <div class="imagen_card_login"></div>
 </div>
+<?php echo $script ?? '' ?>
