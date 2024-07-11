@@ -181,4 +181,12 @@ class ActiveRecord {
         return $resultado;
     }
 
+    //Consujlta plana, utilizar cuando los metodos del active record no son suficientes.
+    public static function SQL($consulta){
+
+        $resultado = self::consultarSQL($consulta);
+        return $resultado;
+    }
+
+
 }

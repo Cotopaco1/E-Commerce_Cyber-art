@@ -13,3 +13,10 @@ function iniciar_sesion_sino_esta_iniciada(){
         /* $_SESSION['carrito_de_compras'] =  */
     }
 }
+
+function imprimirJson($variable){
+
+    echo json_encode(['respuesta'=>$variable]);
+    return;
+
+}

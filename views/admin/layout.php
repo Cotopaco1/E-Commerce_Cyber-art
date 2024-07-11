@@ -36,11 +36,13 @@
     </aside>
     <div class="contenido_admin">
         <div class="contenido_header">
-            <div id="nombre_admin" class="nombre_admin"></div>
+            <div id="nombre_admin" class="nombre_admin">
+                <p><?php echo $nombre ?></p>
+            </div>
             <div id="cerrar_sesion"><a href="#">Cerrar Sesion</a></div>
         </div>
         <div class="app">
-            <div class="titulo_app"><h1>titulo</h1></div>
+            <div class="titulo_app"><h1>Resumen</h1></div>
             <main class="main_admin">
 
                 <?php echo $contenido ?>
@@ -55,6 +57,6 @@
 
 
 
-<script src="../build/js/app.js"></script>
+<script src="../build/js/admin.js"></script>
 </body>
 </html>

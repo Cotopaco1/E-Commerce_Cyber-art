@@ -47,13 +47,19 @@
         justify-content: space-between;
         padding: 4rem;
         .nombre_admin{
-            width: 10rem;
+            p{
+                color: v.$negro;
+                font-weight: v.$bold;
+                text-transform: uppercase;
+        
+            }
         }
     }
     .app{
         .titulo_app{
             h1{
                 text-align: left;
+                color: v.$negro;
 
             }
         }
@@ -62,11 +68,27 @@
             background-color: v.$blanco_admin;
             width: 95%;
             margin: 2rem 0;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
             p,h1,h2,h3{
                 color: v.$negro_login;
+            }
+            .campo{
+                padding: 1.5rem;
+                font-weight: v.$bold;
+                span{
+                    color: v.$azul;
+                }
+
             }
 
         }
     }
 }
-
+.barra_footer{
+        
+        display: flex;
+        justify-content: space-between;
+}

@@ -56,6 +56,8 @@ $router->post('/api/login/reenviar_email', [ControllerApi::class, 'reenviar_emai
 $router->post('/api/login/recuperar_email', [ControllerApi::class, 'recuperar_password']);
 $router->post('/api/login/reestableccer_password', [ControllerApi::class, 'reestablecer_password']);
 
+    //admin
+$router->get('/api/admin/get_info_resumen', [ControllerApi::class, 'get_info_resumen']);
 
 
 $router->comprobarRutas();

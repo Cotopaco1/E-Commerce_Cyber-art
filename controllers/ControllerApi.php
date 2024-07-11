@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Classes\Email;
+use Model\Info_admin;
 use Model\Items_pedido;
 use Model\Pedidos;
 use Model\Productos;
@@ -461,5 +462,20 @@ class ControllerApi{
         ];
         echo json_encode($respuesta); */
     }
+
+    public static function get_info_resumen(){
+
+        $query = "SELECT ";
+        $query .= "(SELECT COUNT(*) FROM pedidos) AS cantidad_pedidos, ";
+        $query .= "(SELECT COUNT(*) FROM productos) AS cantidad_productos, ";
+        $query .= "(SELECT COUNT(*) FROM usuarios) AS cantidad_usuarios";
+
+        $info_admin = Info_admin::SQL($query);
+
+        imprimirJson($info_admin[0]);    
+    
+    }
+
+    
 
 }

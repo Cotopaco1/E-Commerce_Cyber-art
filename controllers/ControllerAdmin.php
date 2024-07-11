@@ -8,7 +8,10 @@ class ControllerAdmin{
 
     public static function index(Router $router){
 
-
-        $router->render('admin/index', [], 'admin/layout');
+        
+        $nombreAdmin = $_SESSION['nombre'];
+        $router->render('admin/index', [
+            'nombre'=>$nombreAdmin
+        ], 'admin/layout');
     }
 }

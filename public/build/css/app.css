@@ -94,166 +94,6 @@ textarea {
   position: relative;
 }
 
-.boton {
-  background-color: #CC54D0;
-  padding: 1.5rem 4rem;
-  color: #21174B;
-  margin-top: 2rem;
-  font-size: 2rem;
-  font-weight: 400;
-  display: inline-block;
-  font-weight: 700;
-  border: none;
-  transition-property: background-color;
-  transition-duration: 0.3s;
-  text-align: center;
-  display: block;
-  width: 100%;
-  margin: 5rem 0;
-}
-@media (min-width: 768px) {
-  .boton {
-    width: auto;
-  }
-}
-.boton:hover {
-  background-color: #b934bd;
-  cursor: pointer;
-}
-
-.botonNegro {
-  background-color: #1a1b15;
-  padding: 1.5rem 4rem;
-  color: #FFFFFF;
-  margin-top: 2rem;
-  font-size: 2rem;
-  font-weight: 400;
-  display: inline-block;
-  font-weight: 700;
-  border: none;
-  transition-property: background-color;
-  transition-duration: 0.3s;
-  text-align: center;
-  display: block;
-  width: 100%;
-  margin: 5rem 0;
-}
-@media (min-width: 768px) {
-  .botonNegro {
-    width: auto;
-  }
-}
-.botonNegro:hover {
-  background-color: black;
-  cursor: pointer;
-}
-
-.botonBorrar {
-  background-color: #cb0000;
-  padding: 1.5rem 4rem;
-  color: #FFFFFF;
-  margin-top: 2rem;
-  font-size: 2rem;
-  font-weight: 400;
-  display: inline-block;
-  font-weight: 700;
-  border: none;
-  transition-property: background-color;
-  transition-duration: 0.3s;
-  text-align: center;
-  display: block;
-  width: 100%;
-  margin: 5rem 0;
-}
-@media (min-width: 768px) {
-  .botonBorrar {
-    width: auto;
-  }
-}
-.botonBorrar:hover {
-  background-color: #980000;
-  cursor: pointer;
-}
-
-.botonChico {
-  width: 3rem;
-  height: 3rem;
-  background-color: #329f00;
-  font-size: 3rem;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  font-weight: bolder;
-  cursor: pointer;
-}
-
-.botonChicoRojo {
-  width: 3rem;
-  height: 3rem;
-  background-color: #cb0000;
-  font-size: 3rem;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  font-weight: bolder;
-  cursor: pointer;
-}
-
-.botonComprar {
-  background-color: #6AAFF2;
-  padding: 1.5rem 4rem;
-  color: #CC54D0;
-  margin-top: 2rem;
-  font-size: 2rem;
-  font-weight: 400;
-  display: inline-block;
-  font-weight: 700;
-  border: none;
-  transition-property: background-color;
-  transition-duration: 0.3s;
-  text-align: center;
-  display: block;
-  width: 100%;
-  margin: 5rem 0;
-}
-@media (min-width: 768px) {
-  .botonComprar {
-    width: auto;
-  }
-}
-.botonComprar:hover {
-  background-color: #3b96ee;
-  cursor: pointer;
-}
-
-.botonAzul {
-  background-color: #0da6f3;
-  padding: 1.5rem 4rem;
-  color: #FFFFFF;
-  margin-top: 2rem;
-  font-size: 2rem;
-  font-weight: 400;
-  display: inline-block;
-  font-weight: 700;
-  border: none;
-  transition-property: background-color;
-  transition-duration: 0.3s;
-  text-align: center;
-  display: block;
-  width: 100%;
-  margin: 5rem 0;
-  margin: 3rem 1rem 1rem 0;
-}
-@media (min-width: 768px) {
-  .botonAzul {
-    width: auto;
-  }
-}
-.botonAzul:hover {
-  background-color: #0a85c3;
-  cursor: pointer;
-}
-
 .hidden {
   visibility: hidden;
 }
@@ -708,6 +548,278 @@ label {
 }
 .alerta.error {
   background-color: #cb0000;
+}
+
+.boton {
+  background-color: #CC54D0;
+  padding: 1.5rem 4rem;
+  color: #21174B;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+  display: inline-block;
+  font-weight: 700;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 5rem 0;
+}
+@media (min-width: 768px) {
+  .boton {
+    width: auto;
+  }
+}
+.boton:hover {
+  background-color: #b934bd;
+  cursor: pointer;
+}
+
+.botonNegro {
+  background-color: #1a1b15;
+  padding: 1.5rem 4rem;
+  color: #FFFFFF;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+  display: inline-block;
+  font-weight: 700;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 5rem 0;
+}
+@media (min-width: 768px) {
+  .botonNegro {
+    width: auto;
+  }
+}
+.botonNegro:hover {
+  background-color: black;
+  cursor: pointer;
+}
+
+.botonBorrar {
+  background-color: #cb0000;
+  padding: 1.5rem 4rem;
+  color: #FFFFFF;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+  display: inline-block;
+  font-weight: 700;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 5rem 0;
+}
+@media (min-width: 768px) {
+  .botonBorrar {
+    width: auto;
+  }
+}
+.botonBorrar:hover {
+  background-color: #980000;
+  cursor: pointer;
+}
+
+.botonChico {
+  width: 3rem;
+  height: 3rem;
+  background-color: #329f00;
+  font-size: 3rem;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.botonChicoRojo {
+  width: 3rem;
+  height: 3rem;
+  background-color: #cb0000;
+  font-size: 3rem;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.botonComprar {
+  background-color: #6AAFF2;
+  padding: 1.5rem 4rem;
+  color: #CC54D0;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+  display: inline-block;
+  font-weight: 700;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 5rem 0;
+}
+@media (min-width: 768px) {
+  .botonComprar {
+    width: auto;
+  }
+}
+.botonComprar:hover {
+  background-color: #3b96ee;
+  cursor: pointer;
+}
+
+.botonAzul {
+  background-color: #0da6f3;
+  padding: 1.5rem 4rem;
+  color: #FFFFFF;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+  display: inline-block;
+  font-weight: 700;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 5rem 0;
+  margin: 3rem 1rem 1rem 0;
+}
+@media (min-width: 768px) {
+  .botonAzul {
+    width: auto;
+  }
+}
+.botonAzul:hover {
+  background-color: #0a85c3;
+  cursor: pointer;
+}
+
+.botonDorado {
+  background-color: #9b9b21;
+  padding: 1.5rem 4rem;
+  color: #1a1b15;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+  display: inline-block;
+  font-weight: 700;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 5rem 0;
+  margin: 0;
+}
+@media (min-width: 768px) {
+  .botonDorado {
+    width: auto;
+  }
+}
+.botonDorado:hover {
+  background-color: #717118;
+  cursor: pointer;
+}
+
+.boton-eliminar {
+  background-color: #cb0000;
+  padding: 1.5rem 4rem;
+  color: #FFFFFF;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+  display: inline-block;
+  font-weight: 700;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 5rem 0;
+  margin: 0;
+}
+@media (min-width: 768px) {
+  .boton-eliminar {
+    width: auto;
+  }
+}
+.boton-eliminar:hover {
+  background-color: #980000;
+  cursor: pointer;
+}
+
+.boton-editar {
+  background-color: #9b9b21;
+  padding: 1.5rem 4rem;
+  color: #FFFFFF;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+  display: inline-block;
+  font-weight: 700;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 5rem 0;
+  margin: 0;
+}
+@media (min-width: 768px) {
+  .boton-editar {
+    width: auto;
+  }
+}
+.boton-editar:hover {
+  background-color: #717118;
+  cursor: pointer;
+}
+
+.boton-ver {
+  background-color: #6AAFF2;
+  padding: 1.5rem 4rem;
+  color: #FFFFFF;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+  display: inline-block;
+  font-weight: 700;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 5rem 0;
+  margin: 0;
+}
+@media (min-width: 768px) {
+  .boton-ver {
+    width: auto;
+  }
+}
+.boton-ver:hover {
+  background-color: #3b96ee;
+  cursor: pointer;
 }
 
 .cuadros {
@@ -1371,19 +1483,110 @@ table a {
   justify-content: space-between;
   padding: 4rem;
 }
-.contenido_admin .contenido_header .nombre_admin {
-  width: 10rem;
+.contenido_admin .contenido_header .nombre_admin p {
+  color: #1a1b15;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 .contenido_admin .app .titulo_app h1 {
   text-align: left;
+  color: #1a1b15;
 }
 .contenido_admin .app .main_admin {
   min-height: 50rem;
   background-color: rgb(255, 255, 255);
   width: 95%;
   margin: 2rem 0;
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 }
 .contenido_admin .app .main_admin p, .contenido_admin .app .main_admin h1, .contenido_admin .app .main_admin h2, .contenido_admin .app .main_admin h3 {
   color: rgb(28, 28, 28);
+}
+.contenido_admin .app .main_admin .campo {
+  padding: 1.5rem;
+  font-weight: 700;
+}
+.contenido_admin .app .main_admin .campo span {
+  color: #0da6f3;
+}
+
+.barra_footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.actions {
+  display: flex;
+  /* justify-content: space-around; */
+  gap: 1rem;
+  justify-content: right;
+}
+.actions button {
+  font-size: 11px;
+  /* padding: 15px; */
+  padding: 10px 10px;
+}
+
+.contenido_modal {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.contenido_modal .producto_div {
+  width: 75%;
+  padding: 3rem;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: space-between;
+  background-color: #9b9b21;
+}
+@media (min-width: 768px) {
+  .contenido_modal .producto_div {
+    width: 60%;
+  }
+}
+
+.div_producto_uno {
+  display: grid;
+  gap: 1.5rem;
+}
+@media (min-width: 768px) {
+  .div_producto_uno {
+    display: flex;
+  }
+}
+.div_producto_uno .imagen_producto_div {
+  max-width: 25rem;
+}
+.div_producto_uno .informacion_producto {
+  display: flex;
+  flex-direction: column;
+  /* gap: 3rem; */
+  justify-content: space-around;
+}
+
+.div_producto_dos {
+  display: grid;
+  gap: 2rem;
+}
+.div_producto_dos input {
+  font-size: 2rem;
+}
+.div_producto_dos textarea {
+  font-size: 2rem;
+}
+
+@media (min-width: 768px) {
+  .producto_div_footer {
+    display: flex;
+    justify-content: space-around;
+  }
 }
 /*# sourceMappingURL=app.css.map */
