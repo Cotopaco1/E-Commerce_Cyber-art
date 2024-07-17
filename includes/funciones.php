@@ -1,5 +1,9 @@
 <?php
 
+define('CARPETA_IMAGENES_PRODUCTOS',
+$_SERVER['DOCUMENT_ROOT'] . '/img/productos');
+
+
 function debugear($variable){
     echo '<pre>';
     var_dump($variable);

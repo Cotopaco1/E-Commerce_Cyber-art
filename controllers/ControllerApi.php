@@ -8,6 +8,11 @@ use Model\Items_pedido;
 use Model\Pedidos;
 use Model\Productos;
 use Model\Usuarios;
+//Image intervention
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+
+//End image intervention
 
 class ControllerApi{
 
@@ -476,6 +481,126 @@ class ControllerApi{
     
     }
 
-    
+    //CRUD
+    public static function actualizar_producto(){
+        if($_SERVER['REQUEST_METHOD']==='POST'){
+            /* $data = file_get_contents('php://input');
+            $datos = json_decode($data,true); */
+
+            $id = $_POST['id'];
+            $productoDB = Productos::find($id);
+            $productoPOST = new Productos($_POST);
+            $productoPOST->imagen = null;
+            $productoDB->sincronizar($productoPOST);
+            
+            /* imprimirJson($productoDB);
+            return; */
+            //Si hay una imagen, entonces...
+            if($_FILES['imagen']['error'] === 0){
+                $manager = new ImageManager(Driver::class);
+                $imagen_file = $_FILES['imagen'];
+                $imagen = $manager->read($imagen_file['tmp_name']);
+                
+                $nombreImagen = md5( uniqid( rand(), true)) . '.jpeg';
+                $destino = __DIR__ . '/../public/img/productos/'. $nombreImagen;
+
+                $imagen->cover(400,600);
+                $imagen->toJpeg();
+                $imagen->save($destino);
+
+                $productoDB->setImagen($nombreImagen);
+            }
+            //Validamos que no haya un error antes de guardar.
+            $alertas = $productoDB->validar();
+                if(empty($alertas)){
+                    $resultado = $productoDB->guardar();
+                    if($resultado){
+                        echo json_encode(['resultado'=>true,
+                        'mensaje'=> 'Producto actualizado correctamente'
+                    ]);
+                        return;
+                    }
+                }else{
+                echo json_encode([
+                    'resultado'=>false,
+                    'alertas'=> $alertas['error']
+                ]);
+                return; 
+                }
+                          
+        }
+
+    }
+    public static function eliminar_producto(){
+        if($_SERVER['REQUEST_METHOD']==='POST'){
+            $data = file_get_contents('php://input');
+            $datos = json_decode($data,true);
+            $id = $datos['id'];
+            $producto = Productos::find($id);
+            $resultado = $producto->eliminar();
+            if($resultado){
+                echo json_encode([
+                    'resultado'=>true,
+                    'mensaje'=> 'El producto ha sido eliminado exitosamente'
+                ]);
+                return;
+            }else{
+                echo json_encode([
+                    'resultado'=>false,
+                    'mensaje'=> 'El producto no se ha podido eliminar'
+                ]);
+                return;
+            }
+            
+        }
+    }
+    public static function crear_producto(){
+
+        if($_SERVER['REQUEST_METHOD']=== 'POST'){
+            $producto = new Productos($_POST);
+            if($_FILES['imagen']['error'] !== 0){
+                echo json_encode([
+                    'resultado'=>false,
+                    'alertas'=> ['Imagen no recibida']
+                ]);
+                exit;
+            }
+            //setear imagen.
+            $manager = new ImageManager(Driver::class);
+            $imagen_file = $_FILES['imagen'];
+            $imagen = $manager->read($imagen_file['tmp_name']);
+            
+            $nombreImagen = md5( uniqid( rand(), true)) . '.jpeg';
+            $destino = __DIR__ . '/../public/img/productos/'. $nombreImagen;
+            $producto->setImagen($nombreImagen);
+            $alertas = $producto->validar();
+            if(!empty($alertas)){
+                echo json_encode([
+                    'resultado'=>false,
+                    'alertas'=>$alertas['error']
+                ]);
+                exit;
+            }
+            $resultado = $producto->guardar();
+            if(!$resultado){
+                echo json_encode([
+                    'resultado'=>false,
+                    'alertas'=>['No se ha podido guardar el producto']
+                ]);
+                exit;
+            }
+            $imagen->cover(400,600);
+            $imagen->toJpeg();
+            $imagen->save($destino);
+
+            echo json_encode([
+                'resultado'=>true,
+                'mensaje'=>'El producto ha sido creado con exito'
+            ]);
+            exit;
+
+        }
+    }
+
 
 }

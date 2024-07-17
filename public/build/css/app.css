@@ -1571,6 +1571,31 @@ table a {
   /* gap: 3rem; */
   justify-content: space-around;
 }
+.div_producto_uno .informacion_producto p {
+  color: #1a1b15;
+  font-weight: bolder;
+}
+.div_producto_uno .informacion_producto p span {
+  color: #FFFFFF;
+}
+
+.crear_producto {
+  padding: 1rem;
+}
+.crear_producto .informacion_producto {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.crear_producto .informacion_producto label {
+  width: max-content;
+  flex-basis: 40%;
+}
+.crear_producto .producto_div_footer input {
+  margin-top: 3rem;
+}
 
 .div_producto_dos {
   display: grid;
@@ -1588,5 +1613,14 @@ table a {
     display: flex;
     justify-content: space-around;
   }
+}
+
+#mensaje_error {
+  background-color: #e33131;
+}
+#mensaje_error p {
+  color: #1a1b15;
+  text-align: center;
+  font-weight: bolder;
 }
 /*# sourceMappingURL=app.css.map */

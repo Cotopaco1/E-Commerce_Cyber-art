@@ -48,9 +48,40 @@
         flex-direction: column;
         /* gap: 3rem; */
         justify-content: space-around;
+        p{
+            color: v.$negro;
+            font-weight: bolder;
+            span{
+                color: v.$blanco;
+            }
+        }
     }
    
 }
+//crear Producto
+
+.crear_producto{
+    padding: 1rem;
+    .informacion_producto{
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        label{
+            width: max-content;
+            flex-basis: 40%;
+        }
+    }
+    .producto_div_footer{
+        input{
+            margin-top: 3rem;
+        }
+    }
+
+}
+
+//termian crear producto
 .div_producto_dos{
     display: grid;
     gap: 2rem;
@@ -66,5 +97,13 @@
     @include m.tablet{
         display: flex;
         justify-content: space-around;
+    }
+}
+#mensaje_error{
+    background-color: v.$rojoError;
+    p{
+        color: v.$negro;
+        text-align: center;
+        font-weight: bolder;
     }
 }

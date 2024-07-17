@@ -15,13 +15,13 @@
                 <h3>Menu</h3>
             </div>
             <div class="campo_menu">
-                <i class="fa-solid fa-house fa-2xl"></i>
+                <i class="fa-solid fa-house fa-2xl" id="home"></i>
             </div>
             <div class="campo_menu">
-                <i class="fa-solid fa-image-portrait fa-2xl"></i>
+                <i class="fa-solid fa-image-portrait fa-2xl" id="productos"></i>
             </div>
             <div class="campo_menu">
-                <i class="fa-solid fa-plus fa-2xl"></i>
+                <i class="fa-solid fa-plus fa-2xl" id="nuevo_producto"></i>
             </div>
             <div class="campo_menu">
                 <i class="fa-solid fa-scroll fa-2xl"></i>
@@ -56,7 +56,7 @@
 
 
 
-
-<script src="../build/js/admin.js"></script>
+    <script src="../build/js/admin.js" type="module"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
