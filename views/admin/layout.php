@@ -24,7 +24,7 @@
                 <i class="fa-solid fa-plus fa-2xl" id="nuevo_producto"></i>
             </div>
             <div class="campo_menu">
-                <i class="fa-solid fa-scroll fa-2xl"></i>
+                <i class="fa-solid fa-scroll fa-2xl" id="pedidos"></i>
             </div>
         </div>
         <div class="menu_footer">

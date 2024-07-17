@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function(){
     iniciarApp();
 })
 //Globales
-let productos_json = {}; 
+let productos_json = {};
+let pedidos_json = {}; 
 /* window.respuestaGlobal = {}; */
 //Cierro globales
 function iniciarApp(){
@@ -30,6 +31,7 @@ function eventos_botones_menu(){
     document.querySelector('#home').addEventListener('click', actualizarPagina)
     document.querySelector('#productos').addEventListener('click', mostrarProductos)
     document.querySelector('#nuevo_producto').addEventListener('click', mostrar_crear_producto);
+    document.querySelector('#pedidos').addEventListener('click', mostrarPedidos);
 }
 //Termina botones menu
 
@@ -43,13 +45,99 @@ function eventosBotones(){
 //Empieza pedidos
 
 function mostrarPedidos(){
-    //Crear tabla para mostrar pedidos.
-    //Solicitar informacion de los pedidos.
-    //Insertar la informacion de los pedidos a la tabla
-    //Mostrar la tabla creada en pantalla
-    console.log('mostrando productos...')
+    cambiarTitulo('Pedidos');
+    crearTabla(['id','fecha','estado','monto_total','actions'])
+    solicitud_get_por_url('/api/admin/get_pedidos')
+    .then(llenarAndMostrarTablaPedidos);
+   
 }
+function llenarAndMostrarTablaPedidos(datos){
+    const tabla = document.getElementById('tbody');
+    pedidos_json = datos.respuesta;
+    let idAnterior = 0;
+    datos.respuesta.forEach(pedido=>{
+        const {id, fecha, status, total} = pedido;
+        if(id === idAnterior) return;
+        const tr = document.createElement('TR');
+        /* const td = document.createElement('TD'); */
+        tr.innerHTML = `
+        <td><p>${id}</p></td>
+        <td><p>${fecha}</p></td>
+        <td><p>${status}</p></td>
+        <td><p>$<span>${parseInt(total).toLocaleString()}</span></p></td>
+        <td>
+        <button data-id="${id}" class="boton-ver">Ver</button>
+        </td>
+        `
+        tabla.appendChild(tr);
+        idAnterior = id;
+    })
+    evento_botones_pedidos_action();
+}
+function evento_botones_pedidos_action(){
+    document.querySelectorAll('.boton-ver').forEach(boton=>{
+        boton.addEventListener('click',mostrar_ver_pedido)
+    })
+}
+function mostrar_ver_pedido(e){
+    crearModal();
+    const idPedido = e.target.dataset.id;
+    const pedido = pedidos_json.find(function(target){
+        return target.id === idPedido;        
+    });
 
+    insertar_al_modal_pedido_ver(pedido);
+    //creamos modal
+    //INSERTAMOS AL MODAL
+
+}
+function insertar_al_modal_pedido_ver(pedido){
+
+    const {id, fecha, status, nombre, email, telefono, direccion,
+        informacion_adicional,total,metodo_pago
+    } = pedido
+    const modal = document.querySelector('.contenido_modal');
+
+    modal.innerHTML= `
+    <div class="producto_div pedido_div">
+            <div class="pedido_div_uno">
+                <p>ID Pedido: <span>${id}</span></p>
+                <p>Fecha: <span>${fecha}</span></p>
+                <p>Estado: <span>${status}</span></p>
+        
+            </div>
+            <div class="pedido_div_dos">
+                <p>Nombre: <span>${nombre}</span></p>
+                <p>Correo: <span>${email}</span></p>
+                <p>telefono: <span>${telefono}</span></p>
+            </div>
+            <div class="div_pedido_tres">
+                <p>Direccion: <span>${direccion}</span></p>
+            </div>
+            <div> <p>Informacion Adicional: <span>${informacion_adicional}</span></p></div>
+            <div class="div_productos_comprados">
+
+            </div>
+            <div class="div_pedido_footer">
+                <p>Estado: <span>${status}</span></p>
+                <p>Metodo de pago: <span>${metodo_pago}</span></p>
+                </div>
+            <p>Total: <span>$${parseInt(total).toLocaleString()}</span></p>
+
+        <div class="producto_div_footer">
+            <button class="boton-eliminar" id="cancelar_boton">Volver</button>
+        </div>
+    </div>
+    `
+    /* if(disponible === 1){
+        const optionSelected = document.getElementById('disponible');
+        optionSelected.setAttribute('selected')
+        
+    } */
+    const boton_cancelar = document.getElementById('cancelar_boton');
+    boton_cancelar.addEventListener('click', eliminarModal)
+
+}
 
 //termina pedidos
 
@@ -256,8 +344,8 @@ function insertar_al_modal_producto_ver(producto){
     //Empieza editar
 function mostrarProductos(){
     cambiarTitulo('Productos')
-    crearTabla();
-    solicitud_get_por_url('http://localhost:3000/api/cuadros/getcuadros')
+    crearTabla(['Imagen','Nombre','Precio','Actions']);
+    solicitud_get_por_url('/api/cuadros/getcuadros')
     .then(llenarAndMostrarTablaProductos);
     //Crear tabla para mostrar productos.
     //Solicitar informacion de los productos.
@@ -271,16 +359,13 @@ function cambiarTitulo(titulo){
     const tituloDiv = document.querySelector('.titulo_app');
     tituloDiv.innerHTML = `<h1>${titulo}</h1>`
 }
-function crearTabla($args = []){
+function crearTabla(args = []){
     const contenido = document.querySelector('.contenido')
     contenido.innerHTML = `
     <table class="tablaResumen id="tabla">
     <thead>
-            <tr>
-                <td>Imagen</td>
-                <td>Nombre</td>
-                <td>Precio</td>
-                <td>Actions</td>
+            <tr class="trHead">
+                
             </tr>
         </thead>
         <tbody id="tbody">
@@ -288,8 +373,14 @@ function crearTabla($args = []){
         </tbody>
     </table>
     `
+    const trHead = document.querySelector('.trHead');
+    args.forEach(mensaje=>{
+        const td = document.createElement('TD');
+        td.textContent = mensaje;
+        trHead.appendChild(td);
+    })
 
-    
+
 }
 function llenarAndMostrarTablaProductos(datos){
     const tabla = document.getElementById('tbody');

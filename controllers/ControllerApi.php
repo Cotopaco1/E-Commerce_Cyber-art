@@ -8,6 +8,7 @@ use Model\Items_pedido;
 use Model\Pedidos;
 use Model\Productos;
 use Model\Usuarios;
+use Model\PedidosAdmin;
 //Image intervention
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -601,6 +602,20 @@ class ControllerApi{
 
         }
     }
+    //Pedidos
+    public static function get_pedidos(){
+        $query = "SELECT pedidos.id,pedidos.fecha,pedidos.status,pedidos.monto_total as total,";
+        $query .= "CONCAT(usuarios.nombre,' ', usuarios.apellido) as nombre,";
+        $query .= "usuarios.email, usuarios.telefono, ";
+        $query .= "CONCAT(pedidos.direccion, ' ', pedidos.departamento, ' ', pedidos.ciudad) as direccion,";
+        $query .= "pedidos.metodo_pago,pedidos.informacion_adicional, items_pedido.productosId as productoId ";
+        $query .= "FROM pedidos INNER JOIN usuarios ON pedidos.usuarioID=usuarios.id ";
+        $query .= "INNER JOIN items_pedido ON items_pedido.pedidosId=pedidos.id";
 
+        // $pedidos = PedidosAdmin::SQL($query);
+        $pedidos = PedidosAdmin::SQL($query);
+
+        imprimirJson($pedidos);  
+    }
 
 }

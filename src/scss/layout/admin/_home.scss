@@ -32,6 +32,9 @@
     text-align: center;
     i{
         font-size: 3rem;
+        &:hover{
+            cursor: pointer;
+        }
     }
     h3{
         font-size: 2rem;
@@ -87,6 +90,9 @@
         }
     }
 }
+//Estilos a los botones menu
+
+
 .barra_footer{
         
         display: flex;

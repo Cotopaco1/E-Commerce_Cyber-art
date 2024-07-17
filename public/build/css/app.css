@@ -1469,6 +1469,9 @@ table a {
 .campo_menu i {
   font-size: 3rem;
 }
+.campo_menu i:hover {
+  cursor: pointer;
+}
 .campo_menu h3 {
   font-size: 2rem;
   margin: 0;
@@ -1622,5 +1625,19 @@ table a {
   color: #1a1b15;
   text-align: center;
   font-weight: bolder;
+}
+
+.pedido_div p {
+  color: #1a1b15;
+  font-weight: bolder;
+}
+.pedido_div p span {
+  color: rgb(255, 255, 255);
+  font-weight: normal;
+}
+.pedido_div div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 /*# sourceMappingURL=app.css.map */

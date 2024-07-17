@@ -1,0 +1,21 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+
+.pedido_div{
+    p{
+        color: v.$negro;
+        font-weight: bolder;
+        span{
+            color: v.$blanco_admin;
+            font-weight: normal;
+        }
+    }
+    div{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+
+
+}
