@@ -606,16 +606,36 @@ class ControllerApi{
     public static function get_pedidos(){
         $query = "SELECT pedidos.id,pedidos.fecha,pedidos.status,pedidos.monto_total as total,";
         $query .= "CONCAT(usuarios.nombre,' ', usuarios.apellido) as nombre,";
-        $query .= "usuarios.email, usuarios.telefono, ";
+        $query .= "usuarios.cedula,usuarios.email, usuarios.telefono, ";
         $query .= "CONCAT(pedidos.direccion, ' ', pedidos.departamento, ' ', pedidos.ciudad) as direccion,";
         $query .= "pedidos.metodo_pago,pedidos.informacion_adicional, items_pedido.productosId as productoId ";
         $query .= "FROM pedidos INNER JOIN usuarios ON pedidos.usuarioID=usuarios.id ";
         $query .= "INNER JOIN items_pedido ON items_pedido.pedidosId=pedidos.id";
-
+        
         // $pedidos = PedidosAdmin::SQL($query);
         $pedidos = PedidosAdmin::SQL($query);
 
         imprimirJson($pedidos);  
     }
+    public static function get_pedidos_where(){
+        $fecha = $_GET['fecha'];
 
+        $query = "SELECT pedidos.id,pedidos.fecha,pedidos.status,pedidos.monto_total as total,";
+        $query .= "CONCAT(usuarios.nombre,' ', usuarios.apellido) as nombre,";
+        $query .= "usuarios.cedula,usuarios.email, usuarios.telefono, ";
+        $query .= "CONCAT(pedidos.direccion, ' ', pedidos.departamento, ' ', pedidos.ciudad) as direccion,";
+        $query .= "pedidos.metodo_pago,pedidos.informacion_adicional, items_pedido.productosId as productoId ";
+        $query .= "FROM pedidos INNER JOIN usuarios ON pedidos.usuarioID=usuarios.id ";
+        $query .= "INNER JOIN items_pedido ON items_pedido.pedidosId=pedidos.id ";
+        $query .= "WHERE fecha = '$fecha'";
+        // $pedidos = PedidosAdmin::SQL($query);
+        /* debugear($query); */
+        $pedidos = PedidosAdmin::SQL($query);
+
+        echo json_encode([
+            'respuesta'=>$pedidos
+        ]);
+        exit;
+        /* imprimirJson($pedidos);  */ 
+    }
 }

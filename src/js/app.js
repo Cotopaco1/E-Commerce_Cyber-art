@@ -714,13 +714,15 @@ async function crear_pedido(){
                 departamento : formularioDatos.departamento,
                 ciudad : formularioDatos.ciudad,
                 metodo_pago : metodo_pago,
-                informacion_adicional : formularioDatos.informacion_extra
+                informacion_adicional : formularioDatos.informacion_extra,
+                
             },
             usuario: {
                 nombre : formularioDatos.nombre,
                 apellido : formularioDatos.apellido,
                 email : formularioDatos.email,
-                telefono : formularioDatos.telefono
+                telefono : formularioDatos.telefono,
+                cedula: formularioDatos.cedula
             }
             
         }
@@ -1095,7 +1097,7 @@ function mostrarCarritoDeCompras(){
             divBotonesCantidad.appendChild(iconoDiv);
 
             const imagenProducto = document.createElement('IMG');
-            imagenProducto.src = `/img/${imagen}`;
+            imagenProducto.src = `/img/productos/${imagen}`;
 
 
             const precioTotal = precio * cantidad;
@@ -1276,7 +1278,7 @@ const minutes = String(now.getMinutes()).padStart(2, '0');
 const seconds = String(now.getSeconds()).padStart(2, '0');
 
 // Formatear la fecha y hora en el formato YYYY-MM-DD HH:MM:SS
-const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+const formattedDate = `${year}-${month}-${day}`;
 return formattedDate;
 }
 //Cuadros //
@@ -1305,7 +1307,7 @@ function imprimirResultadosApi(json){
 
         const imagenDiv = document.createElement('DIV')
         imagenDiv.classList.add('imagenCuadroDiv');
-        imagenDiv.style.backgroundImage = `url(/img/${imagen})`
+        imagenDiv.style.backgroundImage = `url(/img/productos/${imagen})`
         
 
         const infoDiv = document.createElement('DIV');
@@ -1471,7 +1473,7 @@ function actualizarInterfazCarritoCompra(){
             crearBotonBorrar(divInfo, id, producto );
 
             const imagenProducto = document.createElement('IMG');
-            imagenProducto.src = `/img/${imagen}`;
+            imagenProducto.src = `/img/productos/${imagen}`;
 
             productoDiv.appendChild(divInfo);
             productoDiv.appendChild(imagenProducto);

@@ -59,6 +59,7 @@ $router->post('/api/login/reestableccer_password', [ControllerApi::class, 'reest
     //admin
 $router->get('/api/admin/get_info_resumen', [ControllerApi::class, 'get_info_resumen']);
 $router->get('/api/admin/get_pedidos', [ControllerApi::class, 'get_pedidos']);
+$router->get('/api/admin/get_pedidos_where', [ControllerApi::class, 'get_pedidos_where']);
 
 $router->post('/api/admin/actualizar_producto', [ControllerApi::class, 'actualizar_producto']);
 $router->post('/api/admin/eliminar_producto', [ControllerApi::class, 'eliminar_producto']);

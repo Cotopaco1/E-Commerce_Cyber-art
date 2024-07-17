@@ -46,10 +46,35 @@ function eventosBotones(){
 
 function mostrarPedidos(){
     cambiarTitulo('Pedidos');
+   
     crearTabla(['id','fecha','estado','monto_total','actions'])
     solicitud_get_por_url('/api/admin/get_pedidos')
     .then(llenarAndMostrarTablaPedidos);
+    insertar_buscador();
    
+}
+function insertar_buscador(){
+    const contenido = document.querySelector('.contenido');
+    const div = document.createElement('DIV');
+    div.classList.add('div_buscador');
+    div.innerHTML = `
+    <label htmlFor="buscador">Filtrar por fecha    <input class="input" type="date" id="buscador" /></label>
+    `
+    contenido.prepend(div);
+    const buscador = document.getElementById('buscador');
+    buscador.addEventListener('input', evento_buscador)
+}
+
+function evento_buscador(e){
+    const fecha = e.target.value;
+    //vaciar body tabla
+    document.getElementById('tbody').innerHTML = ``
+    //consultar datos
+    solicitud_get_por_url(`/api/admin/get_pedidos_where?fecha=${fecha}`)
+    .then((resultado)=>{
+        llenarAndMostrarTablaPedidos(resultado)
+    })
+    
 }
 function llenarAndMostrarTablaPedidos(datos){
     const tabla = document.getElementById('tbody');
@@ -94,7 +119,7 @@ function mostrar_ver_pedido(e){
 function insertar_al_modal_pedido_ver(pedido){
 
     const {id, fecha, status, nombre, email, telefono, direccion,
-        informacion_adicional,total,metodo_pago
+        informacion_adicional,total,metodo_pago, cedula
     } = pedido
     const modal = document.querySelector('.contenido_modal');
 
@@ -110,6 +135,7 @@ function insertar_al_modal_pedido_ver(pedido){
                 <p>Nombre: <span>${nombre}</span></p>
                 <p>Correo: <span>${email}</span></p>
                 <p>telefono: <span>${telefono}</span></p>
+                <p>Cedula: <span>${cedula}</span></p>
             </div>
             <div class="div_pedido_tres">
                 <p>Direccion: <span>${direccion}</span></p>

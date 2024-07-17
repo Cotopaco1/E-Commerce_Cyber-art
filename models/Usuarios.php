@@ -5,7 +5,7 @@ namespace Model;
 class Usuarios extends ActiveRecord{
     
     protected static $tabla = 'usuarios';
-    protected static $columnasDB = ['id', 'nombre', 'apellido', 'email', 'password', 'telefono', 'admin', 'confirmado', 'token', 'token_reset_password'];
+    protected static $columnasDB = ['id', 'nombre', 'apellido', 'email', 'password', 'telefono','cedula', 'admin', 'confirmado', 'token', 'token_reset_password'];
 
     public $id;
     public $nombre;
@@ -13,6 +13,7 @@ class Usuarios extends ActiveRecord{
     public $email;
     public $password;
     public $telefono;
+    public $cedula;
     public $admin;
     public $confirmado;
     public $token;
@@ -26,6 +27,7 @@ class Usuarios extends ActiveRecord{
         $this->email = $args['email'] ?? '';
         $this->password = $args['password'] ?? '';
         $this->telefono = $args['telefono'] ?? '';
+        $this->cedula = $args['cedula'] ?? '';
         $this->admin =  0;
         $this->confirmado = 0;
         $this->token = '';
@@ -55,7 +57,10 @@ class Usuarios extends ActiveRecord{
         }
         $numero_permitido_de_celular = 10;
         if(strlen($this->telefono) !== $numero_permitido_de_celular && $this->telefono){
-            self::setAlerta('error', 'El telefono debe ser de 10 numeros');
+            self::setAlerta('error', 'El telefono debe ser de 10 numeros, Actualmente es de '. strlen($this->telefono) );
+        }
+        if(!$this->cedula){
+            self::setAlerta('error','El documento de identificacion es obligatorio');
         }
 
         return self::$alertas;

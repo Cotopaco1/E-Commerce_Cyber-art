@@ -1640,4 +1640,12 @@ table a {
   flex-wrap: wrap;
   gap: 2rem;
 }
+
+.div_buscador {
+  margin-bottom: 1.5rem;
+}
+.div_buscador #buscador,
+.div_buscador label {
+  font-size: 2.5rem;
+}
 /*# sourceMappingURL=app.css.map */

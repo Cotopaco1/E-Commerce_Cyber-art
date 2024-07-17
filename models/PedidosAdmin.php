@@ -4,13 +4,14 @@ namespace Model;
 
 class PedidosAdmin extends ActiveRecord{
 
-    protected static $columnasDB = ['id', 'fecha', 'status', 'total', 'nombre','email','telefono', 'direccion', 'metodo_pago', 'informacion_adicional', 'productoId'];
+    protected static $columnasDB = ['id', 'fecha', 'status', 'total', 'nombre','cedula','email','telefono', 'direccion', 'metodo_pago', 'informacion_adicional', 'productoId'];
 
     public $id;
     public $fecha;
     public $status;
     public $total;
     public $nombre;
+    public $cedula;
     public $email;
     public $telefono;
     public $direccion;
@@ -18,7 +19,7 @@ class PedidosAdmin extends ActiveRecord{
     public $informacion_adicional;
     public $productoId;
 
-    public function __construct($args = [])
+   /*  public function __construct($args = [])
     {
         $this->id = $args['id'] ?? null;
         $this->fecha = $args['fecha'] ?? null;
@@ -31,7 +32,7 @@ class PedidosAdmin extends ActiveRecord{
         $this->metodo_pago = $args['metodo_pago'] ?? '';
         $this->informacion_adicional = $args['informacion_adicional'] ?? 0;
         $this->productoId = $args['productoId'] ?? '';
-    }
+    } */
     public function validar(){
 
         if(!$this->fecha){

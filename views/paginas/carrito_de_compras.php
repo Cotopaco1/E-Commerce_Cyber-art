@@ -54,10 +54,13 @@
             <input type="email" id="email" placeholder="Tu email" name="email">
         </div>
         <div class="campoFormulario">
-            <label class="label label_enviar_direccion_diferente">Enviar a direccion diferente <input id="byEmail" type="radio" name="user[direccion_diferente_de_envio]" value="true"></label>
+            <!-- <label class="label label_enviar_direccion_diferente">Enviar a direccion diferente <input id="byEmail" type="radio" name="user[direccion_diferente_de_envio]" value="true"></label> -->
+             <label for="cedula" class="label">Documento de identificacion</label>
+             <input name="cedula" id="cedula" type="numbers" placeholder="Escribe tu Documento de identificacion">
         </div>
         <div class="direccion_diferente_div">  </div>
         <div class="campoFormulario">
+            <label for="informacionExtra" class="label">Informacion adicional</label>
             <textarea class="textArea" name="informacion_extra" id="informacionExtra" placeholder="Escribe cualquier informacion adicional que consideres importante" rows="2" cols="5"></textarea>
         </div>
         
