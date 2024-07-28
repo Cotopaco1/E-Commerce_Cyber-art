@@ -1,4 +1,4 @@
-<h1 class="nombre-pagina">Desde carrito_de_compras</h1>
+<!-- <h1 class="nombre-pagina">Desde carrito_de_compras</h1> -->
 
 <nav class="tabs">
     <button type="button" data-paso="1">Productos seleccionados</button>
@@ -6,7 +6,7 @@
     <button type="button" data-paso="3">Compra</button>
 </nav>
 <?php /* include_once __DIR__ . '/../templates/alertas.php' */ ?>
-<div id="alertas"></div>
+<div id="alertas" class="contenedor_alertas"></div>
 <section id="paso-1" class="contenedor section resumen_carrito_compras ocultar">
 <table class="tablaResumen">
     <thead>
@@ -27,7 +27,7 @@
 <!-- Empieza paso 2 -->
 <section id="paso-2" class="contenedor section formulario_carrito_de_compras ocultar">  
     <form method="post" class="form" id="formulario_carrito_de_compras">
-        <h2>Rellena los datos...</h2>
+        <h2>Formulario de Compra</h2>
         <div class="campoFormulario campo_nombre_and_apellido">
             <label class="label" for="nombre">Nombre</label>
             <input type="text" id="nombre" placeholder="Tu nombre" name="nombre">
@@ -63,9 +63,9 @@
             <label for="informacionExtra" class="label">Informacion adicional</label>
             <textarea class="textArea" name="informacion_extra" id="informacionExtra" placeholder="Escribe cualquier informacion adicional que consideres importante" rows="2" cols="5"></textarea>
         </div>
+       <!--  
         
-        
-        <input type="submit" class="boton" value="Validar datos">
+        <input type="submit" class="boton" value="Validar datos"> -->
     </form>
 </section>
 <!-- Termina paso 2 -->

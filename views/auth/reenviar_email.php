@@ -2,8 +2,9 @@
 <div class="card_login contenedor">
     <div class="datos_login">
         <div class="datos_header crear_cuenta_header">
-            <h3>CyberArt</h3>
-            <p>Ya tienes cuenta cuenta? <a href="http://localhost:3000/login"> Ingresa aca</a> </p>
+            <div class="logo"><a href="/"><img src="./img/logo_cyber-transparente.png" alt="imagenLogo"></a></div>
+
+            <p>Ya tienes cuenta cuenta? <a href="/login"> Ingresa aca</a> </p>
         </div>
         <div class="datos_body">
             <div class="datos_body_titulo">

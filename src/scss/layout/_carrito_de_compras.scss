@@ -1,8 +1,5 @@
 @use 'base/variables' as v;
 @use 'base/mixins' as m;
-
-
-
 //tabs{
     .tabs{
         @include m.tablet{
@@ -26,6 +23,7 @@
             margin-bottom: 2rem;
             text-transform: uppercase;
             transition: background-color 300ms ease;
+            font-size: 1.5rem;
             
             &:hover{
                 cursor: pointer;
@@ -42,6 +40,13 @@
 .paginacion {
     display: flex;
     justify-content: space-between;
+    width: 90%;
+    margin: 0 auto;
+    max-width: 100rem;
+    gap: 1rem;
+    @include m.tablet{
+        padding: 0 4rem;
+    }
 }
 
 //resumen carrito de compras::
@@ -49,6 +54,7 @@
     width: 95%;
     margin: 0 auto;
     background-color: v.$gris;
+    overflow: scroll;
     //Contenedor final despues de la tabla
     .contenedorProductosFormulario{
         .parrafoCarritoVacio{
@@ -70,13 +76,13 @@
     }
 }
 table{
-    
+    min-width: 55rem;
     border-spacing: 0;
     width: 100%;
     text-align: center;
     thead{
         background-color: v.$verde;
-        font-size: 3rem;
+        font-size: 2rem;
         
 
     }
@@ -128,6 +134,10 @@ table{
     max-width: 37rem;
     display: flex;
     gap: 4rem;
+    flex-direction: column;
+    @include m.tablet{
+        flex-direction: row;
+    }
     .infoProductoCarrito{
         max-width: 30rem;
         .nombre-producto{
@@ -162,7 +172,11 @@ table{
 
 //seccion 2 paso 2
 .formulario_carrito_de_compras{
-    background-color: v.$azulOscuro;
+    background-color: v.$blanco-tw;
+    margin-bottom: 0;
+    p,label,h1,h2{
+        color: v.$negro-tw;
+    }
 }
 .form{
     padding: 3rem;
@@ -172,7 +186,6 @@ table{
     display: grid;
     margin-bottom: calc(v.$separacion / 2);
     .label{
-        color: v.$blanco;
         margin: calc(v.$separacion / 4) 0;
         font-weight: v.$bold;
         &:first-of-type{
@@ -238,11 +251,16 @@ table{
     h1,h2{
         color: v.$negro;
     }
-    p{
+    p,li{
         color: v.$negro;
         span{
             color: v.$azulMedio;
             font-weight: bold;
         }
     }
+}
+.lista-productos{
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }

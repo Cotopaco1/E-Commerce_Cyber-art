@@ -5,10 +5,26 @@
     display: flex;
     gap: 5rem;
     background-color: v.$gris_admin;
+    .menu_hamburgesa{
+        @include m.tablet{
+            display: none;
+        }
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        font-size: 3rem;
+        &:hover{
+            cursor: pointer;
+        }
+    }
 }
 .menu_administrador{
+    display: none;
+    @include m.tablet{
+        display: flex;      
+    }
     width: 8rem;
-    display: flex;
+    
     flex-direction: column;
     justify-content: space-between;
     background-color: v.$blanco_admin;
@@ -43,7 +59,10 @@
 }
 
 .contenido_admin{
+    padding: 0 2rem;
     width: 100%;
+    height: 100vh;
+    
     .contenido_header{
         min-height: 10rem;
         display: flex;
@@ -69,7 +88,7 @@
         .main_admin{
             min-height: 50rem;
             background-color: v.$blanco_admin;
-            width: 95%;
+            /* width: 95%; */
             margin: 2rem 0;
             padding: 2rem 1rem;
             display: flex;
@@ -77,6 +96,19 @@
             flex-direction: column;
             p,h1,h2,h3{
                 color: v.$negro_login;
+            }
+            .tablaResumen{
+                min-width: 40rem;
+                .trHead{
+                    font-size: 2rem;
+                }
+                .actions{
+                    display: grid;
+                    @include m.tablet{
+                        display: flex;
+                        justify-content: center;
+                    }
+                }
             }
             .campo{
                 padding: 1.5rem;
@@ -86,8 +118,17 @@
                 }
 
             }
+            .contenido{
+                overflow: scroll;
+                height: 50rem;
+                display: block;
+            }
 
         }
+    }
+    .footer{
+        padding: 2rem 0;
+        width: -webkit-fill-available;
     }
 }
 //Estilos a los botones menu

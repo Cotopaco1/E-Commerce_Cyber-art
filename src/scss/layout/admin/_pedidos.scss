@@ -6,6 +6,7 @@
     p{
         color: v.$negro;
         font-weight: bolder;
+        margin: .5rem 0;
         span{
             color: v.$blanco_admin;
             font-weight: normal;
@@ -16,12 +17,36 @@
         flex-wrap: wrap;
         gap: 2rem;
     }
+    .lista_nombre_productos{
+        display: grid;
+        
+    }
 }
 .div_buscador{
     margin-bottom: 1.5rem;
     #buscador,
     label{
         font-size: 2.5rem;
+    }
+    #buscador_estado{
+        font-size: 2rem;
+        padding: .4rem;
+    }
+}
+.estado{
+    width: min-content;
+    margin: 0 auto;
+    padding: 1rem;
+    border-radius: .5rem;
+    font-size: 1.5rem;
+    &:hover{
+        cursor: pointer;
+    }
+    &.pendiente{
+        background-color: v.$naranja_admin;
         
+    }
+    &.completado{
+        background-color: v.$verde;
     }
 }

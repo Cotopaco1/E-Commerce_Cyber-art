@@ -79,4 +79,15 @@ class Productos extends ActiveRecord{
         }
         return self::$alertas;
     }
+    public function eliminar_soft(){
+        // Consulta SQL
+        $query = "UPDATE " . static::$tabla ." SET ";
+        $query .=  "is_deleted = TRUE ";
+        $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
+        $query .= " LIMIT 1 ";
+        // Actualizar BD
+        $resultado = self::$db->query($query);
+        return $resultado; 
+    }
+    
 }

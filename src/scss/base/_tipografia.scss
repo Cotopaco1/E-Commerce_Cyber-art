@@ -1,10 +1,12 @@
 /* Tipografia */
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
 
 h1, h2, h3 {
     font-family: "Exo 2", sans-serif;
     margin: 0 0 calc(5rem / 2) 0 ;
     font-weight: 900;
-    color: white;
+    color: v.$negro-tw;
     text-align: center;
 }
 
@@ -19,8 +21,13 @@ h3 {
     text-align: center;
 }
 p {
-    color: white;
+    font-family: "Exo 2", sans-serif;
+    color: v.$negro-tw;
     font-size: 2rem;
+}
+legend,
+span,a,button{
+    font-family: "Exo 2", sans-serif;
 }
 
 label{

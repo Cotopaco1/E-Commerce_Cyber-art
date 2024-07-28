@@ -110,6 +110,20 @@ class ActiveRecord {
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
+    // Todos los registros
+    public static function all_no_deleted() {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE is_deleted != 1 OR is_deleted IS NULL";
+        
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+    //todos los registros no deleted y disponibles
+    public static function all_no_deleted_and_disponibles() {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE is_deleted != 1 OR is_deleted IS NULL AND disponible = 1";
+        
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
 
     // Busca un registro por su id
     public static function find($id) {
@@ -121,15 +135,29 @@ class ActiveRecord {
     // Busca un registro por el valor de una columna.
     public static function where($column, $value) {
         $query = "SELECT * FROM " . static::$tabla  ." WHERE {$column} = '{$value}'";
+
         $resultado = self::consultarSQL($query);
         return array_shift( $resultado ) ;
     }
+    //trae todos los registros where:
+    public static function belongsTo($column, $value) {
+        $query = "SELECT * FROM " . static::$tabla  ." WHERE {$column} = '{$value}'";
 
+        $resultado = self::consultarSQL($query);
+        return  $resultado;
+    }
     // Obtener Registros con cierta cantidad
     public static function get($limite) {
         $query = "SELECT * FROM " . static::$tabla . " LIMIT {$limite}";
         $resultado = self::consultarSQL($query);
-        return array_shift( $resultado ) ;
+        return $resultado ;
+    }
+    // Obtener Registros con cierta cantidad y no deleted
+    public static function get_not_deleted_and_disponible($limite) {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE is_deleted != 1 OR is_deleted IS NULL AND disponible = 1 LIMIT {$limite} ";
+        
+        $resultado = self::consultarSQL($query);
+        return $resultado ;
     }
 
     // crea un nuevo registro
@@ -180,6 +208,7 @@ class ActiveRecord {
         $resultado = self::$db->query($query);
         return $resultado;
     }
+    
 
     //Consujlta plana, utilizar cuando los metodos del active record no son suficientes.
     public static function SQL($consulta){

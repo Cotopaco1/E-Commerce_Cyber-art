@@ -1,0 +1,21 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.contenedor_productos{
+    display: grid;
+    /* flex-direction: column; */
+    grid-template-columns: 1fr 1fr;
+    @include m.tablet{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    padding: 2rem 0;
+    gap: 2rem;
+    .producto_div{
+        min-width: 15rem;
+        transition: transform .5s ease;
+        &:hover{
+            transform: scale(1.1);
+           
+        }
+    }
+}

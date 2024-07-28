@@ -11,6 +11,10 @@ document.addEventListener('DOMContentLoaded', function(){
 //Globales
 let productos_json = {};
 let pedidos_json = {}; 
+let filtros = {
+    fecha : '',
+    estado:'todos'
+}
 /* window.respuestaGlobal = {}; */
 //Cierro globales
 function iniciarApp(){
@@ -39,8 +43,19 @@ function eventos_botones_menu(){
 function eventosBotones(){
     document.querySelector('#boton_pedidos').addEventListener('click', mostrarPedidos);
     document.querySelector('#boton_productos').addEventListener('click', mostrarProductos);
+    document.querySelector('#menu_hamburgesa').addEventListener('click', mostrarMenu)
 }
 //Termina botones foter admin
+
+//comienza evento menu hamburgesa
+function mostrarMenu(e){
+    const menu = document.querySelector('.menu_administrador');
+    menu.classList.toggle('mostrar_flex');
+    return;
+    
+}
+
+//termina menu hamburgeesa
 
 //Empieza pedidos
 
@@ -49,7 +64,12 @@ function mostrarPedidos(){
    
     crearTabla(['id','fecha','estado','monto_total','actions'])
     solicitud_get_por_url('/api/admin/get_pedidos')
-    .then(llenarAndMostrarTablaPedidos);
+    /* .then(llenarAndMostrarTablaPedidos);
+    insertar_buscador(); */
+    .then(function(datos){
+        pedidos_json = datos.respuesta;
+        llenarAndMostrarTablaPedidos();
+    });
     insertar_buscador();
    
 }
@@ -59,28 +79,52 @@ function insertar_buscador(){
     div.classList.add('div_buscador');
     div.innerHTML = `
     <label htmlFor="buscador">Filtrar por fecha    <input class="input" type="date" id="buscador" /></label>
+    <select name="estado" id="buscador_estado">
+        <option value="todos" selected>Todos</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="completado">Completado</option>
+    </select>
     `
     contenido.prepend(div);
+    //buscador fecha
     const buscador = document.getElementById('buscador');
-    buscador.addEventListener('input', evento_buscador)
+    buscador.addEventListener('input', evento_buscador_fecha)
+    //buscador estado
+    const buscador_estado = document.getElementById('buscador_estado');
+    buscador_estado.addEventListener('change', evento_buscador_estado)
 }
-
-function evento_buscador(e){
-    const fecha = e.target.value;
+// Peticion where y llena pedidos_json con la respuesta;
+function evento_buscador_fecha(e){
+     filtros.fecha = e.target.value;
     //vaciar body tabla
-    document.getElementById('tbody').innerHTML = ``
+    /* document.getElementById('tbody').innerHTML = `` */
     //consultar datos
-    solicitud_get_por_url(`/api/admin/get_pedidos_where?fecha=${fecha}`)
-    .then((resultado)=>{
-        llenarAndMostrarTablaPedidos(resultado)
+    solicitud_get_por_url(`/api/admin/get_pedidos_filtrados?fecha=${filtros.fecha}&estado=${filtros.estado}`)
+    .then((datos)=>{
+        pedidos_json = datos.pedidos;
+        llenarAndMostrarTablaPedidos()
     })
     
 }
-function llenarAndMostrarTablaPedidos(datos){
+function evento_buscador_estado(e){
+    filtros.estado = e.target.value;
+    //vaciar body tabla
+    /* document.getElementById('tbody').innerHTML = `` */
+    //consultar datos
+    solicitud_get_por_url(`/api/admin/get_pedidos_filtrados?fecha=${filtros.fecha}&estado=${filtros.estado}`)
+    .then((datos)=>{
+        pedidos_json = datos.pedidos;
+        llenarAndMostrarTablaPedidos()
+    })
+    
+}
+//Lo llena con el objeto global json_pedidos;
+function llenarAndMostrarTablaPedidos(){
     const tabla = document.getElementById('tbody');
-    pedidos_json = datos.respuesta;
+    tabla.innerHTML = ``;
+    /* pedidos_json = datos.respuesta; */
     let idAnterior = 0;
-    datos.respuesta.forEach(pedido=>{
+    pedidos_json.forEach(pedido=>{
         const {id, fecha, status, total} = pedido;
         if(id === idAnterior) return;
         const tr = document.createElement('TR');
@@ -88,7 +132,7 @@ function llenarAndMostrarTablaPedidos(datos){
         tr.innerHTML = `
         <td><p>${id}</p></td>
         <td><p>${fecha}</p></td>
-        <td><p>${status}</p></td>
+        <td><p class="${status} estado" data-id="${id}" data-estado="${status}">${status}</p></td>
         <td><p>$<span>${parseInt(total).toLocaleString()}</span></p></td>
         <td>
         <button data-id="${id}" class="boton-ver">Ver</button>
@@ -97,12 +141,44 @@ function llenarAndMostrarTablaPedidos(datos){
         tabla.appendChild(tr);
         idAnterior = id;
     })
+    
     evento_botones_pedidos_action();
 }
+
 function evento_botones_pedidos_action(){
     document.querySelectorAll('.boton-ver').forEach(boton=>{
         boton.addEventListener('click',mostrar_ver_pedido)
     })
+    document.querySelectorAll('[data-estado]').forEach(elemento=>{
+        elemento.addEventListener('dblclick', cambiar_estado)
+    })
+}
+async function cambiar_estado(e){
+    const estado = e.target.dataset.estado;
+    const id = e.target.dataset.id;
+    const datos = new FormData();
+    datos.append('id',id);
+    datos.append('status',estado);
+    datos.append('fecha',filtros.fecha);
+    datos.append('estado',filtros.estado);
+    //peticion para cambiar de estado el pedido.
+    const url = '/api/admin/pedido/actualizar_estado';
+    const options = {
+        method: 'POST',
+        body: datos
+    }
+    try {
+        const resultado = await fetch(url,options);
+        const respuesta = await resultado.json()
+        if(respuesta.exito){
+            pedidos_json = respuesta.pedidos
+            llenarAndMostrarTablaPedidos();
+        }else{
+            console.log(respuesta);
+        }
+    } catch (error) {
+        console.log(error)
+    }
 }
 function mostrar_ver_pedido(e){
     crearModal();
@@ -140,10 +216,9 @@ function insertar_al_modal_pedido_ver(pedido){
             <div class="div_pedido_tres">
                 <p>Direccion: <span>${direccion}</span></p>
             </div>
+            <div class="lista_nombre_productos"></div>
             <div> <p>Informacion Adicional: <span>${informacion_adicional}</span></p></div>
-            <div class="div_productos_comprados">
-
-            </div>
+            
             <div class="div_pedido_footer">
                 <p>Estado: <span>${status}</span></p>
                 <p>Metodo de pago: <span>${metodo_pago}</span></p>
@@ -160,8 +235,24 @@ function insertar_al_modal_pedido_ver(pedido){
         optionSelected.setAttribute('selected')
         
     } */
+    insertar_nombre_productos(id);
     const boton_cancelar = document.getElementById('cancelar_boton');
     boton_cancelar.addEventListener('click', eliminarModal)
+}
+function insertar_nombre_productos(id){
+    const div = document.querySelector('.lista_nombre_productos');
+    const productos = pedidos_json.filter(producto=>{
+        /* console.log(producto.id === 1); */
+        return producto.id === id;
+    })
+    productos.forEach(producto=>{
+        const parrafo = document.createElement('P');
+        parrafo.innerHTML = `<span>${producto.productoNombre}</span> x${producto.productoCantidad}`
+        div.appendChild(parrafo);
+    })
+    /* console.log(id);
+    console.log(pedidos_json); */
+    /* console.log(productos); */
 
 }
 
@@ -371,7 +462,7 @@ function insertar_al_modal_producto_ver(producto){
 function mostrarProductos(){
     cambiarTitulo('Productos')
     crearTabla(['Imagen','Nombre','Precio','Actions']);
-    solicitud_get_por_url('/api/cuadros/getcuadros')
+    solicitud_get_por_url('/api/admin/get_cuadros_where_no_deleted')
     .then(llenarAndMostrarTablaProductos);
     //Crear tabla para mostrar productos.
     //Solicitar informacion de los productos.
@@ -575,6 +666,7 @@ function insertar_al_modal_producto(producto){
 
 }
 
+
 function crearModal(){
     //este codigo solo se ejecuta una vez..
     const modal = document.createElement('DIV');
@@ -584,7 +676,6 @@ function crearModal(){
     `
     modal.addEventListener('click', evento_para_cerrar_modal)
     const body = document.querySelector('body');
-
     body.appendChild(modal);
 }
 function evento_para_cerrar_modal(event){
@@ -624,7 +715,7 @@ async function getDatosResumen(){
 
     try {
         
-        const url = 'http://localhost:3000/api/admin/get_info_resumen'
+        const url = '/api/admin/get_info_resumen'
 
         const resultado = await fetch(url);
         const $respuesta = await resultado.json();

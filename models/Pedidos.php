@@ -42,7 +42,7 @@ class Pedidos extends ActiveRecord{
             self::setAlerta('error', 'El status hace falta');
         }
         if(!$this->monto_total){
-            self::setAlerta('error', 'El email es obligatorio');
+            self::setAlerta('error', 'El monto_total es obligatorio');
         }
         if(!$this->direccion){
             self::setAlerta('error', 'La direccion es obligatoria');

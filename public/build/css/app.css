@@ -17,18 +17,29 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
-  background-color: #B74E6A;
+  background-color: #fafafa;
   position: relative;
 }
 
 main {
-  margin-bottom: 5rem;
+  padding-bottom: 25rem;
+}
+@media (min-width: 768px) {
+  main {
+    padding-bottom: 21rem;
+  }
 }
 
 .contenedor {
   width: 95%;
   max-width: 100rem;
   margin: 0 auto;
+}
+
+.contenedor-sm {
+  width: 80%;
+  max-width: 70rem;
+  margin: 2rem auto;
 }
 
 img {
@@ -64,6 +75,10 @@ a {
   display: block !important;
 }
 
+.mostrar_flex {
+  display: flex !important;
+}
+
 .field {
   margin-top: 2rem;
 }
@@ -89,6 +104,9 @@ textarea {
 .section {
   margin-bottom: 6rem;
 }
+.section:last-of-type {
+  margin-bottom: 0;
+}
 
 .poisition-relative {
   position: relative;
@@ -96,6 +114,26 @@ textarea {
 
 .hidden {
   visibility: hidden;
+}
+
+.padding-for-fixedHeader {
+  padding-top: 6rem;
+  padding-bottom: 22rem;
+}
+@media (min-width: 768px) {
+  .padding-for-fixedHeader {
+    padding-bottom: 18rem;
+  }
+}
+
+.padding-bottom-22 {
+  padding-bottom: 22rem !important;
+}
+
+.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -411,7 +449,7 @@ h1, h2, h3 {
   font-family: "Exo 2", sans-serif;
   margin: 0 0 2.5rem 0;
   font-weight: 900;
-  color: white;
+  color: #0a0a0a;
   text-align: center;
 }
 
@@ -429,8 +467,14 @@ h3 {
 }
 
 p {
-  color: white;
+  font-family: "Exo 2", sans-serif;
+  color: #0a0a0a;
   font-size: 2rem;
+}
+
+legend,
+span, a, button {
+  font-family: "Exo 2", sans-serif;
 }
 
 label {
@@ -470,6 +514,9 @@ label {
 .menuCampo {
   padding: 2rem;
 }
+.menuCampo:hover {
+  background-color: #fb923c;
+}
 .menuCampo a {
   color: black;
   font-size: 2.5rem;
@@ -492,7 +539,7 @@ label {
   position: absolute;
   right: 0;
   height: 100%;
-  background-color: #21174B;
+  background-color: #fafafa;
   padding: 4rem;
 }
 @media (min-width: 480px) {
@@ -533,27 +580,39 @@ label {
   color: #329f00;
 }
 
-.alerta {
-  margin-bottom: 2rem;
-  text-align: center;
-  padding: 1.25rem;
-  color: #FFFFFF;
+.modal_contenido {
   width: 100%;
-  display: block;
-  font-weight: 700;
+  height: 100%;
+}
+
+.contenedor_alertas {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.alerta {
+  padding: 1rem 1rem 1rem 2rem;
   text-transform: uppercase;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  max-width: 80rem;
 }
 .alerta.exito {
-  background-color: #329f00;
+  background-color: #e0ffd2;
+  border-left: 0.5rem solid #329f00;
+  color: #329f00;
 }
 .alerta.error {
-  background-color: #cb0000;
+  background-color: #ffcbcb;
+  border-left: 0.5rem solid #cb0000;
+  color: #cb0000;
 }
 
 .boton {
-  background-color: #CC54D0;
+  background-color: #0a0a0a;
   padding: 1.5rem 4rem;
-  color: #21174B;
+  color: #fafafa;
   margin-top: 2rem;
   font-size: 2rem;
   font-weight: 400;
@@ -566,6 +625,8 @@ label {
   display: block;
   width: 100%;
   margin: 5rem 0;
+  margin: 0;
+  border-radius: 0.5rem;
 }
 @media (min-width: 768px) {
   .boton {
@@ -573,8 +634,13 @@ label {
   }
 }
 .boton:hover {
-  background-color: #b934bd;
+  background-color: black;
   cursor: pointer;
+}
+.boton:hover {
+  /* background-color: lighten(v.$negro-tw, 30%) */
+  background-color: #aeaeae;
+  color: #0a0a0a;
 }
 
 .botonNegro {
@@ -635,24 +701,36 @@ label {
   width: 3rem;
   height: 3rem;
   background-color: #329f00;
+  color: #fafafa;
+  border: none;
   font-size: 3rem;
   text-align: center;
   margin: 0;
   padding: 0;
   font-weight: bolder;
+  border-radius: 0.4rem;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .botonChicoRojo {
   width: 3rem;
   height: 3rem;
   background-color: #cb0000;
+  color: #fafafa;
+  border-radius: 0.4rem;
+  border: none;
   font-size: 3rem;
   text-align: center;
   margin: 0;
   padding: 0;
   font-weight: bolder;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .botonComprar {
@@ -811,6 +889,9 @@ label {
   width: 100%;
   margin: 5rem 0;
   margin: 0;
+  font-size: 1.5rem;
+  padding: 0.5rem 2rem;
+  border-radius: 0.4rem;
 }
 @media (min-width: 768px) {
   .boton-ver {
@@ -820,6 +901,31 @@ label {
 .boton-ver:hover {
   background-color: #3b96ee;
   cursor: pointer;
+}
+
+.boton-accion {
+  border: none;
+  padding: 1rem;
+  font-size: 1.5rem;
+  border-radius: 0.4rem;
+}
+.boton-accion:hover {
+  cursor: pointer;
+}
+
+.btn-agregar {
+  background-color: #0a0a0a;
+  color: rgb(255, 255, 255);
+}
+
+.btn-comprar {
+  background-color: #0a0a0a;
+  color: rgb(255, 255, 255);
+}
+
+.btn-ver-todos {
+  margin: 0 0 4rem 0;
+  max-width: 40rem;
 }
 
 .cuadros {
@@ -838,6 +944,10 @@ label {
 }
 
 .cuadro-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   padding: 2rem;
 }
@@ -876,7 +986,13 @@ label {
 /* contacto index. */
 .contenedorContacto {
   background-color: #21174B;
-  padding: 10rem 0;
+  padding-top: 4rem;
+}
+.contenedorContacto h2, .contenedorContacto legend, .contenedorContacto p, .contenedorContacto h1 {
+  color: #fafafa;
+}
+.contenedorContacto .formulario input:not([type=submit]), .contenedorContacto .formulario textarea {
+  font-size: 1.5rem;
 }
 
 .contacto {
@@ -902,9 +1018,6 @@ label {
   color: #6AAFF2;
   margin-bottom: 2rem;
 }
-.contacto legend {
-  color: #EBA4d2;
-}
 
 .imagenContacto img {
   mask-image: linear-gradient(black 80%, transparent);
@@ -919,6 +1032,14 @@ label {
 
 .contactoField .contactoRadio {
   display: flex;
+  gap: 1rem;
+}
+.contactoField .contactoRadio input {
+  width: 2.4rem;
+  margin: 0;
+}
+.contactoField .contactoRadio label {
+  margin: 0;
 }
 .contactoField p {
   margin: 0;
@@ -974,17 +1095,32 @@ label {
 .headerContenido {
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
+  align-items: center;
+  padding: 1rem 0;
+}
+.headerContenido .logo {
+  max-width: 7rem;
 }
 .headerContenido .buttonsHeader {
   display: flex;
+  justify-content: center;
+  align-items: center;
   height: 4rem;
   gap: 4rem;
   z-index: 10;
 }
+.headerContenido .buttonsHeader i {
+  font-size: 2rem;
+}
+.headerContenido .buttonsHeader i:hover {
+  cursor: pointer;
+}
 
 .hamburgerMenu {
   max-width: 4rem;
+}
+.hamburgerMenu:hover {
+  cursor: pointer;
 }
 
 .redes {
@@ -1012,7 +1148,7 @@ label {
 
 .footer {
   background-color: rgb(215, 220, 224);
-  /* position: absolute; */
+  position: absolute;
   bottom: 0;
   width: 100%;
   padding: 2rem 2rem 1rem 2rem;
@@ -1025,11 +1161,16 @@ label {
 @media (min-width: 768px) {
   .footer .categorias {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
   }
 }
 .footer .categorias a p {
   color: black;
+  font-weight: 700;
+  padding: 1rem 2rem;
+}
+.footer .categorias a p:hover {
+  background-color: #fb923c;
 }
 @media (min-width: 768px) {
   .footer .categorias a p {
@@ -1076,6 +1217,7 @@ label {
   margin-bottom: 2rem;
   text-transform: uppercase;
   transition: background-color 300ms ease;
+  font-size: 1.5rem;
 }
 .tabs button:hover {
   cursor: pointer;
@@ -1089,12 +1231,22 @@ label {
 .paginacion {
   display: flex;
   justify-content: space-between;
+  width: 90%;
+  margin: 0 auto;
+  max-width: 100rem;
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .paginacion {
+    padding: 0 4rem;
+  }
 }
 
 .resumen_carrito_compras {
   width: 95%;
   margin: 0 auto;
   background-color: #e1e1e1;
+  overflow: scroll;
 }
 .resumen_carrito_compras .contenedorProductosFormulario .parrafoCarritoVacio {
   color: #1a1b15;
@@ -1114,13 +1266,14 @@ label {
 }
 
 table {
+  min-width: 55rem;
   border-spacing: 0;
   width: 100%;
   text-align: center;
 }
 table thead {
   background-color: #329f00;
-  font-size: 3rem;
+  font-size: 2rem;
 }
 table tbody {
   padding: 2rem;
@@ -1165,6 +1318,12 @@ table a {
   max-width: 37rem;
   display: flex;
   gap: 4rem;
+  flex-direction: column;
+}
+@media (min-width: 768px) {
+  .tabla_DetallesDelProducto {
+    flex-direction: row;
+  }
 }
 .tabla_DetallesDelProducto .infoProductoCarrito {
   max-width: 30rem;
@@ -1193,7 +1352,11 @@ table a {
 }
 
 .formulario_carrito_de_compras {
-  background-color: #21174B;
+  background-color: #fafafa;
+  margin-bottom: 0;
+}
+.formulario_carrito_de_compras p, .formulario_carrito_de_compras label, .formulario_carrito_de_compras h1, .formulario_carrito_de_compras h2 {
+  color: #0a0a0a;
 }
 
 .form {
@@ -1205,7 +1368,6 @@ table a {
   margin-bottom: 2.5rem;
 }
 .campoFormulario .label {
-  color: #FFFFFF;
   margin: 1.25rem 0;
   font-weight: 700;
 }
@@ -1265,12 +1427,102 @@ table a {
 .div_instrucciones_pago h1, .div_instrucciones_pago h2 {
   color: #1a1b15;
 }
-.div_instrucciones_pago p {
+.div_instrucciones_pago p, .div_instrucciones_pago li {
   color: #1a1b15;
 }
-.div_instrucciones_pago p span {
+.div_instrucciones_pago p span, .div_instrucciones_pago li span {
   color: #4A42AE;
   font-weight: bold;
+}
+
+.lista-productos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.back-arrow {
+  height: 4rem;
+  width: 80%;
+  max-width: 70rem;
+  margin: 2rem auto;
+}
+.back-arrow i {
+  font-size: 2rem;
+}
+.back-arrow i:hover {
+  color: #fb923c;
+  cursor: pointer;
+}
+
+.contenedor-sm.producto_div {
+  display: flex;
+  flex-direction: column;
+  background-color: #fafafa;
+}
+@media (min-width: 768px) {
+  .contenedor-sm.producto_div {
+    flex-direction: row;
+    gap: 2rem;
+  }
+}
+@media (min-width: 768px) {
+  .contenedor-sm.producto_div .producto_imagen {
+    flex-basis: 70rem;
+  }
+}
+.contenedor-sm.producto_div .info {
+  flex: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.contenedor-sm.producto_div .info .acciones {
+  display: flex;
+  justify-content: space-between;
+}
+
+.producto_informacion {
+  display: flex;
+  flex-direction: column;
+}
+.producto_informacion p {
+  color: #a3a3a3;
+  font-size: 1.5rem;
+}
+.producto_informacion p span {
+  color: #0a0a0a;
+  font-weight: 600;
+}
+.producto_informacion .nombre,
+.producto_informacion .precio {
+  color: #0a0a0a;
+  font-size: 2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.producto_informacion .descripcion span {
+  line-height: 2;
+}
+
+.contenedor_productos {
+  display: grid;
+  /* flex-direction: column; */
+  grid-template-columns: 1fr 1fr;
+  padding: 2rem 0;
+  gap: 2rem;
+}
+@media (min-width: 768px) {
+  .contenedor_productos {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+.contenedor_productos .producto_div {
+  min-width: 15rem;
+  transition: transform 0.5s ease;
+}
+.contenedor_productos .producto_div:hover {
+  transform: scale(1.1);
 }
 
 .card_login {
@@ -1300,6 +1552,9 @@ table a {
 .datos_login .datos_header {
   display: flex;
   justify-content: space-between;
+}
+.datos_login .datos_header .logo {
+  width: 7rem;
 }
 .datos_login .datos_body {
   margin: 4rem auto 2rem;
@@ -1442,14 +1697,33 @@ table a {
   gap: 5rem;
   background-color: #e5d9dc;
 }
+.body_admin .menu_hamburgesa {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  font-size: 3rem;
+}
+@media (min-width: 768px) {
+  .body_admin .menu_hamburgesa {
+    display: none;
+  }
+}
+.body_admin .menu_hamburgesa:hover {
+  cursor: pointer;
+}
 
 .menu_administrador {
+  display: none;
   width: 8rem;
-  display: flex;
   flex-direction: column;
   justify-content: space-between;
   background-color: rgb(255, 255, 255);
   padding-bottom: 2rem;
+}
+@media (min-width: 768px) {
+  .menu_administrador {
+    display: flex;
+  }
 }
 .menu_administrador .titulo_menu {
   padding: 1rem;
@@ -1478,7 +1752,9 @@ table a {
 }
 
 .contenido_admin {
+  padding: 0 2rem;
   width: 100%;
+  height: 100vh;
 }
 .contenido_admin .contenido_header {
   min-height: 10rem;
@@ -1498,7 +1774,7 @@ table a {
 .contenido_admin .app .main_admin {
   min-height: 50rem;
   background-color: rgb(255, 255, 255);
-  width: 95%;
+  /* width: 95%; */
   margin: 2rem 0;
   padding: 2rem 1rem;
   display: flex;
@@ -1508,12 +1784,36 @@ table a {
 .contenido_admin .app .main_admin p, .contenido_admin .app .main_admin h1, .contenido_admin .app .main_admin h2, .contenido_admin .app .main_admin h3 {
   color: rgb(28, 28, 28);
 }
+.contenido_admin .app .main_admin .tablaResumen {
+  min-width: 40rem;
+}
+.contenido_admin .app .main_admin .tablaResumen .trHead {
+  font-size: 2rem;
+}
+.contenido_admin .app .main_admin .tablaResumen .actions {
+  display: grid;
+}
+@media (min-width: 768px) {
+  .contenido_admin .app .main_admin .tablaResumen .actions {
+    display: flex;
+    justify-content: center;
+  }
+}
 .contenido_admin .app .main_admin .campo {
   padding: 1.5rem;
   font-weight: 700;
 }
 .contenido_admin .app .main_admin .campo span {
   color: #0da6f3;
+}
+.contenido_admin .app .main_admin .contenido {
+  overflow: scroll;
+  height: 50rem;
+  display: block;
+}
+.contenido_admin .footer {
+  padding: 2rem 0;
+  width: -webkit-fill-available;
 }
 
 .barra_footer {
@@ -1630,6 +1930,7 @@ table a {
 .pedido_div p {
   color: #1a1b15;
   font-weight: bolder;
+  margin: 0.5rem 0;
 }
 .pedido_div p span {
   color: rgb(255, 255, 255);
@@ -1640,6 +1941,9 @@ table a {
   flex-wrap: wrap;
   gap: 2rem;
 }
+.pedido_div .lista_nombre_productos {
+  display: grid;
+}
 
 .div_buscador {
   margin-bottom: 1.5rem;
@@ -1647,5 +1951,26 @@ table a {
 .div_buscador #buscador,
 .div_buscador label {
   font-size: 2.5rem;
+}
+.div_buscador #buscador_estado {
+  font-size: 2rem;
+  padding: 0.4rem;
+}
+
+.estado {
+  width: min-content;
+  margin: 0 auto;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+}
+.estado:hover {
+  cursor: pointer;
+}
+.estado.pendiente {
+  background-color: #fb923c;
+}
+.estado.completado {
+  background-color: #329f00;
 }
 /*# sourceMappingURL=app.css.map */

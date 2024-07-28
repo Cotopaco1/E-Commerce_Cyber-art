@@ -2,7 +2,15 @@
 @use 'base/mixins' as m;
 
 .boton{
-    @include m.boton(v.$rosadoOscuro, v.$azulOscuro);
+    @include m.boton(v.$negro-tw, v.$blanco-tw);
+    margin: 0;
+    border-radius: .5rem;
+    
+    &:hover{
+        /* background-color: lighten(v.$negro-tw, 30%) */
+        background-color: darken(v.$blanco-tw, 30%);
+        color: v.$negro-tw;
+    }
     
 }
 .botonNegro{
@@ -16,23 +24,35 @@
     width: 3rem;
     height: 3rem;
     background-color: v.$verde;
+    color: v.$blanco-tw;
+    border: none;
     font-size: 3rem;
     text-align: center;
     margin: 0;
     padding: 0;
     font-weight: bolder;
+    border-radius: .4rem;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .botonChicoRojo{
     width: 3rem;
     height: 3rem;
     background-color: v.$rojo;
+    color: v.$blanco-tw;
+    border-radius: .4rem;
+    border: none;
     font-size: 3rem;
     text-align: center;
     margin: 0;
     padding: 0;
     font-weight: bolder;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .botonComprar{
     @include m.boton(v.$azulClaro, v.$rosadoOscuro);
@@ -58,4 +78,32 @@
 .boton-ver{
     @include m.boton(v.$azulClaro, v.$blanco);
     margin: 0;
+    font-size: 1.5rem;
+    padding: .5rem 2rem;
+    border-radius: .4rem;
+
+}
+.boton-accion{
+    border: none;
+    padding: 1rem;
+    font-size: 1.5rem;
+    border-radius: .4rem;
+    &:hover{
+        cursor: pointer;
+    }
+
+}
+.btn-agregar{
+    background-color: v.$negro-tw;
+    color: v.$blanco_admin;
+
+}
+.btn-comprar{
+    background-color: v.$negro-tw;
+    color: v.$blanco_admin;
+}
+.btn-ver-todos{
+    margin: 0 0 4rem 0;
+    max-width:40rem ;
+    
 }

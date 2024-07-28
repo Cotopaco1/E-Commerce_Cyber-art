@@ -12,16 +12,62 @@ use Model\PedidosAdmin;
 //Image intervention
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Model\FormularioPersonalizado;
+use Model\ProductosComprados;
 
 //End image intervention
 
 class ControllerApi{
 
     public static function getCuadros(){
+        if($_SERVER['REQUEST_METHOD']=== "GET"){
+            //Si no hay queryString regresamos TODOs
+            if(!$_GET){
+                $cuadros = Productos::all_no_deleted_and_disponibles();
+                echo(json_encode($cuadros));    
+                exit;
+            }
+            //devolver la cantidad que quiera...
+            $cantidad = $_GET['n'];
+            if(is_numeric($cantidad)){
+                //buscar la cantidad de cuadros
+                $cuadros = Productos::get_not_deleted_and_disponible($cantidad);
+                echo(json_encode($cuadros));
+                exit; 
+            }else{
+                echo json_encode([
+                    'error'=>'url invalida'
+                ]);
+                exit;
+            }
 
-        $cuadros = Productos::all();
+        }
+    }
+    public static function get_cuadros_where_no_deleted(){
+        if($_SERVER['REQUEST_METHOD']==='GET'){
+            verificar_admin();
+            $cuadros = Productos::all_no_deleted();
+            echo(json_encode($cuadros));    
+            exit;
+        }
+    }
+    public static function cuadro(){
+        $id = is_numeric($_GET['id']);
+        if(!$id){
+            echo json_encode([
+                'respuesta'=>false,
+                'mensaje'=>'Id invalido'
+            ]);
+            return;
+        }
+        $producto = Productos::where('id', $_GET['id']);
+        echo json_encode([
+            'respuesta'=>true,
+            'producto'=>$producto
+        ]);
+        return;
 
-        echo(json_encode($cuadros));
+
     }
     public static function crear_orden(){
 
@@ -55,6 +101,19 @@ class ControllerApi{
             $pedido = new Pedidos($datos['pedidos']);
             $pedido->status = 'pendiente';
             $pedido->usuarioID = $resultado['id'];
+            //monto_total
+            $monto_total= 0;
+            //itero sobre carrito de compra para tener suma total
+            foreach ($datos['carritoDeCompra'] as $producto) {
+                $productoDB = Productos::where('id',$producto['id']);
+                if(!$productoDB){
+                    $pedido::setAlerta('error','producto no encontrado');
+                    break;
+                }
+                $monto_total = $monto_total + ($productoDB->precio * $producto['cantidad']);
+            }
+            $pedido->monto_total = $monto_total;
+
             $alertas = $pedido->validar();
             //Si no hay errores entonces:
             if(empty($alertas['error'])){
@@ -72,21 +131,40 @@ class ControllerApi{
                         $alertas = $items_pedido->validar();
                         if(empty($alertas['error'])){
                             $resultado = $items_pedido->guardar();
-
-                            if($resultado['resultado']){
-                                
-                                $respuesta = [
-                                    'exito'=> 'se ha guardado todo en la DB',
-                                    'pedidoId'=> $pedidosId,
-                                    'nombre'=> "$usuario->nombre $usuario->apellido",
-                                    'costo_total'=> $pedido->monto_total,
-                                    'direccion'=> "$pedido->direccion en $pedido->departamento - $pedido->ciudad ",
-                                    
-                                ];
-                            }
                         }
                     }
-                    
+                    //dar respuesta
+                    if($resultado['resultado']){
+                        $SQL = "SELECT productos.nombre, items_pedido.cantidad FROM items_pedido INNER JOIN productos ON items_pedido.productosId = productos.id  WHERE pedidosId = {$pedidosId}";
+                        $productos = ProductosComprados::SQL($SQL);
+                        // $productos = Pedidos::belongsTo('pedidosId',$resultado['id']);
+                        if(!$productos){
+                            echo json_encode([
+                                'error'=>'No se pudo encontrar los productos'
+                            ]);
+                            exit;
+                        }
+                        //Enviar correo electronico al administrador y al correo del usuario.
+                        $email = new Email($usuario->email,$usuario->nombre);
+                        $email_resultado = $email->enviar_email_nueva_orden($pedidosId,"$usuario->nombre $usuario->apellido",
+                        $pedido->monto_total,
+                        "$pedido->direccion en $pedido->departamento - $pedido->ciudad ",
+                        $productos
+                        );
+                         $_SESSION['productos'] = [];
+
+                        $respuesta = [
+                            'exito'=> 'se ha guardado todo en la DB',
+                            'pedidoId'=> $pedidosId,
+                            'nombre'=> "$usuario->nombre $usuario->apellido",
+                            'costo_total'=> $pedido->monto_total,
+                            'direccion'=> "$pedido->direccion en $pedido->departamento - $pedido->ciudad ",
+                            'productos'=> $productos,
+                            'email_enviado'=>$email_resultado,
+                            'carrito'=>$_SESSION['productos']
+                  
+                        ];
+                    }
                 }else{
                     $respuesta = [
                         'error'=> 'pedido no se pudo guardar..'
@@ -147,6 +225,38 @@ class ControllerApi{
         }
     }
 
+    public static function guardar_carrito(){
+        if($_SERVER['REQUEST_METHOD']==='POST'){
+            iniciar_sesion_sino_esta_iniciada();
+            $data = file_get_contents('php://input');
+            $datos = json_decode($data,true);
+            $_SESSION['productos'] = $datos;
+            echo json_encode([
+                'respuesta'=>true
+            ]);
+            return;
+        }
+    }
+    public static function get_carrito(){
+        if($_SERVER['REQUEST_METHOD']==='GET'){
+            iniciar_sesion_sino_esta_iniciada();
+
+            if(isset($_SESSION['productos'])){
+                echo json_encode([
+                    'resultado'=>true,
+                    'productos'=>$_SESSION['productos']
+                ]);
+                return;
+            }else{
+                echo json_encode([
+                    'resultado'=>false,
+                    'mensaje'=>'No hay productos en el carrito'
+                ]);
+            }
+        
+        }
+    }
+
     public static function validarFormulario(){
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
@@ -184,6 +294,53 @@ class ControllerApi{
             //Guardar los datos ya validados en la clase de pedidos...
         }
     }
+    //Formulario para cuadro personalizado
+    public static function formulario_cuadro_personalizado(){
+        if($_SERVER['REQUEST_METHOD']==='POST'){
+            //validar formulario
+            $formulario = new FormularioPersonalizado($_POST);
+            $formulario->validar();
+            if($formulario->contacto === 'email'){
+                $formulario->validar_email();
+            }
+            $alertas = FormularioPersonalizado::getAlertas();
+            if(empty($alertas)){
+                //juntar el nombre y apellido en el nombre de la clase.
+                $formulario->nombre = $formulario->nombre . " ". $formulario->apellido;
+                //lleno la variable contacto con email o telefono, dependeidno de lo que el usuario haya elegido
+                ($formulario->contacto === 'email')? $contacto = $formulario->email : $contacto =$formulario->telefono;
+                $email = new Email(
+                    $contacto,
+                    $formulario->nombre,
+                    '',
+                    $formulario->mensaje
+                );
+                $resultado = $email->enviar_email_cuadro_personalizado_al_administrador();
+                if($resultado){
+                    echo json_encode([
+                        'tipo'=>'exito',
+                        'mensaje'=>'Correo enviado correctamente'
+                    ]);
+                    exit;
+                }else{
+                    echo json_encode([
+                        'error'=>'No se pudo realizar el envio del correo'
+                    ]);
+                    exit;
+                }
+
+            }else{
+                echo json_encode([
+                    'tipo'=>'error',
+                    'alertas'=>$alertas
+                ]);
+                exit;
+            }
+
+        }
+
+    }
+    //termina formulario para cuadro personalizado
 
     public static function crear_cuenta(){
 
@@ -272,8 +429,14 @@ class ControllerApi{
                     echo json_encode($respuesta);
                     return;
                 }
-                $usuarioDB = new Usuarios($resultado->fetch_assoc());
-
+                //guardo los resultados en una variable
+                $usuarioDBARRAY = $resultado->fetch_assoc();
+                //creo una instancia para usar metodos
+                $usuarioDB = new Usuarios($usuarioDBARRAY);
+                //al instanciar el admin se pone en 0 por default
+                //por eso formateo el valor al original con el array que habia guardado los datos originales.
+                $usuarioDB->admin = $usuarioDBARRAY['admin'];
+                
                 $resultado = $usuarioDB->comprobarPasswordAndVerificado($usuarioPost->password);
                 if(!$resultado){
                     $respuesta = [
@@ -375,6 +538,13 @@ class ControllerApi{
             $usuario = new Usuarios($resultado->fetch_assoc());
 
             //si llego aca significa que el correo existe.
+            //traigo info de la DB para reescribir admin y confirmado REAL.
+            $usuarioDB = Usuarios::where('email',$usuario->email);
+                
+            $usuario->admin = $usuarioDB->admin;
+            $usuario->token = $usuarioDB->token;
+            $usuario->confirmado = $usuarioDB->confirmado;
+            
             $usuario->crearTokenResetPassword();
             $resultado = $usuario->guardar();
             
@@ -426,12 +596,19 @@ class ControllerApi{
             }
             //existe usuaro y las passwords recibidas son iguales.
             //existe usuario
+            
             $usuario = new Usuarios($resultado->fetch_assoc());
             $usuario->password = $datos['password'];
-
             $alertas = $usuario->validarPassword();
-
+            
             if(empty($alertas)){
+                //traigo info de la DB para reescribir admin y confirmado REAL.
+                $usuarioDB = Usuarios::where('email',$usuario->email);
+                
+                $usuario->admin = $usuarioDB->admin;
+                $usuario->token = $usuarioDB->token;
+                $usuario->confirmado = $usuarioDB->confirmado;
+                
                 $usuario->token_reset_password = '';
                 $usuario->hashearPassword();
                 $resultado = $usuario->guardar();
@@ -470,7 +647,7 @@ class ControllerApi{
     }
 
     public static function get_info_resumen(){
-
+        verificar_admin();
         $query = "SELECT ";
         $query .= "(SELECT COUNT(*) FROM pedidos) AS cantidad_pedidos, ";
         $query .= "(SELECT COUNT(*) FROM productos) AS cantidad_productos, ";
@@ -484,6 +661,7 @@ class ControllerApi{
 
     //CRUD
     public static function actualizar_producto(){
+        verificar_admin();
         if($_SERVER['REQUEST_METHOD']==='POST'){
             /* $data = file_get_contents('php://input');
             $datos = json_decode($data,true); */
@@ -533,12 +711,15 @@ class ControllerApi{
 
     }
     public static function eliminar_producto(){
+        verificar_admin();
+
         if($_SERVER['REQUEST_METHOD']==='POST'){
             $data = file_get_contents('php://input');
             $datos = json_decode($data,true);
             $id = $datos['id'];
+            if(!is_numeric($datos['id'])) return;
             $producto = Productos::find($id);
-            $resultado = $producto->eliminar();
+            $resultado = $producto->eliminar_soft();
             if($resultado){
                 echo json_encode([
                     'resultado'=>true,
@@ -556,8 +737,9 @@ class ControllerApi{
         }
     }
     public static function crear_producto(){
-
+        verificar_admin();
         if($_SERVER['REQUEST_METHOD']=== 'POST'){
+            
             $producto = new Productos($_POST);
             if($_FILES['imagen']['error'] !== 0){
                 echo json_encode([
@@ -603,39 +785,128 @@ class ControllerApi{
         }
     }
     //Pedidos
+    //Admin
     public static function get_pedidos(){
-        $query = "SELECT pedidos.id,pedidos.fecha,pedidos.status,pedidos.monto_total as total,";
-        $query .= "CONCAT(usuarios.nombre,' ', usuarios.apellido) as nombre,";
-        $query .= "usuarios.cedula,usuarios.email, usuarios.telefono, ";
-        $query .= "CONCAT(pedidos.direccion, ' ', pedidos.departamento, ' ', pedidos.ciudad) as direccion,";
-        $query .= "pedidos.metodo_pago,pedidos.informacion_adicional, items_pedido.productosId as productoId ";
-        $query .= "FROM pedidos INNER JOIN usuarios ON pedidos.usuarioID=usuarios.id ";
-        $query .= "INNER JOIN items_pedido ON items_pedido.pedidosId=pedidos.id";
-        
-        // $pedidos = PedidosAdmin::SQL($query);
-        $pedidos = PedidosAdmin::SQL($query);
+        verificar_admin();
+        if($_SERVER['REQUEST_METHOD']==='GET'){
+            $query = "SELECT pedidos.id,pedidos.fecha,pedidos.status,pedidos.monto_total as total,";
+            $query .= "CONCAT(usuarios.nombre,' ', usuarios.apellido) as nombre,";
+            $query .= "usuarios.cedula,usuarios.email, usuarios.telefono, ";
+            $query .= "CONCAT(pedidos.direccion, ' ', pedidos.departamento, ' ', pedidos.ciudad) as direccion,";
+            $query .= "pedidos.metodo_pago,pedidos.informacion_adicional, items_pedido.productosId as productoId, productos.nombre as productoNombre, items_pedido.cantidad as productoCantidad ";
+            $query .= "FROM pedidos INNER JOIN usuarios ON pedidos.usuarioID=usuarios.id ";
+            $query .= "INNER JOIN items_pedido ON items_pedido.pedidosId=pedidos.id ";
+            $query .= "INNER JOIN productos ON items_pedido.productosId=productos.id";
+            
+            // $pedidos = PedidosAdmin::SQL($query);
+            $pedidos = PedidosAdmin::SQL($query);
 
-        imprimirJson($pedidos);  
+            imprimirJson($pedidos); 
+        }
+         
     }
-    public static function get_pedidos_where(){
-        $fecha = $_GET['fecha'];
+    public static function get_pedidos_filtrados(){
 
-        $query = "SELECT pedidos.id,pedidos.fecha,pedidos.status,pedidos.monto_total as total,";
-        $query .= "CONCAT(usuarios.nombre,' ', usuarios.apellido) as nombre,";
-        $query .= "usuarios.cedula,usuarios.email, usuarios.telefono, ";
-        $query .= "CONCAT(pedidos.direccion, ' ', pedidos.departamento, ' ', pedidos.ciudad) as direccion,";
-        $query .= "pedidos.metodo_pago,pedidos.informacion_adicional, items_pedido.productosId as productoId ";
-        $query .= "FROM pedidos INNER JOIN usuarios ON pedidos.usuarioID=usuarios.id ";
-        $query .= "INNER JOIN items_pedido ON items_pedido.pedidosId=pedidos.id ";
-        $query .= "WHERE fecha = '$fecha'";
-        // $pedidos = PedidosAdmin::SQL($query);
-        /* debugear($query); */
-        $pedidos = PedidosAdmin::SQL($query);
+        if($_SERVER['REQUEST_METHOD']==='GET'){
+            verificar_admin();
 
-        echo json_encode([
-            'respuesta'=>$pedidos
-        ]);
-        exit;
-        /* imprimirJson($pedidos);  */ 
+            $fecha = $_GET['fecha'];
+            $estado = $_GET['estado'];
+            if(!$fecha && !$estado){
+                imprimirRespuestaJson('error','parametros invalidos');
+            }
+            if(!$fecha){
+                //si no existe fecha, traemos filtrado por estado.
+                if($estado === 'todos'){
+                    //si estado es todos y fecha no existe traemos
+                    //traemos todos los pedidos.
+                    $pedidos = PedidosAdmin::all();
+                    echo json_encode([
+                        'pedidos'=>$pedidos,
+                        'exito'=>'pedidos traidos con exito'
+                    ]);
+                exit;
+                }
+                $pedidos = PedidosAdmin::where('status',$estado);
+                echo json_encode([
+                    'pedidos'=>$pedidos,
+                    'exito'=>'pedidos traidos con exito'
+                ]);
+                exit;
+            }
+
+            if(!$estado || $estado === 'todos'){
+                //si no existe estado entonces traemos filtrado por fecha
+                $pedidos = PedidosAdmin::where('fecha',$fecha);
+                echo json_encode([
+                    'pedidos'=>$pedidos,
+                    'exito'=>'pedidos traidos con exito'
+                ]);
+                exit;
+            }
+            
+            //Si tiene los dos parametos, traemos los pedidos filtrados por ambos parametros
+            $pedidos = PedidosAdmin::where_filtrados($fecha, $estado);
+
+            echo json_encode([
+                'pedidos'=>$pedidos,
+                'exito'=>'pedidos traidos con exito'
+            ]);
+            exit;
+        }
+    }
+    public static function get_pedidos_where_actualizado(){
+
+        if($_SERVER['REQUEST_METHOD']==='GET'){
+            verificar_admin();
+
+            $columna = $_GET['c'];
+            $valor = $_GET['v'];
+            if(!$columna || !$valor){
+                imprimirRespuestaJson('error','columna o valor invalida');
+            }
+
+            $pedidos = PedidosAdmin::where($columna, $valor);
+
+            echo json_encode([
+                'pedidos'=>$pedidos,
+                'exito'=>'pedidos traidos con exito'
+            ]);
+            exit;
+        }
+        
+    }
+    public static function actualizar_estado_pedido(){
+        if($_SERVER['REQUEST_METHOD']==='POST'){
+            verificar_admin();
+            if(!is_numeric($_POST['id']) || !$_POST['id']){
+                echo json_encode(['error'=>'id invalido']);
+                exit;
+            }
+            $pedido = Pedidos::where('id',$_POST['id']);
+            //cambiarlo con un if
+            if($_POST['status'] !== 'pendiente' && $_POST['status'] !== 'completado'){
+                echo json_encode(['error'=>'estado invalido']);
+                exit;
+            }
+            $pedido->status = ($_POST['status'] === 'pendiente')? 'completado' : 'pendiente';
+            $resultado = $pedido->guardar();
+            if(!$resultado){
+                echo json_encode(['error'=>'no se pudo actualizar']);
+                exit; 
+            }
+            //verificar fecha y estado para retornar los productos filtrados.
+            /* $pedidos = PedidosAdmin::all(); */
+            $resultado = PedidosAdmin::verificar_filtrar_fecha_and_estado($_POST['fecha'],$_POST['estado']);
+            echo json_encode($resultado);
+            exit;
+            /* echo json_encode([
+                'pedidos'=>$pedidos,
+                'exito'=>'Se actualizo correctamente'
+            ]);
+            exit; */
+            
+
+        }
     }
 }

@@ -1,0 +1,66 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.back-arrow{
+    height: 4rem;
+    width: 80%;
+    max-width: 70rem;
+    margin: 2rem auto;
+    i{
+        font-size: 2rem;
+        &:hover{
+            color: v.$naranja_admin;
+            cursor: pointer;
+        }
+    }
+}
+.contenedor-sm.producto_div{
+    display: flex;
+    flex-direction: column;
+    @include m.tablet{
+        flex-direction: row;
+        gap: 2rem;
+    }
+    background-color: v.$blanco-tw;
+    .producto_imagen{
+        @include m.tablet{
+            flex-basis: 70rem;
+        }
+    }
+    .info{
+        flex: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .acciones{
+            display: flex;
+            justify-content: space-between;
+        }
+    }    
+}
+
+.producto_informacion{
+    display: flex;
+    flex-direction: column;
+    
+    p{
+        color: v.$gris-tw;
+        font-size: 1.5rem;
+        span{
+            color: v.$negro-tw;
+            font-weight: 600;
+        }
+    }
+    .nombre,
+    .precio{
+        color: v.$negro-tw;
+        font-size: 2rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    .descripcion{
+        span{
+            line-height: 2;
+        }
+    }
+}

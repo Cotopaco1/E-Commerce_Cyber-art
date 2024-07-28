@@ -1,21 +1,28 @@
 @use 'base/variables' as v;
 @use 'base/mixins' as m;
 
+.contenedor_alertas{
+    width: 90%;
+    margin: 0 auto;
+}
 .alerta{
-    margin-bottom: 2rem;
-    text-align: center;
-    padding: calc(v.$separacion / 4);
-    color: v.$blanco;
-    width: 100%;
-    display: block;
-    font-weight: v.$bold;
+    padding: 1rem 1rem 1rem 2rem;
     text-transform: uppercase;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    max-width: 80rem;
 
     &.exito{
-        background-color: v.$verde;
+        background-color: lighten($color: v.$verde, $amount: 60%);
+        border-left: .5rem solid v.$verde ;
+        color: v.$verde;
     }
     &.error{
-        background-color: v.$rojo;
+        background-color: lighten($color: v.$rojo, $amount: 50%);
+        border-left: .5rem solid v.$rojo ;
+        color: v.$rojo;
     }
 }
+
 

@@ -2,8 +2,17 @@ let validado = false;
 let errorInput = true;
 let formularioDatos;
 let montoTotal = 0;
-let carritoDeCompra = [
-]
+let carritoDeCompra = {
+    productos: [],
+    montoTotal: function(){
+        let total = 0
+        this.productos.forEach(producto=>{
+            total = total + (parseInt(producto.precio)* producto.cantidad)
+            
+        })
+        return total;
+    }
+}
 const usuario = {
     id : null,
     nombre : '',
@@ -35,13 +44,17 @@ function iniciarApp(){
     if(path === '/'){
         agregarFixed(); //Menu Header
         eventoCuadros();
-        consultarApiCuadros();
+        get_cuadros();
+        obtener_carrito_session();
+        evento_formulario_index();
 
     }
     if(path === '/carrito_de_compras'){
+        obtener_carrito_session()
+        .then(mostrarCarritoDeCompras)
         agregarFixed(); //Menu Header
         crearOpcionesEnSelected();
-        recuperarCarritoCompras();
+        /* recuperarCarritoCompras(); */
         tabs();
         mostrarSeccion();
         agregar_evento_botones_paginacion();
@@ -51,32 +64,142 @@ function iniciarApp(){
     }
     if(path === '/crear_cuenta'){
         eventos_crear_cuenta();
+        ocultarHeader();
         return
     }
     if(path === '/login'){
         eventos_login();
+        ocultarHeader();
         return
     }
     if(path === '/reenviar_email'){
         eventos_reenviar_confirmacion();
+        ocultarHeader();
         return
     }
     if(path === '/recuperar_password'){
         eventos_recuperar_password();
+        ocultarHeader();
         return
     }
     if(path === '/reestablecer_password'){
+        ocultarHeader();
         const inputPassword = document.getElementById('password');
         if(!inputPassword) return;
-
         eventos_reestablecer_password();
+        
         return
+    }
+    if(path === '/producto'){
+        iniciar_producto();
+    }
+    if(path === '/productos'){
+        obtener_carrito_session();
     }
     
 }
 
-//Empieza reestablecer_password
+//empieza producto
+    function iniciar_producto(){
+        //agregar evento a los bontes
+        mostrar_producto();
+        obtener_carrito_session();
+        evento_regresar();
+    }
+    function evento_regresar(){
+        document.querySelector('#back-arrow').addEventListener('click', (e)=>{
+            e.preventDefault();
+            window.location.href = document.referrer
+        })
+    }
 
+    function mostrar_producto(){
+        const url = `/api/get/cuadro?id=${get_queryString('id')}`
+        peticion_get(url)
+        .then(respuesta=>{
+            if(respuesta.respuesta){
+                const producto = respuesta.producto
+                //mostrar el producto
+                const disponibilidad = {
+                    0: 'No disponible',
+                    1: 'Disponible'
+                }
+                const div = document.querySelector('.producto_div');
+                const {descripcion, disponible, id, imagen, nombre, precio, size} = producto;
+                div.innerHTML = `
+                <div class="producto_imagen">
+                    <img src="/img/productos/${imagen}" alt="imagen-producto">
+                </div>
+                <div class="info">
+                    <div class="producto_informacion">
+                        <p class="nombre">${nombre}</p>
+                        <p class="precio">$${parseInt(precio).toLocaleString()}</p>
+                        <p class="descripcion"><span>Descripcion</span><br>${descripcion}</p>
+                        <p class="size"><span>Tamaño:</span> ${size}</p>
+                        <p class="disponible">${disponibilidad[disponible]}</p>
+                    </div>
+                    <div class="acciones">
+                        <button  class="boton-accion btn-agregar">Agregar al carrito</button>
+                        <button  class="boton-accion btn-comprar">Comprar ahora</button>
+                    </div>
+                `
+                evento_botones_accion(producto);
+            }
+
+        })
+        
+    }
+    async function obtener_carrito_session(){
+        const respuesta = await peticion_get('/api/session/get_carrito')
+        if(respuesta.resultado){
+            carritoDeCompra.productos = respuesta.productos;
+        }
+        
+    }
+    async function peticion_get(url){
+        try {
+            const resultado = await fetch(url);
+            const respuesta = await resultado.json();
+            return respuesta;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    function get_queryString(param){
+        const queryString = new URLSearchParams(window.location.search);
+        return queryString.get(param);
+    }
+    function evento_botones_accion(producto){
+        document.querySelector('.btn-agregar').addEventListener('click',
+            function(){
+                agregar_al_carrito(producto)
+                mostrarInterfazCarritoCompras();
+            }
+        )
+        document.querySelector('.btn-comprar').addEventListener('click',
+            function(){
+                agregar_al_carrito(producto)
+                guardar_carrito_compras_en_session()
+                .then(window.location.href = "/carrito_de_compras");
+            }
+        )
+    }
+    function agregar_al_carrito(producto){
+        const existe = carritoDeCompra.productos.find(productoCarrito=>{
+            return productoCarrito.id === producto.id
+        })
+        if(existe){
+            existe.cantidad++;
+            return;
+        }
+        producto.cantidad = 1;
+        carritoDeCompra.productos = [...carritoDeCompra.productos, producto];
+        //funcion para agregar el carrito en la session del usuario;
+    }
+
+//Termina producto
+
+//Empieza reestablecer_password
 function eventos_reestablecer_password(){
     document.querySelectorAll('.input').forEach(input=>{
         input.addEventListener('input', verificar_input);
@@ -116,7 +239,7 @@ async function solicitar_reestablecer_password(data){
 
     try {
         const json = JSON.stringify(data)
-        const url = 'http://localhost:3000/api/login/reestableccer_password'
+        const url = '/api/login/reestablecer_password'
         const options = {
             method: 'POST',
             body: json
@@ -143,7 +266,7 @@ function validar_respuesta_reestablecer_password(respuesta){
             icon: "success",
             fontsize: '5rem',
           }).then(()=>{
-            window.location.href = 'http://localhost:3000/login'
+            window.location.href = '/login'
           })
     }else{
         divRespuesta.innerHTML = `
@@ -210,9 +333,9 @@ function validar_respuesta_recuperar_password(respuesta){
             text: `${respuesta.mensaje}`,
             icon: "success",
             fontsize: '5rem',
-          })/* .then(()=>{
-            window.location.href = 'http://localhost:3000/login'
-          }) */
+          }).then(()=>{
+            window.location.href = '/login'
+          })
     }else{
         divRespuesta.innerHTML = `
         <p>${respuesta.mensaje}</p>
@@ -333,7 +456,11 @@ function logIn_usuario(event){
 function validar_respuesta_login(respuesta){
 
     if(respuesta.respuesta === 'exitoso'){
-        window.location.href = 'http://localhost:3000/'
+        if(respuesta.sesionInfo.admin === true){
+            window.location.href = '/admin/home'
+            return;
+        }
+        window.location.href = '/'
     }
     else{
         console.log(respuesta);
@@ -356,7 +483,7 @@ async function enviar_solicitud_login(data){
             method : 'POST',
             body : json
         }
-        const url = 'http://localhost:3000/api/login/login';
+        const url = '/api/login/login';
 
         const resultado = await fetch(url, options);
         const respuesta = await resultado.json()
@@ -566,7 +693,7 @@ function validar_respuesta_envio_formulario_crear_cuenta(respuesta){
             icon: "success",
             fontsize: '5rem',
           }).then(()=>{
-            window.location.href = 'http://localhost:3000/login'
+            window.location.href = '/login'
           })
 
        }else{
@@ -586,7 +713,7 @@ async function enviar_formulario_para_crear_cuenta(data){
 
     try {
         const fecha = getFechaActualFormateada();
-        const url = 'http://localhost:3000/api/login/crear_cuenta'
+        const url = '/api/login/crear_cuenta'
         const json = JSON.stringify(data)
         const options = {
             method : 'post',
@@ -701,16 +828,11 @@ async function crear_pedido(){
         const fecha = getFechaActualFormateada();
         //Crear objeto que sera convertido a JSON y enviado por fetch POST
         const datos = {
-            carritoDeCompra : carritoDeCompra,
-            /* formulario : formularioDatos,
-            fecha : fecha,
-            monto_total : montoTotal,
-            metodo_pago : metodo_pago, */
+            carritoDeCompra : carritoDeCompra.productos,
             /* organizo para la DB */
             pedidos : {
                 fecha : fecha,
                 direccion : formularioDatos.direccion,
-                monto_total : montoTotal,
                 departamento : formularioDatos.departamento,
                 ciudad : formularioDatos.ciudad,
                 metodo_pago : metodo_pago,
@@ -726,7 +848,8 @@ async function crear_pedido(){
             }
             
         }
-        const url = 'http://localhost:3000/api/crear_orden';
+        
+        const url = '/api/crear_orden';
         jsonData = JSON.stringify(datos);
 
         const options = {
@@ -735,11 +858,13 @@ async function crear_pedido(){
         }
         console.log(datos);
         //Envio del objeto a la DB
+        crear_alerta_de_cargando();
         const respuesta = await fetch(url, options)
         const resultado = await respuesta.json();
-        console.log(resultado);
+        eliminar_alerta_de_cargando();
         //Alerta si el resultado es exitoso.
         if(resultado.exito){
+            carritoDeCompra.productos = resultado.carrito
             Swal.fire({
                 icon: "success",
                 title: "Pedido creado",
@@ -769,6 +894,7 @@ function mostrar_instrucciones_despues_de_pago(resultado){
     <div class="div_instrucciones_pago contenedor">
     <h2>Instrucciones a seguir</h2>
     <div class="contenedorInstrucciones">
+        <p>Hemos enviado un correo electronico con las siguientes instrucciones, porfavor revisar la bandeja de spam: </p>
         <p>Consigna a nuestra cuenta bancolombia #: <span>412514</span></p>
         <p>Manda un screenshot a nuestro wp #124123123312 con el pedido # <span>${resultado.pedidoId}</span></p>
         <p>Recibe tus productos en la puerta de tu casa...!</p>
@@ -776,12 +902,19 @@ function mostrar_instrucciones_despues_de_pago(resultado){
     <div class="resumenCompra"></div>
     <h2>Resumen de tu pedido</h2>
     <p>El pedido quedo a nombre de : <span> ${resultado.nombre} </span>  </p>
-    <p>El costo total a pagar es de : <span> ${parseInt(resultado.costo_total).toLocaleString()} </span></p>
-    <p>Los productos que te mandaremos son: ....</p>
+    <p>El costo total a pagar es de : <span> $${parseInt(resultado.costo_total).toLocaleString()} </span></p>
+    <ul class="lista-productos" id="lista-productos">
+        <p>Los productos que te mandaremos son:</p>
+    </ul>
     <p>La direccion a la que te mandaremos los productos es: <span>${resultado.direccion}</span> </p>
     </div>
     `
-    
+    const lista_productos = document.querySelector('#lista-productos');
+    resultado.productos.forEach(producto=>{
+        const productoDiv = document.createElement('LI');
+        productoDiv.innerHTML = `<p><span>${producto.nombre}</span> x${producto.cantidad}</p>`
+        lista_productos.appendChild(productoDiv);
+    })
 }
 
 function formulario_evento(){
@@ -813,11 +946,10 @@ function crear_objeto_con_datos_de_formulario(event){
 
 //Validar formulario de informacion para el pedido
 async function validar_formulario_informacion_para_pedido(data){
-
     try {
         jsonData = JSON.stringify(data);
 
-        const url = 'http://localhost:3000/api/validar_formulario';
+        const url = '/api/validar_formulario';
         const options = {
             method : 'POST',
             body : jsonData
@@ -825,7 +957,7 @@ async function validar_formulario_informacion_para_pedido(data){
         console.log(data);
         const resultado = await fetch(url, options)
         const respuesta = await resultado.json();
-
+        //si hay un error creamos alertas.
         if(respuesta.error){
             //eliminamos alertas anteriores
             const divAlerta = document.querySelector('#alertas')
@@ -839,6 +971,14 @@ async function validar_formulario_informacion_para_pedido(data){
                 divAlerta.appendChild(parrafo)
                 return false;
             })
+            setTimeout(() => {
+                while(divAlerta.firstChild){
+                    divAlerta.removeChild(divAlerta.firstChild);
+                }
+            }, 5000);
+            //scrollear al usuario hasata la primera alerta
+            const alerta = document.querySelector('.alerta');
+            alerta.scrollIntoView({ behavior: 'smooth' });
         }else{
             return true;
         }
@@ -920,7 +1060,6 @@ function mostrarSeccion(){
     }
     //Agrega mostrar a seccion seleccionada.
     let seccion = document.querySelector(`#paso-${paso}`)
-    console.log(seccion, paso)
     seccion.classList.add('actual');
     seccion.classList.remove('ocultar')
 
@@ -994,7 +1133,7 @@ async function getDepartamentosColombia(){
 //Recuperar carrito de compras...
 async function recuperarCarritoCompras (){
     try {
-        const url = 'http://localhost:3000/api/cuadros/guardar_carrito_compras';
+        const url = '/api/cuadros/guardar_carrito_compras';
         //Envio de peticion a la DB
         const respuesta = await fetch(url)
         const resultado = await respuesta.json();
@@ -1008,10 +1147,9 @@ async function recuperarCarritoCompras (){
 }
 
 function mostrarCarritoDeCompras(){
+    guardar_carrito_compras_en_session();
     const interfaz = document.querySelector('.contenedorProductosFormulario')
     const contenedorBig = document.querySelector('#tbody')
-    
-        
         //borras todos todos los producots y los vuelvo a crear.... (actualizar)
         while(contenedorBig.firstChild){
             contenedorBig.removeChild(contenedorBig.firstChild);
@@ -1021,7 +1159,7 @@ function mostrarCarritoDeCompras(){
             }
         }
         //si el carrito no tiene productos ..
-        if(!carritoDeCompra.length >= 1){
+        if(carritoDeCompra.productos.length === 0){
             const parrafo = document.createElement('P');
             parrafo.classList.add('parrafoCarritoVacio');
             parrafo.innerHTML = `El carrito esta vacio ... <br /> Lo sentimos selecciona algo para poder seguir con alguna compra ...  😭`
@@ -1030,7 +1168,7 @@ function mostrarCarritoDeCompras(){
         }
         //Crear productos e insertar en interfaz..
         const tbody = document.getElementById('tbody');
-        carritoDeCompra.forEach(producto =>{
+        carritoDeCompra.productos.forEach(producto =>{
             const {id, nombre, precio, descripcion, size, disponible, imagen, cantidad} = producto;
 
             const productoDiv = document.createElement('DIV');
@@ -1133,8 +1271,8 @@ function mostrarCarritoDeCompras(){
         //Muestra el montoTotal en carrito de compras.
         const parrafoMontoTotal = document.createElement('P');
         parrafoMontoTotal.classList.add('parrafoMontoTotal')
-        montoTotal = sumarProductosCarrito();
-        parrafoMontoTotal.innerHTML = `<span>Monto Total:</span> $${montoTotal.toLocaleString()} COP`;
+        /* montoTotal = sumarProductosCarrito(); */
+        parrafoMontoTotal.innerHTML = `<span>Monto Total:</span> $${carritoDeCompra.montoTotal().toLocaleString()} COP`;
         interfaz.appendChild(parrafoMontoTotal)
         //Crea boton para seguir a la siguiente seccion...
     
@@ -1208,14 +1346,33 @@ function cambiarSeccionAtras(){
 //Eliminar producto id
 function eliminarProducto(id){
 
-    carritoDeCompra.forEach(producto =>{
+    carritoDeCompra.productos.forEach(producto =>{
         if(producto.id === id){
-            const index_producto = carritoDeCompra.indexOf(producto.id);
-            carritoDeCompra.splice(index_producto, 1);
+            const index_producto = carritoDeCompra.productos.indexOf(producto.id);
+            carritoDeCompra.productos.splice(index_producto, 1);
             console.log(carritoDeCompra);
             mostrarCarritoDeCompras();
         }
     })
+    guardar_carrito_compras_en_session();
+
+}
+async function guardar_carrito_compras_en_session(){
+    /* const datos = new FormData();
+    datos.append('carrito', carritoDeCompra) */
+    const url = '/api/session/guardar_carrito';
+    options = {
+        method: 'post',
+        body: JSON.stringify(carritoDeCompra.productos)
+    }
+    try {
+        const resultado = await fetch(url, options);
+        const respuesta = resultado.json();
+        return respuesta;
+        
+    } catch (error) {
+        console.log(error)
+    }
 
 }
 //Enviar peticion para guardar el carrito con la sesion del usuario....
@@ -1233,7 +1390,7 @@ async function guardar_carrito_en_session (){
             monto_total : montoTotal,
             metodo_pago : metodo_pago
         }
-        const url = 'http://localhost:3000/api/cuadros/guardar_carrito_compras';
+        const url = '/api/cuadros/guardar_carrito_compras';
         jsonData = JSON.stringify(datos);
 
         const options = {
@@ -1284,18 +1441,18 @@ return formattedDate;
 //Cuadros //
 //Mostrar Resultados ....
 //Consultar la api
-async function consultarApiCuadros(){
+async function get_cuadros(){
     try {
-        const url = 'http://localhost:3000/api/cuadros/getcuadros';
+        const url = '/api/cuadros/getcuadros?n=6';
         const resultado = await fetch(url);
         const json = await resultado.json()
-        imprimirResultadosApi(json);
+        imprimir_cuadros(json);
     } catch (error) {
         console.log(error);
     }
 
 }
-function imprimirResultadosApi(json){
+function imprimir_cuadros(json){
 
     json.forEach( cuadro =>{
         const { descripcion, disponible, id, imagen, nombre, precio, size} = cuadro
@@ -1304,6 +1461,9 @@ function imprimirResultadosApi(json){
         
         const cuadroDiv = document.createElement('DIV');
         cuadroDiv.classList.add('cuadro')
+        cuadroDiv.onclick = function(){
+            window.location.href = `/producto?id=${id}`
+        }
 
         const imagenDiv = document.createElement('DIV')
         imagenDiv.classList.add('imagenCuadroDiv');
@@ -1320,19 +1480,30 @@ function imprimirResultadosApi(json){
 
         const precioCuadro = document.createElement('P')
         precioCuadro.classList.add('precio-cuadro');
-        precioCuadro.textContent = precio;
+        precioCuadro.textContent =  `$${parseFloat(precio).toLocaleString()}`
+        console.log();
 
         infoDiv.appendChild(nombreCuadro);
         infoDiv.appendChild(precioCuadro);
-        crearBotonComprarActual(infoDiv, cuadro);
+        /* crearBotonComprarActual(infoDiv, cuadro); */
 
-        imagenDiv.appendChild(infoDiv);
+        // imagenDiv.appendChild(infoDiv);
 
         cuadroDiv.appendChild(imagenDiv);
+        cuadroDiv.appendChild(infoDiv);
 
         section.appendChild(cuadroDiv);
 
     })
+}
+//mostrar Producto con modal...
+function mostrar_cuadro(cuadro){
+    const modal = crear_modal();
+    const img = document.createElement('IMG');
+    img.href = `/img/productos/${cuadro.imagen}`;
+
+    console.log(cuadro);
+    
 }
 function eventoCuadros(){
     cuadros = document.querySelectorAll('.imagenCuadroDiv');
@@ -1359,7 +1530,7 @@ function crearBotonComprarActual(event, cuadro){
     })
     
 }
-
+//Funcion que agregar el cuadro al carrito..
 function agregarAlCarrito(cuadro){
    /*  let cantidad = 0;
     carritoDeCompra = [...carritoDeCompra, cuadro] */
@@ -1396,7 +1567,8 @@ function eventoCarritoUserBoton(){
     const carritoCompra = document.querySelector('.carritoCompra');
     const userBoton = document.querySelector('.userBoton');
     carritoCompra.addEventListener('click', mostrarInterfazCarritoCompras);
-    userBoton.addEventListener('click', mostrarInterfazCarritoCompras);
+    //descomentarlo cuando agregue la funcion para los usuarios
+    /* userBoton.addEventListener('click', mostrarInterfazCarritoCompras); */
 
     
 }
@@ -1409,7 +1581,9 @@ function mostrarInterfazCarritoCompras(){
     esconderScroll();
 }
 function actualizarInterfazCarritoCompra(){
-    //Si ya existe un modal, entonces solo le quita occultar..
+    //guardar carrito de compras en la session.
+    guardar_carrito_compras_en_session();
+    //Si ya existe un modal, lo elimina..
     const modalAnterior = document.querySelector('.modalCarrito');
     if(modalAnterior){
         modalAnterior.remove();
@@ -1418,7 +1592,8 @@ function actualizarInterfazCarritoCompra(){
 
     const interfaz = document.querySelector('.contenedorCarritoCompras')
     //si el carrito no tiene productos ..
-    if(!carritoDeCompra.length >= 1){
+    if(carritoDeCompra.productos.length < 1){
+        
         const parrafo = document.createElement('P');
         parrafo.classList.add('parrafoCarritoVacio');
         parrafo.textContent = 'El carrito esta vacio ...'
@@ -1431,7 +1606,8 @@ function actualizarInterfazCarritoCompra(){
             interfaz.removeChild(interfaz.firstChild);
         }
         //Crear productos e insertar en interfaz..
-        carritoDeCompra.forEach(producto =>{
+        
+        carritoDeCompra.productos.forEach(producto =>{
             const {id, nombre, precio, descripcion, size, disponible, imagen, cantidad} = producto;
             
             const productoDiv = document.createElement('DIV');
@@ -1441,7 +1617,7 @@ function actualizarInterfazCarritoCompra(){
             nombreProducto.textContent = nombre;
             nombreProducto.classList.add('nombre-producto')
             const precioProducto = document.createElement('P');
-            precioProducto.textContent = precio;
+            precioProducto.textContent = `$${parseInt(precio).toLocaleString()}`;
             precioProducto.classList.add('precio-producto')
             const cantidadProducto = document.createElement('P');
             cantidadProducto.textContent = `Cantidad: ${cantidad}`;
@@ -1449,15 +1625,19 @@ function actualizarInterfazCarritoCompra(){
             const botonMas = document.createElement('BUTTON');
             botonMas.classList.add('botonChico');
             botonMas.textContent = '+';
-            botonMas.addEventListener('click', function(){
+            botonMas.onclick = function(){
+                agregarCantidad(producto)
+            };
+            /* botonMas.addEventListener('click', function(){
                 agregarCantidad(producto);
-            })
+            }) */
 
             const botonMenos = document.createElement('BUTTON');
             botonMenos.classList.add('botonChicoRojo');
             botonMenos.textContent = '-';
             botonMenos.addEventListener('click', function(){
                 restarCantidad(producto);
+                actualizarInterfazCarritoCompra();
             })
 
 
@@ -1483,18 +1663,21 @@ function actualizarInterfazCarritoCompra(){
         //Muestra el montoTotal en carrito de compras.
         const parrafoMontoTotal = document.createElement('P');
         parrafoMontoTotal.classList.add('parrafoMontoTotal')
-        montoTotal = sumarProductosCarrito();
-        parrafoMontoTotal.textContent = `Monto Total: $${montoTotal.toLocaleString()} pesos Colombianos`;
+        /* montoTotal = sumarProductosCarrito(); */
+        parrafoMontoTotal.textContent = `Monto total: $${carritoDeCompra.montoTotal().toLocaleString()}`;
         interfaz.appendChild(parrafoMontoTotal)
 
         //Boton de comprar en interfaz de carrito de compras.
         const botonComprar = document.createElement('BUTTON');
-        botonComprar.classList.add('botonComprar')
+        botonComprar.classList.add('boton')
         botonComprar.textContent = `Comprar`
-        botonComprar.addEventListener('click', guardar_carrito_en_session )
+        botonComprar.addEventListener('click', comprar_carrito )
         interfaz.appendChild(botonComprar);
 }
-
+function comprar_carrito(){
+    guardar_carrito_compras_en_session()
+    .then(window.location.href = '/carrito_de_compras')
+}
 function sumarProductosCarrito(){
     let total = 0
     carritoDeCompra.forEach(producto => {
@@ -1509,10 +1692,10 @@ function actualizar_resumen_de_carrito_compras(){
 }
 
 function agregarCantidad(producto, compras = false){
-
-    const index = carritoDeCompra.indexOf(producto);
-    carritoDeCompra[index].cantidad ++;
+    const index = carritoDeCompra.productos.indexOf(producto);
+    carritoDeCompra.productos[index].cantidad ++;
     if(compras){
+        console.log(carritoDeCompra.productos)
         mostrarCarritoDeCompras()  
         return
     }
@@ -1520,9 +1703,9 @@ function agregarCantidad(producto, compras = false){
 }
 //Si compra es true, significa que se usara carrito_de_compras
 function restarCantidad(producto, compras = false){
-    const index = carritoDeCompra.indexOf(producto);
-    carritoDeCompra[index].cantidad --;
-    if(carritoDeCompra[index].cantidad < 1){
+    const index = carritoDeCompra.productos.indexOf(producto);
+    carritoDeCompra.productos[index].cantidad --;
+    if(carritoDeCompra.productos[index].cantidad < 1){
         borrarProductoDeCarritoDeCompra(producto.id, producto);
     }
     if(compras){
@@ -1533,7 +1716,6 @@ function restarCantidad(producto, compras = false){
 }
 function crearModal(){
     esconderScroll();
-    
     //este codigo solo se ejecuta una vez..
     const modal = document.createElement('DIV');
     modal.classList.add('modal', 'modalCarrito');
@@ -1559,14 +1741,13 @@ function crearBotonBorrar(contenedor, id, objetoProducto){
 
     //borrar el producto en el carrito que tenga el id pasado...
     botonBorrar.addEventListener('click', function(){
-        carritoDeCompra.forEach( producto =>{
+        carritoDeCompra.productos.forEach( producto =>{
             if(producto.id === id){
-            const index = carritoDeCompra.indexOf(producto);
-            carritoDeCompra.splice(index, 1)
+            const index = carritoDeCompra.productos.indexOf(producto);
+            carritoDeCompra.productos.splice(index, 1)
             //Formateo el objeto a por default... para que al agregarlo al carrito no tenga problemas..
             delete objetoProducto.cantidad;
             actualizarInterfazCarritoCompra();
-
             }
         })
     })
@@ -1574,13 +1755,13 @@ function crearBotonBorrar(contenedor, id, objetoProducto){
 }
 
 function borrarProductoDeCarritoDeCompra(id, objetoProducto){
-    carritoDeCompra.forEach( producto =>{
+    carritoDeCompra.productos.forEach( producto =>{
         if(producto.id === id){
-        const index = carritoDeCompra.indexOf(producto);
-        carritoDeCompra.splice(index, 1)
+        const index = carritoDeCompra.productos.indexOf(producto);
+        carritoDeCompra.productos.splice(index, 1)
         //Formateo el objeto a por default... para que al agregarlo al carrito no tenga problemas..
-        delete objetoProducto.cantidad;
-        actualizarInterfazCarritoCompra();
+        /* delete objetoProducto.cantidad; */
+        
 
         }
     })
@@ -1603,39 +1784,148 @@ function mostrarScroll(){
 }
 function esconderScroll(){
     const contenedor = document.querySelector('body');
-    contenedor.style.overflowY = 'hidden';
-    
+    contenedor.style.overflowY = 'hidden';  
 }
 //Termina carrito compras//
+
+//empieza formulario index
+
+function evento_formulario_index(){
+    const form = document.querySelector('.formulario');
+    form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const datos = crear_objeto_con_datos_de_formulario(e);
+        //enviar datos
+        enviar_formulario_para_cuadro_personalizado(datos)
+
+    })
+}
+async function enviar_formulario_para_cuadro_personalizado(datos){
+    const data = new FormData();
+    data.append('nombre',datos.nombre);
+    data.append('apellido',datos.apellido);
+    data.append('contacto',datos.contacto);
+    data.append('telefono',datos.telefono);
+    data.append('email',datos.email);
+    data.append('mensaje',datos.mensaje);
+
+    /* console.log([...data]); */
+    const url = '/api/formulario_cuadro_personalizado';
+    const options = {
+        method: 'POST',
+        body: data
+    }
+    try {
+        crear_alerta_de_cargando();
+        const resultado = await fetch(url,options);
+        const respuesta = await resultado.json();
+        eliminar_alerta_de_cargando();
+        if(respuesta.tipo === 'exito'){
+            mostrar_alerta('exito',respuesta.mensaje,'.informacionPersonal legend');
+            document.querySelector('[type="submit"]').remove();
+        }else{
+            respuesta.alertas.error.forEach(alerta=>{
+                mostrar_alerta('error',alerta,'.informacionPersonal legend')
+            })
+        }
+        console.log(respuesta);
+    } catch (error) {
+        error
+    }
+}
+
+function mostrar_alerta(tipo,mensaje,referencia){
+    const alerta = document.createElement('DIV');
+    alerta.classList.add('alerta',tipo);
+    alerta.textContent = mensaje
+    const divRef = document.querySelector(referencia);
+    divRef.parentElement.insertBefore(alerta, divRef )
+
+    setTimeout(() => {
+        alerta.remove();
+    }, 4000);
+
+}
+//termina formulario index
 
 //Agrega evento al menuHamburgesa
 function eventoMenu(){
     menu = document.querySelector('.hamburgerMenu');
     menu.addEventListener('click', function(){
-        mostrarModal();
+        mostrarMenu();
         
     })
 }
-//Muestra modal.
-function mostrarModal(){
+function mostrarMenu(){
     ocultarHeader();
-    botonCerrar = document.querySelector('.icono')
-    modal = document.querySelector('.modal');
-    modal.classList.remove('ocultar');
-    modal.addEventListener('click', ocultarModalAndMostrarHeader)
-    /* botonCerrar.addEventListener('click', function(){
-        ocultarModalAndMostrarHeader(event, '.icono');
-    }) */
+    const modal = crear_modal();
+    esconderScroll();
+    modal.innerHTML = `
+    <div class="menu">
+            <div class="menuHeader">
+                <i id="cerrar_menu" class="fa-solid fa-x fa-2xl icono"></i>
+                <div class="menuCampo">
+                    <a href="/">Home</a>
+                </div>
+                <div class="menuCampo">
+                    <a href="/productos">Todos los Productos</a>
+                </div>
+                <div class="menuCampo">
+                    <a href="/carrito_de_compras">Carrito de compra</a>
+                </div>
+                
+            </div>
+            <div class="menuFooter">
+                <div class="redes contenedor">
+                    <a href="https://www.facebook.com/profile.php?id=61559826170800"><i class="fa-brands fa-square-facebook fa-2xl"></i></i></a>    
+                    <a href="https://www.instagram.com/cyberr.art/"><i class="fa-brands fa-square-instagram fa-2xl"></i></a>    
+                    <a href="https://www.tiktok.com/@cyberartcraft"><i class="fa-brands fa-tiktok fa-2xl"></i></a>    
+                </div>
+            </div>
+        </div>
+    `
+    modal.addEventListener('mousedown', function(event){
+        evento_eliminar_modal(event, '.menu')
+    })
+    botonCerrar = document.querySelector('#cerrar_menu')
+    botonCerrar.addEventListener('click', eliminar_modal_and_mostrar_header)
+    return;
+}
+//Function para crear modal
+function crear_modal(){
+    const body = document.querySelector('body');
+    const modal = document.createElement('DIV');
+    modal.classList.add('modal');
+    modal.innerHTML = `
+    <div class="modal_contenido">
+
+    </div>
+    `
+    body.appendChild(modal);
+    const modal_contenido = document.querySelector('.modal_contenido')
+    return modal_contenido;
+
+
+}
+function evento_eliminar_modal(event, targetClosest){
+    eventClass = event.target.closest(targetClosest)
+    if(!eventClass){
+        eliminar_modal();
+        mostrarHeader();
+        mostrarScroll();
+    }
+}
+//function para eliminar el modal
+function eliminar_modal(){
+    const modal = document.querySelector('.modal');
+    modal.remove();
+    mostrarHeader();
 }
 //Oculta el modal y header presionando afuera del menu...
-function ocultarModalAndMostrarHeader(event){
-    eventClass = event.target.closest('.menu')
-    if(!eventClass){
-        modal.classList.add('ocultar');
-        mostrarHeader();
-        modal.removeEventListener('click', ocultarModalAndMostrarHeader)
-        
-    }
+function eliminar_modal_and_mostrar_header(){
+    eliminar_modal();
+    mostrarHeader();
+    mostrarScroll();
 }
 //Subrayar pagina actual
 function subrayarPaginaActual(){
@@ -1661,24 +1951,29 @@ function mostrarHeader(){
     header = document.querySelector('header');
     header.classList.remove('ocultar');
 }
+
 //agregar posicion fixed en navegacion.
 function agregarFixed(){
-    header = document.querySelector('.header');
-    sectionReferencia = document.querySelector('.nombre-pagina');
+    const header = document.querySelector('.header');
+    const sectionReferencia = document.querySelector('.nombre-pagina');
+    const main = document.querySelector('main');
+    if(!sectionReferencia) return;
 
     document.addEventListener('scroll', function(){
         let scrollNumber = sectionReferencia.getBoundingClientRect().top
         if(scrollNumber < 1){
             header.classList.add('positionFixed');
+            main.classList.add('padding-for-fixedHeader');
         }
         else{
             header.classList.remove('positionFixed');
+            main.classList.remove('padding-for-fixedHeader');
         }
     })
 }
 //Agrega evento a inputs Radio.
 function eventoInputs(){
-    inputBoton = document.querySelectorAll("[name='user[contacto]']")
+    inputBoton = document.querySelectorAll("[name='contacto']")
     inputBoton.forEach(function(input){
         input.addEventListener('click', function(e){
             target = e.target.id;
@@ -1692,13 +1987,13 @@ function mostrar (id){
     if(id === 'byTelefono'){
         div.innerHTML = `
         <label for="telefono">Numero de Celular</label>
-        <input id="telefono" type="tel" placeholder="Tu numero de celular" name="user[telefono]">
+        <input id="telefono" type="tel" placeholder="Tu numero de celular" name="telefono">
         `
     }
     if(id === 'byEmail'){
         div.innerHTML = `
         <label for="email">Correo</label>
-        <input id="email" type="email" placeholder="Tu correo electronico" name="user[email]">
+        <input id="email" type="email" placeholder="Tu correo electronico" name="email">
         `
     }
 

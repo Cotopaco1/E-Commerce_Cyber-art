@@ -25,6 +25,9 @@
     .datos_header{
         display: flex;
         justify-content: space-between;
+        .logo{
+            width: 7rem;
+        }
     }
     .datos_body{
         margin:  4rem auto 2rem;

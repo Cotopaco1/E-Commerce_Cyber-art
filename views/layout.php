@@ -12,41 +12,15 @@
     <title>CyberArt</title>
 </head>
 <body>
-    <div class="modal ocultar">
-        <div class="menu">
-            <div class="menuHeader">
-                <i class="fa-solid fa-x fa-2xl icono"></i>
-                <div class="menuCampo">
-                    <a href="/">Home</a>
-                </div>
-                <div class="menuCampo">
-                    <a href="#">Lo mas vendido</a>
-                </div>
-                <div class="menuCampo">
-                    <a href="#">Inspirate</a>
-                </div>
-                <div class="menuCampo">
-                    <a href="#">Nuevas colecciones</a>
-                </div>
-                <div class="menuCampo">
-                    <a href="#">Contactanos</a>
-                </div>
-                <div class="menuCampo">
-                    <a href="#">Quienes somos?</a>
-                </div>
-            </div>
-            <div class="menuFooter">
-                <?php include __DIR__ . '/templates/redes.php' ?>
-            </div>
-        </div>
-    </div>
     <header class="header">
         <div class="contenedor headerContenido">
             <div class="hamburgerMenu"><img src="menu.png" alt="hamburgerMenu"></div>
-            <div class="logo"><img src="#" alt="imagenLogo"></div>
+            <div class="logo"><a href="/"><img src="./img/logo_cyber-transparente.png" alt="imagenLogo"></a></div>
             <div class="buttonsHeader">
-                <img class="carritoCompra" src="img/iconos/carrito-compras.png" alt="imagenCarrito">
-                <img class="userBoton" src="img/iconos/usuario.png" alt="imagenUsuario">
+                <!-- <img class="carritoCompra" src="img/iconos/carrito-compras.png" alt="imagenCarrito">
+                <img class="userBoton" src="img/iconos/usuario.png" alt="imagenUsuario"> -->
+                <i class="fa-solid fa-cart-shopping carritoCompra"></i>
+                <!-- <i class="fa-regular fa-user userBoton"></i> -->
                 
                 <?php if($auth ?? false): ?>
                 <a href="/logout" class="link_cerrar_sesion">Cerrar sesion</a>
@@ -63,14 +37,14 @@
 <footer class="footer ">
     <?php include __DIR__ . '/templates/redes.php' ?>
     <div class="categorias contenedor">
-        <a href="#"><p>Lo mas vendido</p></a>
-        <a href="#"><p>Inspirate</p></a>
-        <a href="#"><p>nuevas colecciones</p></a>
-        <a href="#"><p>Quienes somos?</p></a>
+        <a href="/"><p>Home</p></a>
+        <a href="/productos"><p>Todos los productos</p></a>
+        <!-- <a href="/contacto"><p>Contactanos</p></a>
+        <a href="/nosotros"><p>Nosotros</p></a> -->
     </div>
     <p>Copyright <?php echo date('Y'); ?>, designed by Sergio Silva</p>
 </footer>
 <script src="./build/js/app.js"></script>
-
+<?php echo $script ?? '' ?>
 </body>
 </html>

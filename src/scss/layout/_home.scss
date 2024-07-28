@@ -16,6 +16,10 @@
 }
 
 .cuadro-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     padding: 2rem;
     p{
@@ -54,7 +58,15 @@
     /* contacto index. */
 .contenedorContacto{
     background-color: #21174B;
-    padding: 10rem 0;
+    padding-top: 4rem;
+    h2,legend,p,h1{
+        color: v.$blanco-tw;
+    }
+    .formulario{
+        input:not([type="submit"]),textarea{
+            font-size: 1.5rem;
+        }
+    }
 }
 .contacto{
     display: grid;
@@ -78,9 +90,7 @@
         color: #6AAFF2;
         margin-bottom: 2rem;
     }
-    legend{
-        color: #EBA4d2;
-    }
+    
 }
 .imagenContacto{
     img{
@@ -105,6 +115,14 @@
 .contactoField{
     .contactoRadio{
         display: flex;
+        gap: 1rem;
+        input{
+            width: 2.4rem;
+            margin: 0;
+        }
+        label{
+            margin: 0;
+        }
     }
     p{
         margin: 0;
@@ -145,3 +163,4 @@
         
     }
 }
+

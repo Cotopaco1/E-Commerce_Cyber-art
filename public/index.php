@@ -14,6 +14,9 @@ $router = new Router();
 $router->get('/', [ControllerPaginas::class, 'index']);
 $router->get('/carrito_de_compras', [ControllerPaginas::class, 'carrito_de_compras']);
 $router->post('/carrito_de_compras', [ControllerPaginas::class, 'carrito_de_compras']);
+$router->get('/producto', [ControllerPaginas::class, 'producto']);
+$router->get('/productos', [ControllerPaginas::class, 'productos']);
+
 
 //Login
 $router->get('/login', [ControllerLogin::class, 'index']);
@@ -44,23 +47,31 @@ $router->get('/admin/home', [ControllerAdmin::class, 'index']);
 //Api...
     //carrito_de_compras
 $router->get('/api/cuadros/getcuadros', [ControllerApi::class, 'getCuadros']);
+$router->get('/api/get/cuadro', [ControllerApi::class, 'cuadro']);
 $router->post('/api/cuadros/guardar_carrito_compras', [ControllerApi::class, 'guardar_carrito_de_compras_en_session']);
+$router->post('/api/session/guardar_carrito', [ControllerApi::class, 'guardar_carrito']);
+$router->get('/api/session/get_carrito', [ControllerApi::class, 'get_carrito']);
 $router->get('/api/cuadros/guardar_carrito_compras', [ControllerApi::class, 'guardar_carrito_de_compras_en_session']);
 $router->post('/api/validar_formulario', [ControllerApi::class, 'validarFormulario']);
 $router->post('/api/crear_orden', [ControllerApi::class, 'crear_orden']);
+    //formulario index
+$router->post('/api/formulario_cuadro_personalizado',[ControllerApi::class, 'formulario_cuadro_personalizado']);
 
     //Login
 $router->post('/api/login/crear_cuenta', [ControllerApi::class, 'crear_cuenta']);
 $router->post('/api/login/login', [ControllerApi::class, 'logIn_usuario']);
 $router->post('/api/login/reenviar_email', [ControllerApi::class, 'reenviar_email']);
 $router->post('/api/login/recuperar_email', [ControllerApi::class, 'recuperar_password']);
-$router->post('/api/login/reestableccer_password', [ControllerApi::class, 'reestablecer_password']);
+$router->post('/api/login/reestablecer_password', [ControllerApi::class, 'reestablecer_password']);
 
     //admin
 $router->get('/api/admin/get_info_resumen', [ControllerApi::class, 'get_info_resumen']);
 $router->get('/api/admin/get_pedidos', [ControllerApi::class, 'get_pedidos']);
 $router->get('/api/admin/get_pedidos_where', [ControllerApi::class, 'get_pedidos_where']);
+$router->get('/api/admin/get_pedidos_filtrados', [ControllerApi::class, 'get_pedidos_filtrados']);
+$router->get('/api/admin/get_cuadros_where_no_deleted', [ControllerApi::class, 'get_cuadros_where_no_deleted']);
 
+$router->post('/api/admin/pedido/actualizar_estado', [ControllerApi::class, 'actualizar_estado_pedido']);
 $router->post('/api/admin/actualizar_producto', [ControllerApi::class, 'actualizar_producto']);
 $router->post('/api/admin/eliminar_producto', [ControllerApi::class, 'eliminar_producto']);
 $router->post('/api/admin/crear_producto', [ControllerApi::class, 'crear_producto']);

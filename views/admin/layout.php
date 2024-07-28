@@ -34,12 +34,15 @@
         </div>
 
     </aside>
+    <div class="menu_hamburgesa" id="menu_hamburgesa">
+        <i class="fa-solid fa-bars"></i>
+    </div>
     <div class="contenido_admin">
         <div class="contenido_header">
             <div id="nombre_admin" class="nombre_admin">
                 <p><?php echo $nombre ?></p>
             </div>
-            <div id="cerrar_sesion"><a href="#">Cerrar Sesion</a></div>
+            <div id="cerrar_sesion"><a href="/logout">Cerrar Sesion</a></div>
         </div>
         <div class="app">
             <div class="titulo_app"><h1>Resumen</h1></div>

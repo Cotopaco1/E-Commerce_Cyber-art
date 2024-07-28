@@ -31,10 +31,14 @@
     
     .menuCampo{
         padding: 2rem;
+        &:hover{
+            background-color: v.$naranja_admin;
+        }
         a{
             color: black;
             font-size: 2.5rem;
             font-weight: bold;
+            
         }
     }
     
@@ -64,7 +68,7 @@
         position: absolute;
         right: 0;
         height: 100%;
-        background-color: v.$azulOscuro;
+        background-color: v.$blanco-tw;
         padding: 4rem;
     }
     .interfazCampo{
@@ -95,4 +99,8 @@
             color: v.$verde;
         }
     }
+}
+.modal_contenido{
+    width: 100%;
+    height: 100%;
 }

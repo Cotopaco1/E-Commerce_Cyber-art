@@ -18,16 +18,24 @@ html {
 body{
     min-height: 100vh;
     margin: 0;
-    background-color: #B74E6A;
+    background-color: v.$blanco-tw;
     position: relative;
 }
 main{
-    margin-bottom: 5rem;
+    padding-bottom: 25rem;
+    @include m.tablet{
+        padding-bottom: 21rem;
+    }
 }
 .contenedor {
     width: 95%;
     max-width: 100rem;
     margin: 0 auto;
+}
+.contenedor-sm{
+    width: 80%;
+    max-width: 70rem;
+    margin: 2rem auto;
 }
 img {
     max-width: 100%;
@@ -59,6 +67,9 @@ a{
 .mostrar{
     display: block!important;
 }
+.mostrar_flex{
+    display: flex!important;
+}
 .field{
     margin-top: 2rem;
 }
@@ -80,6 +91,9 @@ textarea{
 }
 .section{
     margin-bottom: 6rem;
+    &:last-of-type{
+        margin-bottom: 0;
+    }
     
 }
 .poisition-relative{
@@ -88,4 +102,19 @@ textarea{
 
 .hidden{
     visibility: hidden;
+}
+.padding-for-fixedHeader{
+    padding-top: 6rem;
+    padding-bottom: 22rem;
+    @include m.tablet{
+        padding-bottom: 18rem;
+    }
+}
+.padding-bottom-22{
+    padding-bottom: 22rem!important;
+}
+.center-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
