@@ -806,9 +806,9 @@ class ControllerApi{
          
     }
     public static function get_pedidos_filtrados(){
-
+        verificar_admin();
         if($_SERVER['REQUEST_METHOD']==='GET'){
-            verificar_admin();
+            
 
             $fecha = $_GET['fecha'];
             $estado = $_GET['estado'];
@@ -856,9 +856,9 @@ class ControllerApi{
         }
     }
     public static function get_pedidos_where_actualizado(){
-
+        verificar_admin();
         if($_SERVER['REQUEST_METHOD']==='GET'){
-            verificar_admin();
+            
 
             $columna = $_GET['c'];
             $valor = $_GET['v'];
@@ -877,8 +877,9 @@ class ControllerApi{
         
     }
     public static function actualizar_estado_pedido(){
-        if($_SERVER['REQUEST_METHOD']==='POST'){
             verificar_admin();
+        if($_SERVER['REQUEST_METHOD']==='POST'){
+            
             if(!is_numeric($_POST['id']) || !$_POST['id']){
                 echo json_encode(['error'=>'id invalido']);
                 exit;
