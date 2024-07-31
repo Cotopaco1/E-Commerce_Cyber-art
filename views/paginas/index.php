@@ -12,7 +12,7 @@
     <h2>Volvemos tu idea/Recuerdo en un cuadro personalizado</h2>
     <div class="contenedor contacto">
     <div class="imagenContacto">
-        <img src="luffy.png" alt="imagenContacto">
+        <img src="luffy-recortado.webp" alt="imagenContacto">
     </div>
     <form action="/" class="formulario" id="formulario_informacion_usuario">
         <fieldset class="informacionPersonal">

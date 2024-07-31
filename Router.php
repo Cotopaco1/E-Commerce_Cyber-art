@@ -28,7 +28,7 @@ class Router
 
         // $auth = $_SESSION['login'] ?? null;
         $rutas_login = ['/crear_cuenta', '/recuperar_password', '/reestablecer_password'];
-        $currentUrl = $_SERVER['PATH_INFO'] ?? '/';
+        $currentUrl = strtok($_SERVER['REQUEST_URI'], '?') ?? '/';
         $method = $_SERVER['REQUEST_METHOD'];
 
         

@@ -789,17 +789,17 @@ class ControllerApi{
     public static function get_pedidos(){
         verificar_admin();
         if($_SERVER['REQUEST_METHOD']==='GET'){
-            $query = "SELECT pedidos.id,pedidos.fecha,pedidos.status,pedidos.monto_total as total,";
+            /* $query = "SELECT pedidos.id,pedidos.fecha,pedidos.status,pedidos.monto_total as total,";
             $query .= "CONCAT(usuarios.nombre,' ', usuarios.apellido) as nombre,";
             $query .= "usuarios.cedula,usuarios.email, usuarios.telefono, ";
             $query .= "CONCAT(pedidos.direccion, ' ', pedidos.departamento, ' ', pedidos.ciudad) as direccion,";
             $query .= "pedidos.metodo_pago,pedidos.informacion_adicional, items_pedido.productosId as productoId, productos.nombre as productoNombre, items_pedido.cantidad as productoCantidad ";
             $query .= "FROM pedidos INNER JOIN usuarios ON pedidos.usuarioID=usuarios.id ";
             $query .= "INNER JOIN items_pedido ON items_pedido.pedidosId=pedidos.id ";
-            $query .= "INNER JOIN productos ON items_pedido.productosId=productos.id";
+            $query .= "INNER JOIN productos ON items_pedido.productosId=productos.id"; */
             
             // $pedidos = PedidosAdmin::SQL($query);
-            $pedidos = PedidosAdmin::SQL($query);
+            $pedidos = PedidosAdmin::all();
 
             imprimirJson($pedidos); 
         }

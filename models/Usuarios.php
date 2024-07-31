@@ -56,6 +56,7 @@ class Usuarios extends ActiveRecord{
             self::setAlerta('error', 'El telefono es obligatorio');
         }
         $numero_permitido_de_celular = 10;
+        $this->telefono = str_replace(' ', '', $this->telefono);
         if(strlen($this->telefono) !== $numero_permitido_de_celular && $this->telefono){
             self::setAlerta('error', 'El telefono debe ser de 10 numeros, Actualmente es de '. strlen($this->telefono) );
         }

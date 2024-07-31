@@ -10,7 +10,6 @@ class ControllerPaginas{
 
     public static function index(Router $router){
         $script = '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
-        
 
         $router->render('paginas/index', [
             'script' => $script
