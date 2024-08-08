@@ -1956,6 +1956,7 @@ function mostrarMenu(){
     })
     botonCerrar = document.querySelector('#cerrar_menu')
     botonCerrar.addEventListener('click', eliminar_modal_and_mostrar_header)
+    subrayarPaginaActual();
     return;
 }
 //Function para crear modal
@@ -2004,12 +2005,12 @@ function eliminar_modal_and_mostrar_header(){
 }
 //Subrayar pagina actual
 function subrayarPaginaActual(){
-    console.log('Subrayando pagina...')
+    
     paginaActual = obtenerPaginaActual();
     menuCampos = document.querySelectorAll('.menuCampo a');
     menuCampos.forEach( menuCampo =>{
         if(menuCampo.attributes.href.value === paginaActual ){
-            menuCampo.classList.add('subrayarAmarillo');
+            menuCampo.parentElement.classList.add('subrayarAmarillo');
         }
     })
     
