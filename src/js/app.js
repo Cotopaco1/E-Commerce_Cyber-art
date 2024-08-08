@@ -2004,6 +2004,7 @@ function eliminar_modal_and_mostrar_header(){
 }
 //Subrayar pagina actual
 function subrayarPaginaActual(){
+    console.log('Subrayando pagina...')
     paginaActual = obtenerPaginaActual();
     menuCampos = document.querySelectorAll('.menuCampo a');
     menuCampos.forEach( menuCampo =>{
