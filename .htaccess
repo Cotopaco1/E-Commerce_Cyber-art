@@ -1,0 +1,10 @@
+# Redirige www.cyberart.store y cyberart.store a la carpeta public_html
+RewriteCond %{HTTP_HOST} ^cyberart\.store$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^www\.cyberart\.store$ [NC]
+RewriteCond %{REQUEST_URI} !^/public_html/
+RewriteRule ^(.*)$ /public_html/$1 [L]
+
+RewriteBase /public_html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?/$1 [L,QSA]
