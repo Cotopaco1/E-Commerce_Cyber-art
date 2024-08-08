@@ -2,10 +2,16 @@
 @use 'base/mixins' as m;
 //tabs{
     .tabs{
+        max-width: 110rem;
+        width: 95%;
+        margin: 1rem auto;
+
         @include m.tablet{
             display: flex;
+            margin: 0 auto;
+            gap: 1rem;
+            padding: 1rem;
             button{
-    
                 margin-right: 1rem;
                 &:last-child{
                     margin-right: 0;
@@ -20,11 +26,12 @@
             padding: 2rem;
             display: block;
             width: 100%;
-            margin-bottom: 2rem;
+            margin: 0 auto 2rem auto;
             text-transform: uppercase;
             transition: background-color 300ms ease;
             font-size: 1.5rem;
-            
+            max-width: 40rem;
+            border-radius: .5rem;
             &:hover{
                 cursor: pointer;
                 background-color: darken(v.$azul, 10%);
@@ -53,8 +60,8 @@
 .resumen_carrito_compras{
     width: 95%;
     margin: 0 auto;
-    background-color: v.$gris;
-    overflow: scroll;
+    /* background-color: v.$gris;
+    overflow: scroll; */
     //Contenedor final despues de la tabla
     .contenedorProductosFormulario{
         .parrafoCarritoVacio{
@@ -167,64 +174,49 @@ table{
         }
     }
 }
-
-
-
 //seccion 2 paso 2
-.formulario_carrito_de_compras{
-    background-color: v.$blanco-tw;
-    margin-bottom: 0;
-    p,label,h1,h2{
-        color: v.$negro-tw;
-    }
-}
-.form{
-    padding: 3rem;
-    
-}
-.campoFormulario{
-    display: grid;
-    margin-bottom: calc(v.$separacion / 2);
-    .label{
-        margin: calc(v.$separacion / 4) 0;
-        font-weight: v.$bold;
-        &:first-of-type{
-            margin-top: 0;
-        }
-    }
-    input,
-    .textArea,
-    .select{
-        padding: 1rem;
-        font-size: 2rem;
-        &::placeholder{
-            font-size: 2rem;
-        }
-    }
-    .select{
 
+.formulario_carrito_de_compras{
+    width: 95%;
+    margin: 0 auto;
+    @include m.tablet{
+        width: 100%;
     }
-    .label_enviar_direccion_diferente{
-        display: flex;
-        gap: 2rem;
-        input{
-            width: 3rem;
-        }
+    &__texto{
+        color: v.$blanco-tw;
     }
+
 }
-.campo_nombre_and_apellido{
-  
+.main--carritoCompras{
+    background-image: url('/img/FondoCyberArt.webp');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 67rem;
+    padding-top: 1px;
 }
 
 //seccion 3 paso 3
+.metodo_de_pago{
+    background-color: v.$blanco-tw;
+    font-family: v.$fuente_principal_2;
+    margin-bottom: 2rem!important;
+    margin-top: 2rem!important;
+    border-radius: .5rem;
+    padding-top: 2rem;
+    
+}
 
 .card{
-    background-color: v.$gris;
     padding: 2rem;
     .contenedor_metodo_pago{
-        border: 1px solid black;
+        border: 1px solid v.$gris-tw;
+        border-radius: .5rem;
         padding: 2rem;
         margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
         .input_radio_metodo_pago{
             width: 3.1rem;
             height: 2.5rem;
@@ -237,7 +229,8 @@ table{
     .boton_crear_pedido{
         display: block;
         width: 100%;
-        margin-bottom: 2rem;
+        max-width: 35rem;
+        margin: 0 auto;
     }
     p{
         color: v.$negro;
@@ -246,6 +239,7 @@ table{
 
 //instrucciones de pago...
 .div_instrucciones_pago{
+    margin-top: 4rem;
     background-color: v.$gris;
     padding: 2rem;
     h1,h2{

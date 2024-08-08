@@ -21,7 +21,10 @@
     align-items: center;
     padding: 1rem 0;
     .logo{
-        max-width: 7rem;
+        max-width: 4rem;
+        @include m.telefono{
+            max-width: 5rem;
+        }
         
     }
     .buttonsHeader{
@@ -40,7 +43,7 @@
     }
 }
 .hamburgerMenu{
-    max-width: 4rem;
+    max-width: 3rem;
     &:hover{
         cursor: pointer;
     }

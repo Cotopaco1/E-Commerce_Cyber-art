@@ -3,6 +3,7 @@
 namespace Classes;
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 
 class Email{
 
@@ -31,7 +32,7 @@ class Email{
         $mail = new PHPMailer();
         $mail->isSMTP();
         $mail->isHTML(TRUE);
-        $mail->SMTPSecure = 'tls';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->CharSet = 'UTF-8';
 
         $mail->Host = $this->host;
@@ -73,7 +74,8 @@ class Email{
         $mail = new PHPMailer();
         $mail->isSMTP();
         $mail->isHTML(TRUE);
-        $mail->SMTPSecure = 'tls';
+        //Activar para produccion...
+        /* $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; */
         $mail->CharSet = 'UTF-8';
 
         $mail->Host = $this->host;
@@ -82,8 +84,8 @@ class Email{
         $mail->Username = $this->username;
         $mail->Password = $this->password;
 
-        $mail->setFrom('cyberart@pagina.com');
-        $mail->addAddress('cyberart@admin.com' , 'Administrador CyberArt');
+        $mail->setFrom('admin@cyberart.store');
+        $mail->addAddress('admin@cyberart.store' , 'Administrador CyberArt');
 
         $mail->Subject = 'Nuevo cliente interesado';
             $contenido = "<html>";
@@ -101,7 +103,7 @@ class Email{
         $mail = new PHPMailer();
         $mail->isSMTP();
         $mail->isHTML(TRUE);
-        $mail->SMTPSecure = 'tls';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->CharSet = 'UTF-8';
 
         $mail->Host = $this->host;
@@ -110,17 +112,19 @@ class Email{
         $mail->Username = $this->username;
         $mail->Password = $this->password;
 
-        $mail->setFrom('cyberart@gmail.com');
+        $mail->setFrom('admin@cyberart.store');
         $mail->addAddress($this->email , $this->nombre);
+        $mail->addReplyTo('admin@cyberart.store', 'Nueva orden');
         
         
         $mail->Subject = 'Pedido creado con Exito!';
         
         $productos_text = '';
         foreach($productos as $producto){
-            $productos_text .= "<li>$producto->nombre x $producto->cantidad </li>";
+            $productos_text .= "<li><strong>$producto->nombre</strong> x <strong>$producto->cantidad</strong> </li>";
         };
-
+        //formateo el precio
+        $total = number_format($total, 0, ',', '.');        
         $contenido = <<<EOD
         <html>
         <p>Hola <strong> $this->nombre </strong> Has creado con exito tu pedido en CyberArt </p>
@@ -129,28 +133,33 @@ class Email{
         <div>
         <h2>Instrucciones a seguir</h2>
         <div>
-            <p>Consigna a nuestra cuenta bancolombia #: <span>412514</span></p>
-            <p>Manda un screenshot a nuestro wp +57 321 3458210 con el pedido # <span>$pedidosId</span></p>
+            <p>Consigna a nuestra cuenta bancolombia #: <strong>076-379546-57</strong></p>
+            <p>Manda un pantallazo a nuestro <strong> WhatsApp +57 321 3458210</strong> con el pedido # <strong>$pedidosId</strong></p>
             <p>Recibe tus productos en la puerta de tu casa...!</p>
         </div>
         <div></div>
         <h2>Resumen de tu pedido</h2>
-        <p>El pedido quedo a nombre de : <span> $nombre </span>  </p>
-        <p>El costo total a pagar es de : <span> $total </span></p>
+        <p>El pedido quedo a nombre de : <strong> $nombre </strong>  </p>
+        <p>El costo total a pagar es de : <strong> $$total </strong></p>
         <ul class="lista-productos" id="lista-productos">
             <p>Los productos que te mandaremos son:</p>
             $productos_text
         </ul>
-        <p>La direccion a la que te mandaremos los productos es: <span>$direccion</span> </p>
+        <p>La direccion a la que te mandaremos los productos es: <strong>$direccion</strong> </p>
         </div>
+        <img src="https://cyberart.store/img/bancolombia-chico.png" alt="datos transferencia">
+        <p> si tu no hiciste este pedido, puedes ignorar el mensaje </p>
         </html>
         
         EOD;
-        $contenido .= "<p> si tu no hiciste este pedido, puedes ignorar el mensaje </p>";
-        $contenido .= "</html>";
-
+        // <img src="cid:myimage">
         $mail->Body = $contenido;
+        
         $resultado = $mail->send();
+        
+        if(!$resultado){
+            $resultado = $mail->ErrorInfo;
+        }
         return $resultado;
         
     }

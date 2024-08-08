@@ -19,7 +19,7 @@ function css(done) {
       .pipe(sourcemaps.init())
       .pipe(sass().on('error', sass.logError))
       .pipe(sourcemaps.write('.')) 
-      .pipe(dest('public/build/css'))
+      .pipe(dest('public_html/build/css'))
     done()
   }
 
@@ -29,7 +29,7 @@ function js(done){
     .pipe(sourcemaps.init())
     .pipe(terser())
     .pipe(sourcemaps.write('.'))
-    .pipe(dest('public/build/js'))
+    .pipe(dest('public_html/build/js'))
     done()
 
 }

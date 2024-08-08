@@ -33,6 +33,9 @@ class FormularioPersonalizado extends ActiveRecord{
         if(!$this->contacto){
             self::setAlerta('error','El contacto es obligatorio');
         }
+        if($this->contacto !== 'email' && $this->contacto !== 'telefono'){
+            self::setAlerta('error', 'El contacto es obligatorio');
+        }
         if($this->contacto === 'email' && !$this->email){
             self::setAlerta('error','El email es obligatorio');
         }

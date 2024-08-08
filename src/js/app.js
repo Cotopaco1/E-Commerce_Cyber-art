@@ -890,13 +890,12 @@ function mostrar_instrucciones_despues_de_pago(resultado){
     const div = document.querySelector('main')
     //crear div
     div.innerHTML = `
-    <h1>Gracias por tu compra!</h1>
     <div class="div_instrucciones_pago contenedor">
     <h2>Instrucciones a seguir</h2>
     <div class="contenedorInstrucciones">
-        <p>Hemos enviado un correo electronico con las siguientes instrucciones, porfavor revisar la bandeja de spam: </p>
-        <p>Consigna a nuestra cuenta bancolombia #: <span>412514</span></p>
-        <p>Manda un screenshot a nuestro wp #124123123312 con el pedido # <span>${resultado.pedidoId}</span></p>
+        <p>Hemos enviado un correo electronico con las siguientes instrucciones, porfavor revisar tambien la bandeja de spam: </p>
+        <p>Consigna a nuestra cuenta bancolombia #: <strong>076-379546-57</strong></p>
+        <p>Manda un screenshot a nuestro WhatsApp <strong>+57 321 3458210</strong> con el pedido # <span>${resultado.pedidoId}</span></p>
         <p>Recibe tus productos en la puerta de tu casa...!</p>
     </div>
     <div class="resumenCompra"></div>
@@ -907,6 +906,7 @@ function mostrar_instrucciones_despues_de_pago(resultado){
         <p>Los productos que te mandaremos son:</p>
     </ul>
     <p>La direccion a la que te mandaremos los productos es: <span>${resultado.direccion}</span> </p>
+    <img class="width-auto" src="/img/bancolombia-chico.png" alt="datos transferencia">
     </div>
     `
     const lista_productos = document.querySelector('#lista-productos');
@@ -1160,10 +1160,34 @@ function mostrarCarritoDeCompras(){
         }
         //si el carrito no tiene productos ..
         if(carritoDeCompra.productos.length === 0){
-            const parrafo = document.createElement('P');
+            /* const parrafo = document.createElement('P');
             parrafo.classList.add('parrafoCarritoVacio');
             parrafo.innerHTML = `El carrito esta vacio ... <br /> Lo sentimos selecciona algo para poder seguir con alguna compra ...  😭`
             interfaz.appendChild(parrafo);
+            return */
+            const mainDiv = document.querySelector('.main--carritoCompras')
+            const div = document.createElement('DIV');
+            div.classList.add('carritoVacio')
+
+            const parrafo = document.createElement('P');
+            parrafo.classList.add('carritoVacio__parrafo', 'carritoVacio__parrafo--blanco');
+            parrafo.textContent = 'Todavia no has agregado ningun producto :('
+
+            const icono = document.createElement('IMG');
+            icono.setAttribute('src', '/img/iconos/cart-x.svg')
+            icono.classList.add('carritoVacio__icono', 'carritoVacio__icono--blanco');
+
+            const botonProductos = document.createElement('A');
+            botonProductos.textContent = `Ver Productos`;
+            botonProductos.classList.add('carritoVacio__boton');
+            botonProductos.setAttribute('href', '/productos');
+
+            div.appendChild(parrafo)
+            div.appendChild(icono)
+            div.appendChild(botonProductos);
+            console.log(div);
+            mainDiv.innerHTML = '';
+            mainDiv.appendChild(div);
             return
         }
         //Crear productos e insertar en interfaz..
@@ -1179,23 +1203,23 @@ function mostrarCarritoDeCompras(){
             nombreProducto.classList.add('nombre-producto')
 
             const precioProducto = document.createElement('P');
-            precioProducto.textContent = `$${parseInt(precio).toLocaleString()}`;
+            precioProducto.innerHTML = `$${parseInt(precio).toLocaleString()}<span> x Unidad</span>`;
             
-            precioProducto.classList.add('precio-producto')
+            precioProducto.classList.add('tabla__precioCantidad__texto')
 
             const cantidadProducto = document.createElement('P');
-            cantidadProducto.textContent = `Cantidad: ${cantidad}`;
-            cantidadProducto.classList.add('cantidad_producto');
+            cantidadProducto.textContent = `${cantidad}`;
+            cantidadProducto.classList.add('botonesCantidad__texto');
 
             const botonMas = document.createElement('BUTTON');
-            botonMas.classList.add('botonChico');
+            botonMas.classList.add('botonesCantidad__boton');
             botonMas.textContent = '+';
             botonMas.addEventListener('click', function(){
                 agregarCantidad(producto, true);
             })
 
             const botonMenos = document.createElement('BUTTON');
-            botonMenos.classList.add('botonChicoRojo');
+            botonMenos.classList.add('botonesCantidad__boton');
             botonMenos.textContent = '-';
             botonMenos.addEventListener('click', function(){
                 restarCantidad(producto, true);
@@ -1229,10 +1253,11 @@ function mostrarCarritoDeCompras(){
             divInfo.appendChild(descripcionProducto)
 
             const divBotonesCantidad = document.createElement('DIV');
-            divBotonesCantidad.classList.add('cantidad_producto_div')
+            divBotonesCantidad.classList.add('botonesCantidad')
             divBotonesCantidad.appendChild(botonMas)
+            divBotonesCantidad.appendChild(cantidadProducto)
             divBotonesCantidad.appendChild(botonMenos)
-            divBotonesCantidad.appendChild(iconoDiv);
+            /* divBotonesCantidad.appendChild(iconoDiv); */
 
             const imagenProducto = document.createElement('IMG');
             imagenProducto.src = `/img/productos/${imagen}`;
@@ -1240,41 +1265,66 @@ function mostrarCarritoDeCompras(){
 
             const precioTotal = precio * cantidad;
             const precioTotalParrafo = document.createElement('P')
-            precioTotalParrafo.textContent = `$${precioTotal.toLocaleString()}`
-            precioTotalParrafo.classList.add('precio-total-produto')
+            precioTotalParrafo.innerHTML = `$${precioTotal.toLocaleString()} <span>Total</span> `
+            precioTotalParrafo.classList.add('tabla__precioCantidad__texto')
            
             //Creo row de tabla e ingreso los datos a la fila...
-            const traw = document.createElement('TR');
+            const divProducto = document.createElement('DIV');
+            /* divProducto.classList.add('tabla_DetallesDelProducto'); */
+            divProducto.classList.add('tabla__producto')
+            divProducto.appendChild(imagenProducto)
+            divProducto.appendChild(divInfo);
+
             const tdDetalles = document.createElement('TD');
-            tdDetalles.classList.add('tabla_DetallesDelProducto')
-            tdDetalles.appendChild(imagenProducto)
-            tdDetalles.appendChild(divInfo);
+            tdDetalles.appendChild(divProducto);
 
             const tdCantidad = document.createElement('TD');
-            tdCantidad.appendChild(cantidadProducto);
-            tdCantidad.appendChild(divBotonesCantidad);
+            
+            /* tdCantidad.appendChild(cantidadProducto); */
+            const divCantidadPrecio = document.createElement('DIV');
+            /* divCantidadPrecio.appendChild(tdCantidad); */
+            divCantidadPrecio.classList.add('tabla__precioCantidad')
+
+            
+            
+            divCantidadPrecio.appendChild(precioProducto);
+            divCantidadPrecio.appendChild(precioTotalParrafo);
+            divCantidadPrecio.appendChild(divBotonesCantidad);
+
+            tdCantidad.appendChild(divCantidadPrecio);
             
 
-            const tdPrecio = document.createElement('TD');
-            tdPrecio.appendChild(precioProducto)
+            // const tdPrecio = document.createElement('TD');
+            /* tdPrecio.appendChild(precioProducto) */
 
-            const tdTotal = document.createElement('TD');
-            tdTotal.appendChild(precioTotalParrafo);
+            // const tdTotal = document.createElement('TD');
+            /* tdTotal.appendChild(precioTotalParrafo); */
             
+            const traw = document.createElement('TR');
             traw.appendChild(tdDetalles)
             traw.appendChild(tdCantidad)
-            traw.appendChild(tdPrecio)
-            traw.appendChild(tdTotal)
+            /* traw.appendChild(tdPrecio)
+            traw.appendChild(tdTotal) */
             tbody.appendChild(traw);
             
         })
         //Muestra el montoTotal en carrito de compras.
+        
         const parrafoMontoTotal = document.createElement('P');
-        parrafoMontoTotal.classList.add('parrafoMontoTotal')
+        parrafoMontoTotal.classList.add('parrafoMontoTotal', 'tabla__row__texto', 'tabla__row__texto--right')
         /* montoTotal = sumarProductosCarrito(); */
         parrafoMontoTotal.innerHTML = `<span>Monto Total:</span> $${carritoDeCompra.montoTotal().toLocaleString()} COP`;
-        interfaz.appendChild(parrafoMontoTotal)
+        
+
+        const td = document.createElement('TD');
+        td.appendChild(parrafoMontoTotal);
+        td.setAttribute('colspan', 2)
+        /* interfaz.appendChild(parrafoMontoTotal) */
         //Crea boton para seguir a la siguiente seccion...
+        const traw = document.createElement('TR');
+        traw.appendChild(td)
+        traw.classList.add('tabla__row')
+        tbody.appendChild(traw);
     
 
        /*  const botonSiguiente = document.createElement('BUTTON');
@@ -1593,11 +1643,21 @@ function actualizarInterfazCarritoCompra(){
     const interfaz = document.querySelector('.contenedorCarritoCompras')
     //si el carrito no tiene productos ..
     if(carritoDeCompra.productos.length < 1){
-        
+        const div = document.createElement('DIV');
+        div.classList.add('carritoVacio')
+
         const parrafo = document.createElement('P');
-        parrafo.classList.add('parrafoCarritoVacio');
-        parrafo.textContent = 'El carrito esta vacio ...'
-        interfaz.appendChild(parrafo);
+        parrafo.classList.add('carritoVacio__parrafo');
+        parrafo.textContent = 'Todavia no has agregado ningun producto :('
+
+        const icono = document.createElement('IMG');
+        icono.setAttribute('src', '/img/iconos/cart-x.svg')
+        icono.classList.add('carritoVacio__icono');
+
+        div.appendChild(parrafo)
+        div.appendChild(icono)
+        console.log(div);
+        interfaz.appendChild(div);
         return
     }
         
@@ -1720,7 +1780,7 @@ function crearModal(){
     const modal = document.createElement('DIV');
     modal.classList.add('modal', 'modalCarrito');
     ocultarHeader();
-    modal.addEventListener('click', ocultarModal)
+    modal.addEventListener('mousedown', ocultarModal)
 
     const body = document.querySelector('body');
     const carritoDeCompras = document.createElement('DIV')
@@ -1767,14 +1827,16 @@ function borrarProductoDeCarritoDeCompra(id, objetoProducto){
     })
 }
 function ocultarModal(event){
-    
-const modal = document.querySelector('.modalCarrito')
+    const modal = document.querySelector('.modalCarrito')
     eventClass = event.target.closest('.contenedorCarritoCompras')
     if(!eventClass){
-        mostrarScroll();
-        /* modal.classList.add('ocultar'); */
-        modal.remove();
-        mostrarHeader();
+        const menuCarrito = document.querySelector('.contenedorCarritoCompras')
+        menuCarrito.classList.add('salida_derecha')
+        setTimeout(() => {
+            mostrarScroll();
+            modal.remove();
+            mostrarHeader(); 
+        }, 200);
         
     }
 }
@@ -1808,8 +1870,8 @@ async function enviar_formulario_para_cuadro_personalizado(datos){
     data.append('telefono',datos.telefono);
     data.append('email',datos.email);
     data.append('mensaje',datos.mensaje);
-
-    /* console.log([...data]); */
+    /* console.log([...data]);
+    return; */
     const url = '/api/formulario_cuadro_personalizado';
     const options = {
         method: 'POST',
@@ -1821,11 +1883,16 @@ async function enviar_formulario_para_cuadro_personalizado(datos){
         const respuesta = await resultado.json();
         eliminar_alerta_de_cargando();
         if(respuesta.tipo === 'exito'){
-            mostrar_alerta('exito',respuesta.mensaje,'.informacionPersonal legend');
+            /* mostrar_alerta('exito',respuesta.mensaje,'.formulario__campo'); */
+            Swal.fire({
+                title: "Datos guardados!",
+                text: "Te contactaremos lo mas pronto posible!",
+                icon: "success"
+              });
             document.querySelector('[type="submit"]').remove();
         }else{
             respuesta.alertas.error.forEach(alerta=>{
-                mostrar_alerta('error',alerta,'.informacionPersonal legend')
+                mostrar_alerta('error',alerta,'.formulario__campo')
             })
         }
         console.log(respuesta);
@@ -1910,9 +1977,13 @@ function crear_modal(){
 function evento_eliminar_modal(event, targetClosest){
     eventClass = event.target.closest(targetClosest)
     if(!eventClass){
-        eliminar_modal();
-        mostrarHeader();
-        mostrarScroll();
+        const menu = document.querySelector('.menu');
+        menu.classList.add('fade_out')
+        setTimeout(() => {
+            eliminar_modal();
+            mostrarHeader();
+            mostrarScroll();
+        }, 200);
     }
 }
 //function para eliminar el modal
@@ -1923,9 +1994,13 @@ function eliminar_modal(){
 }
 //Oculta el modal y header presionando afuera del menu...
 function eliminar_modal_and_mostrar_header(){
-    eliminar_modal();
-    mostrarHeader();
-    mostrarScroll();
+    const menu = document.querySelector('.menu');
+    menu.classList.add('fade_out')
+    setTimeout(() => {
+        eliminar_modal();
+        mostrarHeader();
+        mostrarScroll();
+    }, 200);
 }
 //Subrayar pagina actual
 function subrayarPaginaActual(){
@@ -1986,14 +2061,14 @@ function mostrar (id){
     div = document.querySelector('.contactoDiv');
     if(id === 'byTelefono'){
         div.innerHTML = `
-        <label for="telefono">Numero de Celular</label>
-        <input id="telefono" type="tel" placeholder="Tu numero de celular" name="telefono">
+        <label for="telefono" class="formulario__label">Numero de Celular</label>
+        <input class="formulario__input" id="telefono" type="tel" placeholder="Numero de celular" name="telefono">
         `
     }
     if(id === 'byEmail'){
         div.innerHTML = `
-        <label for="email">Correo</label>
-        <input id="email" type="email" placeholder="Tu correo electronico" name="email">
+        <label for="email" class="formulario__label">Correo</label>
+        <input class="formulario__input" id="email" type="email" placeholder="Correo electronico" name="email">
         `
     }
 

@@ -49,3 +49,88 @@
     gap: $espaciado;
     grid-template-columns: repeat($columnas, 1fr);
 }
+
+@mixin titulo{
+    font-family: v.$fuente_principal_2;
+    font-size: 3.5rem;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+@mixin campo_formulario{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    @include tablet{
+        flex-direction: row;
+        gap: 2rem;
+    }
+    margin: 2rem 0;
+    &--column{
+        flex-direction: column;
+        gap: 0;
+    }
+    &--row{
+        flex-direction: row;
+    }
+    &--gap{
+        gap: 1rem
+    }
+}
+@mixin label_formulario{
+    color: #102272;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: inline-block;
+    &--block{
+        display: block;
+    }
+}
+@mixin input_formulario{
+    border: 1px solid lighten(v.$gris-tw, 20);
+        padding: 1.5rem 1rem;
+        border-radius: 1rem;
+        font-size: 1.4rem;
+        width: 100%;
+        @include tablet{
+            font-size: 1.8rem;
+        }
+        &::placeholder{
+            font-size: 1.4rem;
+            @include tablet{
+                font-size: 1.8rem;
+            }
+        }
+}
+@mixin submit_formulario{
+    @include boton(v.$negro-tw, v.$blanco-tw);
+    margin: 3rem 0 0 0 ;
+    border-radius: .5rem;
+    max-width: 20rem;
+    align-self: flex-end;
+    &:hover{
+        
+        /* background-color: lighten(v.$negro-tw, 30%) */
+        background-color: darken(v.$blanco-tw, 30%);
+        color: v.$negro-tw;
+        
+    }
+}
+@mixin textarea_formulario{
+    display: block;
+    width: 100%;
+    font-size: 1.4rem;
+    padding: 1rem;
+    border: none;
+    border: 1px solid v.$gris-tw;
+    @include tablet{
+        font-size: 1.8rem;
+    }
+    &::placeholder{
+        font-size: 1.4rem;
+        @include tablet{
+            font-size: 1.8rem;
+        }
+    }
+}

@@ -1,53 +1,52 @@
 <!-- <div id="carritoDeCompras">
     <div class="contenedorCarritoCompras"></div>
 </div> -->
-<h1 class="nombre-pagina">Cuadros personalizados</h1>
+<h1 class="nombre-pagina">Decoraciones Personalizadas</h1>
 <section class="contenedor cuadros section" id="cuadros">
 </section>
 <div class="center-content">
     <a href="/productos" class="boton btn-ver-todos"> Ver todos los productos</a>
-
 </div>
 <section class="contenedorContacto section">
-    <h2>Volvemos tu idea/Recuerdo en un cuadro personalizado</h2>
+    <!-- <h2>Volvemos tu idea/Recuerdo en un cuadro personalizado</h2> -->
     <div class="contenedor contacto">
-    <div class="imagenContacto">
-        <img src="luffy-recortado.webp" alt="imagenContacto">
+    <div class="contacto__div">
+        <!-- <img src="luffy-recortado.webp" alt="imagenContacto"> -->
+         <h2 class="contacto__titulo">Dejanos tus datos</h2>
+         <p class="contacto__texto">Haremos un cuadro con tu idea, a tu medida y con la imagen que quieras, dejanos tus datos y nos contactaremos contigo</p>
     </div>
-    <form action="/" class="formulario" id="formulario_informacion_usuario">
-        <fieldset class="informacionPersonal">
-            <legend>Informacion personal</legend>
-            <div class="contenedorNombre">
+    <!-- Inicia formulario de contacto... -->
+    <div class="contacto__div">
+        <form action="/" class="formulario" id="formulario_informacion_usuario">
+            <div class="formulario__campo">
                 <div>
-                    <label for="nombre">Nombre</label>
-                    <input id="nombre" type="text" placeholder="Tu nombre" name="nombre">
+                    <label class="formulario__label" for="nombre">Nombre</label>
+                    <input class="formulario__input" id="nombre" type="text" placeholder="Nombre" name="nombre">
                 </div>
                 <div>
-                    <label for="apellido">apellido</label>
-                    <input id="apellido" type="text" placeholder="Tu apellido" name="apellido">
+                <label class="formulario__label" for="apellido">apellido</label>
+                    <input class="formulario__input" id="apellido" type="text" placeholder="Apellido" name="apellido">
 
                 </div>
             </div>
-        </fieldset>
-        <fieldset class="contactoField">
-            <legend>Contacto</legend>
-            <p>Como desea ser contactado?</p>
-            <div class="contactoRadio field">
-                <label for="byEmail">Correo Electronico</label>
-                <input id="byEmail" type="radio" name="contacto" value="email">
-                <label for="byTelefono">Telefono</label>
-                <input id="byTelefono"  name="contacto" type="radio" value="telefono">
+            <p class="formulario__texto">Como desea ser contactado?</p>
+            <div class="formulario__campo formulario__campo--row">
+                <label class="formulario__label" for="byEmail">Correo Electronico</label>
+                <input class="formulario__input" id="byEmail" type="radio" name="contacto" value="email">
+                <label class="formulario__label" for="byTelefono">Telefono</label>
+                <input class="formulario__input" id="byTelefono"  name="contacto" type="radio" value="telefono">
             </div>
-            <div class="contactoDiv field">  </div>
-             
-            <div class="field fieldMensaje">
-                <label for="mensaje">Tu mensaje</label>
-                <textarea name="mensaje" id="mensaje"></textarea>
-            </div>
-            <input type="submit" class="boton">
+            <div class="contactoDiv formulario__campo formulario__campo--column">  </div>
+                
+            
+            <label class="formulario__label formulario__label--block" for="mensaje">Tu mensaje</label>
+            <textarea name="mensaje" id="mensaje" class="formulario__textarea"></textarea>
+        
+            <input class="formulario__submit" type="submit" class="boton" value="Enviar">
 
-        </fieldset>
-    </form>
+        
+        </form>
+    </div>
 </section>
 <!-- <section class="contenedor caracteristicas section">
     <div class="caracteristica">

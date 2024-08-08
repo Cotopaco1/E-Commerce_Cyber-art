@@ -136,6 +136,10 @@ textarea {
   align-items: center;
 }
 
+.width-auto {
+  width: auto;
+}
+
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 /* Document
    ========================================================================== */
@@ -446,7 +450,8 @@ template {
  } */
 /* Tipografia */
 h1, h2, h3 {
-  font-family: "Exo 2", sans-serif;
+  /* font-family: "Exo 2", sans-serif; */
+  font-family: "Montserrat", sans-serif;
   margin: 0 0 2.5rem 0;
   font-weight: 900;
   color: #0a0a0a;
@@ -467,14 +472,16 @@ h3 {
 }
 
 p {
-  font-family: "Exo 2", sans-serif;
+  /* font-family: "Exo 2", sans-serif; */
+  font-family: "Montserrat", sans-serif;
   color: #0a0a0a;
   font-size: 2rem;
 }
 
 legend,
 span, a, button {
-  font-family: "Exo 2", sans-serif;
+  /* font-family: "Exo 2", sans-serif; */
+  font-family: "Montserrat", sans-serif;
 }
 
 label {
@@ -501,14 +508,55 @@ label {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  animation: menuAnimacion 0.2s linear;
+}
+.modal .fade_out {
+  animation: fade_out 0.2s linear forwards;
+}
+.modal .salida_derecha {
+  animation: salida_derecha 0.2s linear;
 }
 
+@keyframes menuAnimacion {
+  from {
+    transform: translate(-40rem);
+  }
+  to {
+    transform: translate(0);
+  }
+}
+@keyframes fade_out {
+  0% {
+    transform: translate(0);
+  }
+  100% {
+    transform: translate(-40rem);
+  }
+}
+@keyframes salida_derecha {
+  0% {
+    transform: translate(0);
+  }
+  100% {
+    transform: translate(50rem);
+  }
+}
+@keyframes entrada_derecha {
+  0% {
+    transform: translate(50rem);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
 .menuHeader .icono {
   color: white;
   background-color: rgba(0, 0, 0, 0.58);
   padding: 2rem 1.5rem;
   border-radius: 50%;
   cursor: pointer;
+  margin-left: 2rem;
+  margin-bottom: 4rem;
 }
 
 .menuCampo {
@@ -532,6 +580,7 @@ label {
   position: relative;
   width: 100%;
   height: 100%;
+  animation: entrada_derecha 0.2s linear;
 }
 .modalCarrito .contenedorCarritoCompras {
   width: 80%;
@@ -583,6 +632,58 @@ label {
 .modal_contenido {
   width: 100%;
   height: 100%;
+}
+
+.carritoVacio {
+  font-family: "Montserrat", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin: 0 auto;
+}
+.carritoVacio__parrafo {
+  font-weight: 800;
+}
+.carritoVacio__parrafo--blanco {
+  color: #fafafa;
+  font-size: 3rem;
+}
+.carritoVacio__icono {
+  max-width: 8rem;
+}
+.carritoVacio__icono--blanco {
+  filter: brightness(0) invert(1);
+}
+.carritoVacio__boton {
+  background-color: #FFFFFF;
+  padding: 1.5rem 4rem;
+  color: #1a1b15;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+  display: inline-block;
+  font-weight: 700;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 5rem 0;
+  width: auto;
+  margin: 3rem 0 0 0;
+  border-radius: 0.5rem;
+}
+@media (min-width: 768px) {
+  .carritoVacio__boton {
+    width: auto;
+  }
+}
+.carritoVacio__boton:hover {
+  background-color: #e6e6e6;
+  cursor: pointer;
 }
 
 .contenedor_alertas {
@@ -925,17 +1026,165 @@ label {
 
 .btn-ver-todos {
   margin: 0 0 4rem 0;
-  max-width: 40rem;
+  font-size: 1.5rem;
+  max-width: 27rem;
+}
+@media (min-width: 480px) {
+  .btn-ver-todos {
+    max-width: 40rem;
+  }
+}
+
+.formulario {
+  background-color: #fafafa;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  margin: 4rem auto;
+  font-family: "Montserrat", sans-serif;
+  max-width: 50rem;
+  display: flex;
+  flex-direction: column;
+}
+.formulario--71rem {
+  max-width: 71rem;
+}
+.formulario__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+@media (min-width: 768px) {
+  .formulario__campo {
+    flex-direction: row;
+    gap: 2rem;
+  }
+}
+.formulario__campo--column {
+  flex-direction: column;
+  gap: 0;
+}
+.formulario__campo--row {
+  flex-direction: row;
+}
+.formulario__campo--gap {
+  gap: 1rem;
+}
+.formulario__label {
+  color: #102272;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+.formulario__label--block {
+  display: block;
+}
+.formulario__texto {
+  color: #102272;
+  font-size: 1.8rem;
+  margin: 0;
+}
+.formulario__textarea {
+  display: block;
+  width: 100%;
+  font-size: 1.4rem;
+  padding: 1rem;
+  border: none;
+  border: 1px solid #a3a3a3;
+}
+@media (min-width: 768px) {
+  .formulario__textarea {
+    font-size: 1.8rem;
+  }
+}
+.formulario__textarea::placeholder {
+  font-size: 1.4rem;
+}
+@media (min-width: 768px) {
+  .formulario__textarea::placeholder {
+    font-size: 1.8rem;
+  }
+}
+.formulario__select {
+  padding: 1rem;
+  font-size: 1.4rem;
+  border-radius: 0.5rem;
+}
+@media (min-width: 768px) {
+  .formulario__select {
+    font-size: 1.8rem;
+  }
+}
+.formulario__select::placeholder {
+  font-size: 1.4rem;
+}
+@media (min-width: 768px) {
+  .formulario__select::placeholder {
+    font-size: 1.8rem;
+  }
+}
+.formulario__input:not([type=submit]) {
+  border: 1px solid #d6d6d6;
+  padding: 1.5rem 1rem;
+  border-radius: 1rem;
+  font-size: 1.4rem;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .formulario__input:not([type=submit]) {
+    font-size: 1.8rem;
+  }
+}
+.formulario__input:not([type=submit])::placeholder {
+  font-size: 1.4rem;
+}
+@media (min-width: 768px) {
+  .formulario__input:not([type=submit])::placeholder {
+    font-size: 1.8rem;
+  }
+}
+.formulario__submit {
+  background-color: #0a0a0a;
+  padding: 1.5rem 4rem;
+  color: #fafafa;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+  display: inline-block;
+  font-weight: 700;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 5rem 0;
+  margin: 3rem 0 0 0;
+  border-radius: 0.5rem;
+  max-width: 20rem;
+  align-self: flex-end;
+}
+@media (min-width: 768px) {
+  .formulario__submit {
+    width: auto;
+  }
+}
+.formulario__submit:hover {
+  background-color: black;
+  cursor: pointer;
+}
+.formulario__submit:hover {
+  /* background-color: lighten(v.$negro-tw, 30%) */
+  background-color: #aeaeae;
+  color: #0a0a0a;
 }
 
 .cuadros {
   display: grid;
   gap: 2rem;
-}
-@media (min-width: 480px) {
-  .cuadros {
-    grid-template-columns: 1fr 1fr;
-  }
+  grid-template-columns: 1fr 1fr;
 }
 @media (min-width: 768px) {
   .cuadros {
@@ -954,18 +1203,25 @@ label {
 .cuadro-info p {
   margin: 1rem 0;
 }
+.cuadro-info .precio-cuadro {
+  font-weight: 800;
+  color: #329f00;
+}
 
 .imagenCuadroDiv {
   background-position: center center;
   background-size: cover;
   width: 100%;
   height: 60rem;
-  /* height: 70rem; */
+  max-height: 27rem;
+  border-radius: 0.5rem;
   position: relative;
 }
 @media (min-width: 768px) {
   .imagenCuadroDiv {
-    height: 40rem;
+    max-height: unset;
+    height: unset;
+    aspect-ratio: 3/4;
   }
 }
 .imagenCuadroDiv:hover {
@@ -973,6 +1229,142 @@ label {
 }
 .imagenCuadroDiv p {
   margin: 0;
+}
+
+/* .formulario_carrito_de_compras{
+    background-color: v.$blanco-tw;
+    margin-bottom: 0;
+    p,label,h1,h2{
+        color: v.$negro-tw;
+    }
+}
+.form{
+    padding: 3rem;
+
+}
+.campoFormulario{
+    display: grid;
+    margin-bottom: calc(v.$separacion / 2);
+    .label{
+        margin: calc(v.$separacion / 4) 0;
+        font-weight: v.$bold;
+        &:first-of-type{
+            margin-top: 0;
+        }
+    }
+    input,
+    .textArea,
+    .select{
+        padding: 1rem;
+        font-size: 2rem;
+        &::placeholder{
+            font-size: 2rem;
+        }
+    }
+    .select{
+
+    }
+    .label_enviar_direccion_diferente{
+        display: flex;
+        gap: 2rem;
+        input{
+            width: 3rem;
+        }
+    }
+}
+.campo_nombre_and_apellido{
+
+}
+ */
+.tabla {
+  min-width: unset;
+  max-width: 78rem;
+  border-spacing: 0 2rem;
+  padding: 0 2rem;
+  font-family: "Montserrat", sans-serif;
+  background-color: #fafafa;
+  margin: 1rem auto;
+}
+.tabla__head {
+  background-color: unset;
+}
+.tabla__head__row__th {
+  text-align: left;
+}
+.tabla__row__texto--right {
+  text-align: right;
+}
+.tabla__producto {
+  max-width: 37rem;
+  display: flex;
+  gap: 4rem;
+  flex-direction: column;
+  border-bottom: 2px solid #a3a3a3;
+}
+@media (min-width: 768px) {
+  .tabla__producto {
+    flex-direction: row;
+    padding-bottom: 2rem;
+  }
+}
+.tabla__producto .infoProductoCarrito {
+  max-width: 30rem;
+}
+.tabla__producto .infoProductoCarrito .nombre-producto {
+  font-weight: bold;
+}
+.tabla__producto .infoProductoCarrito .descripcion-producto {
+  font-size: 1.5rem;
+}
+.tabla__producto .infoProductoCarrito p {
+  color: #1a1b15;
+  text-align: left;
+}
+.tabla__producto .infoProductoCarrito p span {
+  color: #4A42AE;
+  font-weight: bolder;
+}
+.tabla__precioCantidad {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.tabla__precioCantidad__texto {
+  font-size: 1.4rem;
+  color: #0a0a0a;
+}
+.tabla__precioCantidad__texto span {
+  font-weight: 600;
+}
+
+/* Prueba */
+/* Prueba termina */
+.botonesCantidad {
+  display: flex;
+  width: min-content;
+  border: 2px solid #bc9ca4;
+  border-collapse: collapse;
+  border-radius: 0.5rem;
+}
+.botonesCantidad__texto {
+  margin: 0;
+  border-left: 2px solid #bc9ca4;
+  border-right: 2px solid #bc9ca4;
+  font-size: 14px;
+  text-align: center;
+  padding: 5px;
+}
+.botonesCantidad__boton {
+  color: #a3a3a3;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 23px;
+  padding: 0px 5px;
+}
+.botonesCantidad__boton:hover {
+  cursor: pointer;
+  background-color: #d6d6d6;
 }
 
 .botonAgregarCarrito2 {
@@ -985,14 +1377,17 @@ label {
 
 /* contacto index. */
 .contenedorContacto {
-  background-color: #21174B;
-  padding-top: 4rem;
-}
-.contenedorContacto h2, .contenedorContacto legend, .contenedorContacto p, .contenedorContacto h1 {
-  color: #fafafa;
-}
-.contenedorContacto .formulario input:not([type=submit]), .contenedorContacto .formulario textarea {
-  font-size: 1.5rem;
+  /* background-color: #21174B; */
+  /* background-image: -webkit-image-set(
+      url('/img/FondoCyberArt.webp') type('image/webp'),
+      url('/img/FondoCyberArt.jpg') type('image/jpeg'),
+  ); */
+  background-image: image-set(url("/img/imagenFondoFormulario.jpg") type("image/jpeg"));
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 80rem;
+  display: flex;
 }
 
 .contacto {
@@ -1003,20 +1398,34 @@ label {
     grid-template-columns: 1fr 1fr;
   }
 }
-.contacto input {
-  border: none;
-  padding: 1rem;
-  border-radius: 1rem;
+.contacto__div {
   width: 100%;
-  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.contacto input::placeholder {
-  font-size: 1.5rem;
+.contacto__titulo {
+  color: #fafafa;
+  margin-top: 4rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 3.5rem;
+  text-transform: uppercase;
+  font-weight: 600;
 }
-.contacto label {
-  font-weight: bolder;
-  color: #6AAFF2;
-  margin-bottom: 2rem;
+@media (min-width: 768px) {
+  .contacto__titulo {
+    text-align: left;
+  }
+}
+.contacto__texto {
+  color: #fafafa;
+  text-align: center;
+  margin: 0;
+}
+@media (min-width: 768px) {
+  .contacto__texto {
+    text-align: left;
+  }
 }
 
 .imagenContacto img {
@@ -1099,7 +1508,12 @@ label {
   padding: 1rem 0;
 }
 .headerContenido .logo {
-  max-width: 7rem;
+  max-width: 4rem;
+}
+@media (min-width: 480px) {
+  .headerContenido .logo {
+    max-width: 5rem;
+  }
 }
 .headerContenido .buttonsHeader {
   display: flex;
@@ -1117,7 +1531,7 @@ label {
 }
 
 .hamburgerMenu {
-  max-width: 4rem;
+  max-width: 3rem;
 }
 .hamburgerMenu:hover {
   cursor: pointer;
@@ -1195,9 +1609,17 @@ label {
   align-self: center;
 }
 
+.tabs {
+  max-width: 110rem;
+  width: 95%;
+  margin: 1rem auto;
+}
 @media (min-width: 768px) {
   .tabs {
     display: flex;
+    margin: 0 auto;
+    gap: 1rem;
+    padding: 1rem;
   }
   .tabs button {
     margin-right: 1rem;
@@ -1214,10 +1636,12 @@ label {
   padding: 2rem;
   display: block;
   width: 100%;
-  margin-bottom: 2rem;
+  margin: 0 auto 2rem auto;
   text-transform: uppercase;
   transition: background-color 300ms ease;
   font-size: 1.5rem;
+  max-width: 40rem;
+  border-radius: 0.5rem;
 }
 .tabs button:hover {
   cursor: pointer;
@@ -1245,8 +1669,8 @@ label {
 .resumen_carrito_compras {
   width: 95%;
   margin: 0 auto;
-  background-color: #e1e1e1;
-  overflow: scroll;
+  /* background-color: v.$gris;
+  overflow: scroll; */
 }
 .resumen_carrito_compras .contenedorProductosFormulario .parrafoCarritoVacio {
   color: #1a1b15;
@@ -1352,55 +1776,47 @@ table a {
 }
 
 .formulario_carrito_de_compras {
+  width: 95%;
+  margin: 0 auto;
+}
+@media (min-width: 768px) {
+  .formulario_carrito_de_compras {
+    width: 100%;
+  }
+}
+.formulario_carrito_de_compras__texto {
+  color: #fafafa;
+}
+
+.main--carritoCompras {
+  background-image: url("/img/FondoCyberArt.webp");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 67rem;
+  padding-top: 1px;
+}
+
+.metodo_de_pago {
   background-color: #fafafa;
-  margin-bottom: 0;
-}
-.formulario_carrito_de_compras p, .formulario_carrito_de_compras label, .formulario_carrito_de_compras h1, .formulario_carrito_de_compras h2 {
-  color: #0a0a0a;
-}
-
-.form {
-  padding: 3rem;
-}
-
-.campoFormulario {
-  display: grid;
-  margin-bottom: 2.5rem;
-}
-.campoFormulario .label {
-  margin: 1.25rem 0;
-  font-weight: 700;
-}
-.campoFormulario .label:first-of-type {
-  margin-top: 0;
-}
-.campoFormulario input,
-.campoFormulario .textArea,
-.campoFormulario .select {
-  padding: 1rem;
-  font-size: 2rem;
-}
-.campoFormulario input::placeholder,
-.campoFormulario .textArea::placeholder,
-.campoFormulario .select::placeholder {
-  font-size: 2rem;
-}
-.campoFormulario .label_enviar_direccion_diferente {
-  display: flex;
-  gap: 2rem;
-}
-.campoFormulario .label_enviar_direccion_diferente input {
-  width: 3rem;
+  font-family: "Montserrat", sans-serif;
+  margin-bottom: 2rem !important;
+  margin-top: 2rem !important;
+  border-radius: 0.5rem;
+  padding-top: 2rem;
 }
 
 .card {
-  background-color: #e1e1e1;
   padding: 2rem;
 }
 .card .contenedor_metodo_pago {
-  border: 1px solid black;
+  border: 1px solid #a3a3a3;
+  border-radius: 0.5rem;
   padding: 2rem;
   margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
 .card .contenedor_metodo_pago .input_radio_metodo_pago {
   width: 3.1rem;
@@ -1414,13 +1830,15 @@ table a {
 .contenedor_crear_pedido .boton_crear_pedido {
   display: block;
   width: 100%;
-  margin-bottom: 2rem;
+  max-width: 35rem;
+  margin: 0 auto;
 }
 .contenedor_crear_pedido p {
   color: #1a1b15;
 }
 
 .div_instrucciones_pago {
+  margin-top: 4rem;
   background-color: #e1e1e1;
   padding: 2rem;
 }
@@ -1480,6 +1898,11 @@ table a {
 .contenedor-sm.producto_div .info .acciones {
   display: flex;
   justify-content: space-between;
+}
+@media (min-width: 768px) {
+  .contenedor-sm.producto_div .info .acciones {
+    gap: 2rem;
+  }
 }
 
 .producto_informacion {

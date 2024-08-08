@@ -1,0 +1,109 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.tabla{
+    min-width: unset;
+    max-width: 78rem;
+    border-spacing: 0 2rem;
+    padding: 0 2rem;
+    font-family: v.$fuente_principal_2;
+    background-color: v.$blanco-tw;
+    margin: 1rem auto;
+    &__head{
+        background-color: unset;
+        &__row{
+            &__th{
+                text-align: left;
+            }
+        }
+
+    }
+    &__row{
+        &__texto{
+            &--right{
+                text-align: right;
+            }
+        }
+    }
+    &__body{
+
+    }
+    &__producto{
+        max-width: 37rem;
+        display: flex;
+        gap: 4rem;
+        flex-direction: column;
+        border-bottom: 2px solid v.$gris-tw;
+        @include m.tablet{
+            flex-direction: row;
+            padding-bottom: 2rem;
+        }
+        .infoProductoCarrito{
+            max-width: 30rem;
+            .nombre-producto{
+                font-weight: bold;
+            }
+            .descripcion-producto{
+                font-size: 1.5rem;
+            }
+            p{
+                color: v.$negro;
+                text-align: left;
+                span{
+                    color: v.$azulMedio;
+                    font-weight: bolder;
+                }
+            }
+            
+
+        }
+    }
+    &__precioCantidad{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        &__texto{
+            font-size: 1.4rem;
+            color: v.$negro-tw;
+            span{
+                font-weight: 600;
+            }
+        }
+    }
+    
+}
+/* Prueba */
+.tabla_DetallesDelProducto{
+    
+}
+
+/* Prueba termina */
+
+.botonesCantidad{
+    display: flex;
+    width: min-content;
+    border: 2px solid darken(v.$gris_admin, 20);
+    border-collapse: collapse;
+    border-radius: .5rem;
+    &__texto{
+        margin: 0;
+        border-left: 2px solid darken(v.$gris_admin, 20);
+        border-right: 2px solid darken(v.$gris_admin, 20);
+        font-size: 14px;
+        text-align: center;
+        padding: 5px;
+        
+    }
+    &__boton{
+        color: v.$gris-tw;
+        border: none;
+        border-radius: .5rem;
+        font-size: 23px;
+        padding: 0px 5px;
+        &:hover{
+            cursor: pointer;
+            background-color: lighten(v.$gris-tw, $amount: 20);
+        }
+    }
+}

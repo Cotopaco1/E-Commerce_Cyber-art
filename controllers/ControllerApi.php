@@ -152,7 +152,7 @@ class ControllerApi{
                         $productos
                         );
                          $_SESSION['productos'] = [];
-
+                        
                         $respuesta = [
                             'exito'=> 'se ha guardado todo en la DB',
                             'pedidoId'=> $pedidosId,

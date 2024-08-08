@@ -1,0 +1,51 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.formulario{
+    background-color: v.$blanco-tw;
+    padding: 1rem 2rem;
+    border-radius: .5rem;
+    margin: 4rem auto;
+    font-family: v.$fuente_principal_2;
+    max-width: 50rem;
+    display: flex;
+    flex-direction: column;
+    &--71rem{
+        max-width: 71rem;
+    }
+    &__campo{
+        @include m.campo_formulario;
+    }
+    &__label{
+       @include m.label_formulario;
+    }
+    &__texto{
+        color: #102272;
+        font-size: 1.8rem;
+        margin: 0;
+    }
+    &__textarea{
+        @include m.textarea_formulario;
+    }
+    &__select{
+        padding: 1rem;
+        font-size: 1.4rem;
+        border-radius: .5rem;
+        @include m.tablet{
+            font-size: 1.8rem;
+        }
+        &::placeholder{
+            font-size: 1.4rem;
+            @include m.tablet{
+                font-size: 1.8rem;
+            }
+            
+        }
+    }
+    &__input:not([type=submit]){
+        @include m.input_formulario;
+    }
+    &__submit{
+        @include m.submit_formulario;
+    }
+}

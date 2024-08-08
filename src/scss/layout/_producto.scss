@@ -35,6 +35,9 @@
         .acciones{
             display: flex;
             justify-content: space-between;
+            @include m.tablet{
+                gap: 2rem;
+            }
         }
     }    
 }
