@@ -4,6 +4,7 @@ require '../includes/app.php';
 
 use Controller\ControllerAdmin;
 use Controller\ControllerApi;
+use Controller\ControllerLandingPages;
 use Controller\ControllerLogin;
 use Controller\ControllerPaginas;
 use MVC\Router;
@@ -16,6 +17,10 @@ $router->get('/carrito_de_compras', [ControllerPaginas::class, 'carrito_de_compr
 $router->post('/carrito_de_compras', [ControllerPaginas::class, 'carrito_de_compras']);
 $router->get('/producto', [ControllerPaginas::class, 'producto']);
 $router->get('/productos', [ControllerPaginas::class, 'productos']);
+
+//LandingPages
+$router->get('/rickAndMorty', [ControllerLandingPages::class, 'rickAndMorty']);
+
 
 
 //Login

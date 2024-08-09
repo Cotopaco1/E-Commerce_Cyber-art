@@ -1,0 +1,10 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.body_lp{
+    background-color: v.$blanco-tw;
+}
+
+.main_lp{
+    background-color: v.$blanco-tw;
+}

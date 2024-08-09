@@ -1,0 +1,118 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.section_lp{
+    width: 95%;
+    margin: 1rem auto;
+    text-align: center;
+    &__contenedorImagen{
+        margin: 1rem 0;
+    }
+    &__imagen{
+        border-radius: 1rem;
+        box-shadow: 6px 10px 15px 0px rgba(0,0,0,0.54);
+    }
+    &__titulo{
+        font-size: 3rem;
+        text-transform: uppercase;
+        &--blanco{
+            color: v.$blanco;
+        }
+    }
+    &__subtitulo{
+        font-size: 2.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+    &__texto{
+        font-weight: 500;
+        span{
+            font-weight: 700;
+            &.rojo{
+                color: v.$rojo;
+            }
+        }
+        &--fw700{
+            font-weight: 700;
+        }
+        &--subrayado{
+            background-color: v.$azul;
+            color: v.$blanco;
+            font-size: 2.4rem;
+            font-weight: 800;
+            border-radius: 1rem;
+            padding: 1rem 0;
+            text-transform: uppercase;
+        }
+        &--resaltado{
+            font-weight: 700;
+        }
+        &--sm{
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+    }
+    &__ratio{
+
+    }
+    &__contenedorVerde{
+        background-color: v.$verde;
+        padding: 1.5rem 0;
+        border-radius: 1rem;
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        cursor: pointer;
+        h3{
+            margin: 0;
+        }
+        i,input{
+            color: v.$blanco;
+            font-size: 3rem;
+        }
+        input{
+            background-color: transparent;
+            border: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            @include m.textoResponsivo(2rem, 3rem);
+        }
+    }
+    &__contenedorPrecios{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: -3rem;
+        @media (max-width: v.$telefono) {
+            flex-direction: column;
+        }
+    }
+    &__precioAnterior{
+        color: v.$gris-tw;
+        font-size: 3rem;
+        @include m.textoResponsivo(2rem, 3rem);
+        text-decoration: line-through;
+        font-weight: 800;
+        margin: 0;
+    }
+    &__precioRebaja{
+        color: v.$verde;
+        font-size: 6rem;
+        font-weight: 800;
+        margin: 0;
+        @include m.textoResponsivo(5rem, 7rem);
+
+    }
+    &__video{
+        max-width: 60rem;
+        width: 100%;
+        border-radius: 1rem;
+        object-fit: cover;
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px 0px;
+        /* width: clamp(10rem 100% 30rem); */
+    }
+
+
+}

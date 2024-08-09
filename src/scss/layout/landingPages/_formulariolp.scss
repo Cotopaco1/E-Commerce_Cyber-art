@@ -1,0 +1,64 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.formulario_lp{
+    background-color: v.$blanco-tw;
+    padding: 1rem;
+    border-radius: .5rem;
+    margin: 4rem auto;
+    font-family: v.$fuente_principal_2;
+    max-width: 50rem;
+    display: flex;
+    flex-direction: column;
+    @include m.shadow;
+    border-radius: 1rem;
+    &--71rem{
+        max-width: 71rem;
+    }
+    &__campo{
+        @include m.campo_formulario;
+        &{
+            text-align: left;
+            margin: 1rem 0;
+        }
+    }
+    &__label{
+       @include m.label_formulario;
+       &{
+        color: v.$negro;
+        margin: 0;
+       }
+    }
+    &__texto{
+        color: #102272;
+        font-size: 1.8rem;
+        margin: 0;
+    }
+    &__textarea{
+        @include m.textarea_formulario;
+    }
+    &__select{
+        padding: 1rem;
+        font-size: 1.4rem;
+        border-radius: .5rem;
+        border-color: lighten(v.$gris-tw, 20);
+        @include m.shadow;
+        @include m.tablet{
+            font-size: 1.8rem;
+        }
+        &::placeholder{
+            font-size: 1.4rem;
+            @include m.tablet{
+                font-size: 1.8rem;
+            }
+            
+        }
+    }
+    &__input:not([type=submit]){
+        @include m.input_formulario;
+        @include m.shadow;
+    }
+    &__submit{
+        @include m.submit_formulario;
+    }
+}

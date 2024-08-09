@@ -1,0 +1,26 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.caracteristicas_lp{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    &__contenedor{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    &__imagen{
+        width: 10rem;
+    }
+    &__texto{
+        color: v.$naranja_admin;
+        font-weight: 800;
+        text-transform: uppercase;
+        margin: 0;
+        font-size: 2rem;
+        line-height: 0.8;
+    }
+}
