@@ -17,7 +17,7 @@
         </div>
         <div class="section_lp__contenedorVerde quiero_comprar" id="quiero_comprar">
             <i class="fa-solid fa-basket-shopping"></i>
-            <h3 class="section_lp__titulo section_lp__titulo--blanco ">Comprar ahora</h3>
+            <h3 class="section_lp__titulo section_lp__titulo--blanco texto_responsive">Comprar ahora</h3>
         </div>
         <p class="section_lp__texto section_lp__texto--resaltado"> Ordena ahora y paga en casa!🏠</p>
         <div class="caracteristicas_lp">
@@ -34,7 +34,7 @@
                 <p class="caracteristicas_lp__texto">Producto garantizado</p>
             </div>
         </div>
-        <p class="section_lp__texto section_lp__texto--sm">Compra ahora y recibe este producto en un rango de <span>3 - 5 días</span></p>
+        <p class="section_lp__texto section_lp__texto--sm">Compra ahora y recibe este producto en un rango de <span>3 - 5 días Habiles</span></p>
         <video loading="lazy" width="400" height="700" class="section_lp__video" autoplay muted loop>
             <source src="videos/rick-2.mp4" type="video/mp4">
         </video>
@@ -44,6 +44,7 @@
             <div class="section_lp__imagen--desvanecida">
                 <img loading="lazy" src="img/landingPage/super-oferta3.png" alt="">
             </div>
+            <p class="section_lp__texto section_lp__texto--fw700">Completa el siguiente formulario para finalizar tu compra</p>
             <div class="formulario_lp__campo">
                 <label for="nombre" class="formulario_lp__label">Nombre <span>*</span></label>
                 <input type="text" class="formulario_lp__input" id="nombre" name="nombre">

@@ -155,7 +155,7 @@
     box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px 0px;
 }
 @mixin textoResponsivo($min,$maximo){
-    font-size: clamp($min, -0.8rem + 10vw ,$maximo);
+    font-size: clamp($min, -0.8rem + 10vw ,$maximo)!important;
 }
 @mixin textoResponsivoIdeal($min,$ideal,$maximo){
     font-size: clamp($min, $ideal,$maximo);

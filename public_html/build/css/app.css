@@ -159,6 +159,15 @@ textarea {
   color: #5b5bd9;
 }
 
+.display_inline-block {
+  display: inline-block;
+}
+
+.texto_responsive {
+  min-width: max-content;
+  font-size: clamp(2rem, -0.8rem + 10vw, 3rem) !important;
+}
+
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 /* Document
    ========================================================================== */
@@ -2562,7 +2571,7 @@ table a {
 }
 .section_lp__contenedorVerde {
   background-color: #329f00;
-  padding: 1.5rem 0;
+  padding: 1.5rem 2rem;
   border-radius: 1rem;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px 0px;
   display: flex;
@@ -2585,7 +2594,7 @@ table a {
   border: none;
   font-weight: 800;
   text-transform: uppercase;
-  font-size: clamp(2rem, -0.8rem + 10vw, 3rem);
+  font-size: clamp(2rem, -0.8rem + 10vw, 3rem) !important;
 }
 .section_lp__contenedorPrecios {
   display: flex;
@@ -2601,7 +2610,7 @@ table a {
 .section_lp__precioAnterior {
   color: #a3a3a3;
   font-size: 3rem;
-  font-size: clamp(2rem, -0.8rem + 10vw, 3rem);
+  font-size: clamp(2rem, -0.8rem + 10vw, 3rem) !important;
   text-decoration: line-through;
   font-weight: 800;
   margin: 0;
@@ -2611,7 +2620,7 @@ table a {
   font-size: 6rem;
   font-weight: 800;
   margin: 0;
-  font-size: clamp(5rem, -0.8rem + 10vw, 7rem);
+  font-size: clamp(5rem, -0.8rem + 10vw, 7rem) !important;
 }
 .section_lp__video {
   max-width: 60rem;
@@ -2635,14 +2644,14 @@ table a {
   align-items: center;
 }
 .caracteristicas_lp__imagen {
-  width: 10rem;
+  width: 6rem;
 }
 .caracteristicas_lp__texto {
   color: #fb923c;
   font-weight: 800;
   text-transform: uppercase;
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.5rem;
   line-height: 0.8;
 }
 

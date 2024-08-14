@@ -135,3 +135,10 @@ textarea{
 .color-azul-claro{
     color: v.$azul-claro;
 }
+.display_inline-block{
+    display: inline-block;
+}
+.texto_responsive{
+    min-width: max-content;
+    @include m.textoResponsivo(2rem, 3rem);
+}

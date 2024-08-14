@@ -13,14 +13,14 @@
         align-items: center;
     }
     &__imagen{
-        width: 10rem;
+        width: 6rem;
     }
     &__texto{
         color: v.$naranja_admin;
         font-weight: 800;
         text-transform: uppercase;
         margin: 0;
-        font-size: 2rem;
+        font-size: 1.5rem;
         line-height: 0.8;
     }
 }
