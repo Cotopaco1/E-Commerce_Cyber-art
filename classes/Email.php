@@ -6,6 +6,12 @@ use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
+if($_ENV['ENTORNO'] === 'produccion'){
+    define('EMAIL_ENCRIPTACION', PHPMailer::ENCRYPTION_SMTPS);
+}else{
+    define('EMAIL_ENCRIPTACION', '');
+}
+
 class Email{
 
     public $email;
@@ -34,7 +40,7 @@ class Email{
         $mail->isSMTP();
         $mail->isHTML(TRUE);
         /* $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; */
-        $mail->SMTPSecure = $_ENV['EMAIL_SMTP_SECURE'];
+        $mail->SMTPSecure = EMAIL_ENCRIPTACION;
         $mail->CharSet = 'UTF-8';
 
         $mail->Host = $this->host;
@@ -78,7 +84,7 @@ class Email{
         $mail->isHTML(TRUE);
         //Activar para produccion...
         /* $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; */
-        $mail->SMTPSecure = $_ENV['EMAIL_SMTP_SECURE'];
+        $mail->SMTPSecure = EMAIL_ENCRIPTACION;
         $mail->CharSet = 'UTF-8';
 
         $mail->Host = $this->host;
@@ -108,7 +114,7 @@ class Email{
         $mail->isHTML(TRUE);
         /* Activa solo para producction */
         /* $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; */
-        $mail->SMTPSecure = $_ENV['EMAIL_SMTP_SECURE'];
+        $mail->SMTPSecure = EMAIL_ENCRIPTACION;
         $mail->CharSet = 'UTF-8';
 
         $mail->Host = $this->host;
@@ -176,7 +182,7 @@ class Email{
 
         /* Activa solo para Produccion */
         /* $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; */
-        $mail->SMTPSecure = $_ENV['EMAIL_SMTP_SECURE'];
+        $mail->SMTPSecure = EMAIL_ENCRIPTACION;
         //Activar solo para Prueba
         /* $mail->SMTPDebug = SMTP::DEBUG_SERVER;  */
         $mail->CharSet = 'UTF-8';
