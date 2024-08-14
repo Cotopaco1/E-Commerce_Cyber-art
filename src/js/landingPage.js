@@ -19,7 +19,10 @@ function iniciarApp(){
     document.querySelector('#formulario').addEventListener('submit', function(e){ 
         e.preventDefault();
         crear_alerta_cargando();
-        requestAnimationFrame(() => enviar_formulario(e));
+        setTimeout(() => {
+            enviar_formulario(e);
+            
+        }, 1);
        
     } )
     //scroll hacia formulario
