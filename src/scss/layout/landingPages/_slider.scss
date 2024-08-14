@@ -1,0 +1,47 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.slider{
+    overflow: hidden;
+    @include m.shadow;
+    border-radius: 1rem;
+    &__inner{
+        display: flex;
+        flex-wrap: nowrap;
+        transition: all .3s ease-in;
+        /* overflow-x: scroll; */
+    }
+    &__imagen{
+        /* scroll-snap-align: start; */
+        flex-shrink: 0;
+    }
+    
+}
+.slider-manual{
+    display: flex;
+    overflow: hidden;
+    overflow-x: scroll;
+    gap: 1rem;
+    margin: 1rem 0;
+    scroll-snap-type: x mandatory;
+    &__label{
+        display: block;
+        scroll-snap-align: start ;
+    }
+    &__label input[type=radio]:checked + img{
+        /* transform: scale(1.1); */
+        /* filter: drop-shadow(2px 4px 6px black); */
+        border: 4px solid lighten(v.$verde, 10);
+    }
+    &__input[type=radio]{
+        display: none;
+    }
+    
+    img{
+        border-radius: 1rem;
+        width: 18rem;
+        max-width: 18rem;
+        aspect-ratio: 4/5;
+        transition: all .1s ease;
+    }
+}

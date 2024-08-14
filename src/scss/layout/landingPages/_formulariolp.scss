@@ -20,10 +20,17 @@
         &{
             text-align: left;
             margin: 1rem 0;
+            @include m.tablet{
+                flex-direction: column;
+            }
         }
+
     }
     &__label{
        @include m.label_formulario;
+       span{
+        color: v.$rojo;
+       }
        &{
         color: v.$negro;
         margin: 0;
@@ -54,11 +61,24 @@
             
         }
     }
-    &__input:not([type=submit]){
+    &__input:not([type=submit], [type=radio], [type=checkbox]){
         @include m.input_formulario;
         @include m.shadow;
     }
+    &__input--checkbox{
+        width: 2rem;
+        height: 2rem
+    }
     &__submit{
         @include m.submit_formulario;
+    }
+}
+.otro_cuadro_div{
+    max-height: 0;
+    overflow: hidden;
+    transition: all .3s ease;
+    &.mostrar_respuesta{
+        max-height: 30rem;
+        opacity: 1;
     }
 }

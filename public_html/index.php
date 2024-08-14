@@ -23,6 +23,7 @@ $router->get('/rickAndMorty', [ControllerLandingPages::class, 'rickAndMorty']);
 
 
 
+
 //Login
 $router->get('/login', [ControllerLogin::class, 'index']);
 $router->post('/login', [ControllerLogin::class, 'index']);
@@ -81,5 +82,8 @@ $router->post('/api/admin/actualizar_producto', [ControllerApi::class, 'actualiz
 $router->post('/api/admin/eliminar_producto', [ControllerApi::class, 'eliminar_producto']);
 $router->post('/api/admin/crear_producto', [ControllerApi::class, 'crear_producto']);
 
+//landingPages
+$router->post('/api/lp/enviar_formulario', [ControllerApi::class, 'formulario_landing_page']);
+$router->get('/api/lp/cuenta_regresiva', [ControllerApi::class, 'cuenta_regresiva']);
 
 $router->comprobarRutas();

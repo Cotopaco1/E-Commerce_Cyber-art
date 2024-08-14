@@ -56,6 +56,23 @@
     text-transform: uppercase;
     font-weight: 600;
 }
+/* Comienza mixins para landingPage */
+@mixin titulo_lp{
+    font-family: v.$fuente_principal_2;
+    font-size: 3rem;
+    text-transform: uppercase;
+    font-weight: 800;
+    &--blanco{
+        color: v.$blanco;
+    }
+}
+@mixin subtitulo_lp{
+    font-size: 2.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    
+}
+/* Termina mixins para landingPage */
 @mixin campo_formulario{
     display: flex;
     flex-direction: column;

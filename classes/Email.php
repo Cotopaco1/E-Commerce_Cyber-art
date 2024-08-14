@@ -2,6 +2,7 @@
 
 namespace Classes;
 
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
@@ -164,5 +165,88 @@ class Email{
         return $resultado;
         
     }
+    public function enviar_formulario_landingPage($args){
+        $mail = new PHPMailer();
+        try {
+            $mail->isSMTP();
+        $mail->isHTML(TRUE);
 
+        /* Activa solo para Produccion */
+        /* $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; */
+
+        //Activar solo para Prueba
+        /* $mail->SMTPDebug = SMTP::DEBUG_SERVER;  */
+        $mail->CharSet = 'UTF-8';
+
+        $mail->Host = $this->host;
+        $mail->SMTPAuth = true;
+        $mail->Port = $this->port;
+        $mail->Username = $this->username;
+        $mail->Password = $this->password;
+
+        $mail->setFrom('admin@cyberart.store');
+        $mail->addAddress('admin@cyberart.store' , 'Administrador CyberArt');        
+        
+        $mail->Subject = 'Nuevo pedido ';
+        
+        $propiedad_text = '';
+        $oferta = [
+            '1'=>'1x $79.900',
+            '2'=> '2x $140.000'
+        ];
+         
+        foreach($args as $key=>$value){
+            if($key === 'metodoPago'){
+                $key = 'Metodo de pago';
+            }
+            
+            switch($key){
+                case 'metodoPago':
+                    $key = 'Metodo de pago';
+                    
+                    break;
+                case 'oferta':
+                    $value = $oferta[$value];
+                    break;
+                case 'otro_cuadro':
+                    continue 2;
+                case 'otro_producto_nombre':
+                    if($value){
+                        $key = 'Nombre del segundo cuadro';
+                    }else{
+                        /* $key = ''; */
+                        continue 2;
+                    }
+                    break;
+                default:
+                    break;
+
+            }
+            
+            $propiedad_text .= "<li>$key: <strong>$value</strong></li>";
+        };  
+        
+        $contenido = <<<EOD
+        <html>
+        <p>Hola administrador de CyberArt, tienes un nuevo pedido</p>
+        <ul class="lista-productos" id="lista-productos">
+            <p>Los datos del cliente son: </p>
+            $propiedad_text
+        </ul>
+        </html>
+        EOD;
+        // <img src="cid:myimage">
+        $mail->Body = $contenido;
+        
+        $resultado = $mail->send();
+        
+        if(!$resultado){
+            $resultado = $mail->ErrorInfo;
+        }
+        return $resultado;
+          
+        } catch (Exception $e) {
+            return ['error'=>"Message could not be sent. Mailer Error: {$mail->ErrorInfo}"];
+        }
+    }
 }

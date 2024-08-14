@@ -5,16 +5,24 @@
     width: 95%;
     margin: 1rem auto;
     text-align: center;
+    max-width: 70rem;
+    font-family: v.$fuente_principal_2;
     &__contenedorImagen{
         margin: 1rem 0;
     }
     &__imagen{
         border-radius: 1rem;
         box-shadow: 6px 10px 15px 0px rgba(0,0,0,0.54);
+        &--desvanecida{
+            mask-image: linear-gradient(black 90%, transparent);
+        }
     }
     &__titulo{
         font-size: 3rem;
         text-transform: uppercase;
+        &--noMargin{
+            margin: 0;
+        }
         &--blanco{
             color: v.$blanco;
         }
@@ -23,6 +31,9 @@
         font-size: 2.6rem;
         font-weight: 700;
         text-transform: uppercase;
+        &--rojo{
+            color: v.$rojo;
+        }
     }
     &__texto{
         font-weight: 500;
@@ -31,6 +42,9 @@
             &.rojo{
                 color: v.$rojo;
             }
+        }
+        &--noMargin{
+            margin: 0;
         }
         &--fw700{
             font-weight: 700;
@@ -52,6 +66,31 @@
             font-weight: 500;
         }
     }
+    &__enlace{
+        display: inline-block;
+        padding: 2rem 1rem;
+        color: v.$blanco;
+        font-size: 2.5rem;
+        margin: 2rem 0;
+        border-radius: .5rem;
+        font-weight: 700;
+        cursor: pointer;
+        /* &--azul{
+            background-color: v.$azul;
+
+        } */
+    }
+    &__ul{
+        list-style: none;
+        padding-left: 1rem;
+    }
+    &__li{
+        text-align: left
+    }
+    &__enlace--azul{
+        @extend .section_lp__enlace;
+        background-color: v.$azul;
+    }
     &__ratio{
 
     }
@@ -64,11 +103,13 @@
         justify-content: center;
         align-items: center;
         gap: 2rem;
+        margin: 2rem 0;
         cursor: pointer;
         h3{
             margin: 0;
         }
         i,input{
+            cursor: pointer;
             color: v.$blanco;
             font-size: 3rem;
         }

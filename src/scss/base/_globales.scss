@@ -64,14 +64,25 @@ a{
 .ocultar{
     display: none!important;
 }
+.esconder{
+    max-height: 0;
+    overflow: hidden;
+}
 .mostrar{
     display: block!important;
 }
+
 .mostrar_flex{
     display: flex!important;
 }
+.flex{
+    display: flex;
+}
 .field{
     margin-top: 2rem;
+}
+.flex-9{
+    flex: .9;
 }
 
 legend{
@@ -120,4 +131,7 @@ textarea{
 }
 .width-auto{
     width: auto;
+}
+.color-azul-claro{
+    color: v.$azul-claro;
 }

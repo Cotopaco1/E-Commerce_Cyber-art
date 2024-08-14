@@ -1,0 +1,45 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+
+.cuenta_regresiva{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: v.$fuente_principal_2;
+    background-color: v.$rojo;
+    padding: 2rem 0;
+    &__div{
+        display: flex;
+        /* gap: 2rem; */
+    }
+    &__titulo{
+        font-size: 2rem;
+        color: v.$blanco;
+        margin-bottom: 1rem;
+    }
+    &__texto{
+
+    }
+    &__separador{
+            /* display: flex; */
+        font-size: 43px;
+        color: white;
+        /* justify-content: center; */
+        /* align-items: center; */
+        line-height: 0.7;
+    }
+    &__tiempo{
+        color: white;
+        font-weight: 500;
+        font-size: 1.5rem;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        span{
+            font-size: 26px;
+        }
+    }
+}

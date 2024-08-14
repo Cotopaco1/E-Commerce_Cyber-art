@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Classes\Email;
+use DateTime;
 use Model\Info_admin;
 use Model\Items_pedido;
 use Model\Pedidos;
@@ -12,6 +13,7 @@ use Model\PedidosAdmin;
 //Image intervention
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Model\FormularioLandingPage;
 use Model\FormularioPersonalizado;
 use Model\ProductosComprados;
 
@@ -909,5 +911,85 @@ class ControllerApi{
             
 
         }
+    }
+    //Landing Pages.
+    public static function formulario_landing_page(){
+
+        if($_SERVER['REQUEST_METHOD']=== 'POST'){
+            $data = file_get_contents('php://input');
+            $datos = json_decode($data,true);
+
+            $form = new FormularioLandingPage($datos);
+            $form->validar_campos_obligatorios();
+            $form->validar_otro_cuadro();
+            $alertas = FormularioLandingPage::getAlertas();
+            if(!empty($alertas)){
+                http_response_code(400);
+                imprimirRespuestaJson('error', $alertas['error']);
+            }
+            
+            //Paso la validacion...
+            //enviar email
+            $mail = new Email($form->correo,$form->nombre);
+            $array = get_object_vars($form);
+            $resultado = $mail->enviar_formulario_landingPage($array);
+            
+            if($resultado){
+                
+                echo json_encode([
+                    'exito'=>'Correo enviado exitosamente'
+                ]);
+                return;
+            }
+            http_response_code(500);
+            imprimirRespuestaJson('error', $resultado);
+
+            
+        }
+
+    }
+    public static function cuenta_regresiva(){
+
+        if($_SERVER['REQUEST_METHOD']==='GET'){
+            date_default_timezone_set('America/Bogota');
+
+            if(!isset($_SESSION['cuenta_regresiva'])){
+                //asignar cuenta regresiva.
+                $fecha_objetivo = new DateTime('now');
+                $fecha_objetivo->modify('+5 hour');
+                $_SESSION['cuenta_regresiva']['fecha_inicio'] = $fecha_objetivo;
+            }
+            
+            $fecha_objetivo = $_SESSION['cuenta_regresiva']['fecha_inicio'];
+            $fecha_actual = new DateTime('now');
+            $diferencia = $fecha_objetivo->diff($fecha_actual); 
+
+            $totalSegundos = $diferencia->s + ($diferencia->i * 60) + ($diferencia->h * 3600);
+            if($totalSegundos <= 0){
+                //ya llego a 0 el contador.
+                //volvemos a reescribir la session.
+                $fecha_objetivo = new DateTime('now');
+                $fecha_objetivo->modify('+5 hour');
+                $_SESSION['cuenta_regresiva']['fecha_inicio'] = $fecha_objetivo;
+                $fecha_objetivo = $_SESSION['cuenta_regresiva']['fecha_inicio'];
+                $fecha_actual = new DateTime('now');
+                $diferencia = $fecha_objetivo->diff($fecha_actual);
+
+            }
+
+            $cuenta_regresiva = [
+                'segundos'=> $diferencia->s,
+                'minutos'=> $diferencia->i,
+                'horas'=> $diferencia->h + ($diferencia->days * 24)
+
+            ];
+            
+            echo json_encode([
+                'respuesta'=>true,
+                'cuenta_regresiva'=>$cuenta_regresiva
+            ]);
+            exit;
+        }
+
     }
 }

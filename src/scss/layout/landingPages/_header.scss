@@ -2,7 +2,7 @@
 @use 'base/mixins' as m;
 
 .header_lp{
-    background-color: v.$verde_alerta_login;
+    background-color: v.$color-bg-logo-lp;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -23,6 +23,27 @@
         border-left: .5rem solid v.$rojo ;
         color: v.$rojo;
     }
+    &--cargando{
+        animation: vuelta360  .6s linear infinite ;
+        width: 3rem;
+    }
+    &--check{
+        width: 3rem;
+    }
+}
+.mensaje-error{
+    font-size: 1.1rem;
+    margin: .4rem 0px;
+    font-weight: 600;
+    color: v.$rojo;
+}
+@keyframes vuelta360 {
+    0%{
+        transform: rotate(0turn);
+    }
+    100%{
+        transform: rotate(1turn);
+    }
 }
 
 
