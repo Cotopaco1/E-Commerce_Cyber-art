@@ -118,7 +118,7 @@
                 <select class="formulario_lp__select" name="oferta" id="oferta">
                     <option value="" selected disabled>--Selecciona una opcion--</option>
                     <option value="1"  >1x $79.900 (20% dcto) + Envio gratis</option>
-                    <option value="2" >2x $140.000 (30% dcto) + Envio gratis</option>
+                    <option value="2" >2x $139.900 (30% dcto) + Envio gratis</option>
                 </select>
             </div>
             <div class="formulario_lp__campo formulario_lp__campo--row otro_cuadro_div" id="otro_cuadro_div">

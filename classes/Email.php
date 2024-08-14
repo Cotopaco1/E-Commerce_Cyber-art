@@ -172,7 +172,7 @@ class Email{
         $mail->isHTML(TRUE);
 
         /* Activa solo para Produccion */
-        /* $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; */
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
 
         //Activar solo para Prueba
         /* $mail->SMTPDebug = SMTP::DEBUG_SERVER;  */
