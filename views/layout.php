@@ -21,7 +21,14 @@
     <header class="header">
         <div class="contenedor headerContenido">
             <div class="hamburgerMenu"><img src="menu.png" alt="hamburgerMenu"></div>
-            <div class="logo"><a href="/"><img src="./img/logo_cyber-transparente.png" alt="imagenLogo"></a></div>
+            <div class="logo">
+                <a href="/">
+                    <picture>
+                        <source media="(min-width: 480px)" srcset="./img/logo_cyberArt-horizontal2.png">
+                        <img src="./img/logo_cyberArt.png" alt="imagenLogo">
+                    </picture>
+                </a>
+            </div>
             <div class="buttonsHeader">
                 <!-- <img class="carritoCompra" src="img/iconos/carrito-compras.png" alt="imagenCarrito">
                 <img class="userBoton" src="img/iconos/usuario.png" alt="imagenUsuario"> -->

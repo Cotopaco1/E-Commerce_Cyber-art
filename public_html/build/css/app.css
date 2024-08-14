@@ -1593,7 +1593,7 @@ label {
 }
 @media (min-width: 480px) {
   .headerContenido .logo {
-    max-width: 5rem;
+    max-width: 14rem;
   }
 }
 .headerContenido .buttonsHeader {
@@ -1874,7 +1874,7 @@ table a {
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  min-height: 67rem;
+  min-height: 70rem;
   padding-top: 1px;
 }
 

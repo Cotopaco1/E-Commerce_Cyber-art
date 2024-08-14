@@ -27,7 +27,7 @@
     </div>
     <header class="header_lp">
         <a href="/">
-        <img class="header_lp__logo" src="img/logo_cyberArt-horizontal.png" alt="logo cyberart">
+        <img class="header_lp__logo" src="img/logo_cyberArt-horizontal2.png" alt="logo cyberart">
         </a>
     </header>
     
@@ -84,7 +84,7 @@
     include_once __DIR__ . '/../templates/redes.php';
     ?>
     <div class="footer_lp__contenedor--center">
-        <a href="/"><img class="footer_lp__logo" src="img/logo_cyberArt-horizontal.png" alt="logo cyberart"></a>
+        <a href="/"><img class="footer_lp__logo" src="img/logo_cyberArt-horizontal2.png" alt="logo cyberart"></a>
     </div>
     <div class="footer_lp__copyright">
         <p class="footer_lp__texto--bold">Enlaces a nuestra Pagina Web</p>
