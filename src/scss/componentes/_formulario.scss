@@ -48,4 +48,10 @@
     &__submit{
         @include m.submit_formulario;
     }
+    &__contenedorSubmit{
+        display: flex;
+        justify-content: flex-end;
+        position: relative;
+        min-height: 8.3rem;
+    }
 }

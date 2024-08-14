@@ -42,7 +42,9 @@
             <label class="formulario__label formulario__label--block" for="mensaje">Tu mensaje</label>
             <textarea name="mensaje" id="mensaje" class="formulario__textarea"></textarea>
         
-            <input class="formulario__submit" type="submit" class="boton" value="Enviar">
+            <div id="contenedor_submit" class="formulario__contenedorSubmit">
+                <input id="submit" class="formulario__submit" type="submit" class="boton" value="Enviar">
+            </div>
 
         
         </form>

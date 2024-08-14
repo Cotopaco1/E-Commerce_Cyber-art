@@ -33,7 +33,8 @@ class Email{
         $mail = new PHPMailer();
         $mail->isSMTP();
         $mail->isHTML(TRUE);
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        /* $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; */
+        $mail->SMTPSecure = $_ENV['EMAIL_SMTP_SECURE'];
         $mail->CharSet = 'UTF-8';
 
         $mail->Host = $this->host;
@@ -76,7 +77,8 @@ class Email{
         $mail->isSMTP();
         $mail->isHTML(TRUE);
         //Activar para produccion...
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        /* $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; */
+        $mail->SMTPSecure = $_ENV['EMAIL_SMTP_SECURE'];
         $mail->CharSet = 'UTF-8';
 
         $mail->Host = $this->host;
@@ -105,7 +107,8 @@ class Email{
         $mail->isSMTP();
         $mail->isHTML(TRUE);
         /* Activa solo para producction */
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        /* $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; */
+        $mail->SMTPSecure = $_ENV['EMAIL_SMTP_SECURE'];
         $mail->CharSet = 'UTF-8';
 
         $mail->Host = $this->host;
@@ -172,8 +175,8 @@ class Email{
         $mail->isHTML(TRUE);
 
         /* Activa solo para Produccion */
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-
+        /* $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; */
+        $mail->SMTPSecure = $_ENV['EMAIL_SMTP_SECURE'];
         //Activar solo para Prueba
         /* $mail->SMTPDebug = SMTP::DEBUG_SERVER;  */
         $mail->CharSet = 'UTF-8';

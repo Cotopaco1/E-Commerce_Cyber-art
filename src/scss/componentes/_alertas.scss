@@ -27,8 +27,21 @@
         animation: vuelta360  .6s linear infinite ;
         width: 3rem;
     }
+    &--cargando-grande{
+        animation: vuelta360  .6s linear infinite ;
+        width: 5rem;
+        position: absolute;
+        inset: 0;
+        margin: auto;
+    }
     &--check{
         width: 3rem;
+    }
+    &--check-grande{
+        width: 5rem;
+        position: absolute;
+        inset: 0;
+        margin: auto;
     }
 }
 .mensaje-error{

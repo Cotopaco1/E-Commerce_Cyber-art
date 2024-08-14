@@ -753,8 +753,21 @@ label {
   animation: vuelta360 0.6s linear infinite;
   width: 3rem;
 }
+.alerta--cargando-grande {
+  animation: vuelta360 0.6s linear infinite;
+  width: 5rem;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+}
 .alerta--check {
   width: 3rem;
+}
+.alerta--check-grande {
+  width: 5rem;
+  position: absolute;
+  inset: 0;
+  margin: auto;
 }
 
 .mensaje-error {
@@ -1241,6 +1254,12 @@ label {
   /* background-color: lighten(v.$negro-tw, 30%) */
   background-color: #aeaeae;
   color: #0a0a0a;
+}
+.formulario__contenedorSubmit {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  min-height: 8.3rem;
 }
 
 .cuadros {

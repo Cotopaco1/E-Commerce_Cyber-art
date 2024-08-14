@@ -26,6 +26,9 @@ const usuario = {
     }
 }
 
+//imagenes pre cargadas:
+let imgPreload;
+let imgPreload2;
 
 let metodo_pago = '';
 let paso = 1;
@@ -47,6 +50,7 @@ function iniciarApp(){
         get_cuadros();
         obtener_carrito_session();
         evento_formulario_index();
+        precargar_imagen();
 
     }
     if(path === '/carrito_de_compras'){
@@ -1856,6 +1860,7 @@ function evento_formulario_index(){
     const form = document.querySelector('.formulario');
     form.addEventListener('submit', function(e){
         e.preventDefault();
+        crear_alerta_cargando_boton();
         const datos = crear_objeto_con_datos_de_formulario(e);
         //enviar datos
         enviar_formulario_para_cuadro_personalizado(datos)
@@ -1863,6 +1868,7 @@ function evento_formulario_index(){
     })
 }
 async function enviar_formulario_para_cuadro_personalizado(datos){
+    
     const data = new FormData();
     data.append('nombre',datos.nombre);
     data.append('apellido',datos.apellido);
@@ -1878,11 +1884,12 @@ async function enviar_formulario_para_cuadro_personalizado(datos){
         body: data
     }
     try {
-        crear_alerta_de_cargando();
+        
         const resultado = await fetch(url,options);
         const respuesta = await resultado.json();
-        eliminar_alerta_de_cargando();
+        
         if(respuesta.tipo === 'exito'){
+            eliminar_alerta_cargando_boton(true);
             /* mostrar_alerta('exito',respuesta.mensaje,'.formulario__campo'); */
             Swal.fire({
                 title: "Datos guardados!",
@@ -1891,6 +1898,7 @@ async function enviar_formulario_para_cuadro_personalizado(datos){
               });
             document.querySelector('[type="submit"]').remove();
         }else{
+            eliminar_alerta_cargando_boton(false);
             respuesta.alertas.error.forEach(alerta=>{
                 mostrar_alerta('error',alerta,'.formulario__campo')
             })
@@ -1900,6 +1908,35 @@ async function enviar_formulario_para_cuadro_personalizado(datos){
         error
     }
 }
+// Alertas cargando
+function crear_alerta_cargando_boton(){
+    const contenedor = document.querySelector('#contenedor_submit');
+    const submit = document.querySelector('#submit');
+    submit.style.display = 'none';
+
+    const alerta = document.createElement('IMG');
+    alerta.src = imgPreload.src;
+    alerta.classList.add('alerta--cargando-grande');
+
+    contenedor.appendChild(alerta);
+    
+}
+function eliminar_alerta_cargando_boton(tipo){
+    document.querySelector('.alerta--cargando-grande').remove();
+    //Si tipo es false significa que la validacion fallo y mostramos de nuevo el boton de submit
+    if(!tipo){
+        document.querySelector('#submit').style.display = 'block';
+        return;
+    }
+    //Si tipo es true, ignora el if y se muestra un chulito de enviado
+    const contenedor = document.querySelector('#contenedor_submit');
+    const alerta = document.createElement('IMG');
+    alerta.src = imgPreload2.src;
+    alerta.classList.add('alerta--check-grande');
+    contenedor.appendChild(alerta);
+
+}
+//Termina alertas cargando
 
 function mostrar_alerta(tipo,mensaje,referencia){
     const alerta = document.createElement('DIV');
@@ -2074,4 +2111,13 @@ function mostrar (id){
         `
     }
 
+}
+function precargar_imagen(){
+    window.addEventListener('load', function(){
+        imgPreload = new Image();
+        imgPreload.src = 'img/iconos/loading.svg';
+
+        imgPreload2 = new Image();
+        imgPreload2.src = 'img/iconos/check.svg';
+    })
 }

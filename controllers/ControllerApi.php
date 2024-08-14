@@ -321,12 +321,17 @@ class ControllerApi{
                 if($resultado){
                     echo json_encode([
                         'tipo'=>'exito',
-                        'mensaje'=>'Correo enviado correctamente'
+                        'alertas'=>[
+                            'exito'=>['Correo enviado exitosamente']
+                        ]
                     ]);
                     exit;
                 }else{
                     echo json_encode([
-                        'error'=>'No se pudo realizar el envio del correo'
+                        'tipo'=>'error',
+                        'alertas'=>[
+                            'error'=>['El correo no se pudo enviar']
+                        ]
                     ]);
                     exit;
                 }
@@ -756,7 +761,7 @@ class ControllerApi{
             $imagen = $manager->read($imagen_file['tmp_name']);
             
             $nombreImagen = md5( uniqid( rand(), true)) . '.jpeg';
-            $destino = __DIR__ . '/../public/img/productos/'. $nombreImagen;
+            $destino = __DIR__ . '/../public_html/img/productos/'. $nombreImagen;
             $producto->setImagen($nombreImagen);
             $alertas = $producto->validar();
             if(!empty($alertas)){
