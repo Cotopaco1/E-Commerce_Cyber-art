@@ -14,7 +14,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <!-- Termina google Fonts -->
-    <link rel="icon" href="/img/logo_cyber-16x16.ico" type="image/x-icon">
+    <!-- Open graph meta tags -->
+    <meta property="og:title" content="Cyber-Art" >
+    <meta property="og:description" content="Ordena y reciba los mejores cuadros decorativos" >
+    <meta property="og:image" content="Ordena y reciba los mejores cuadros decorativos" >
+    <meta property="og:url" content= 'https://cyberart.store/' >
+    <meta property="og:image" content= 'https://cyberart.store/img/logo_cyberArt-horizontal2' >
+    <meta property="og:type" content= 'website' >
+    
+    <!-- Termina meta datos -->
+    <link rel="icon" href="/img/logo_cyberArt.ico" type="image/x-icon">
     <title>CyberArt</title>
 </head>
 <body>
