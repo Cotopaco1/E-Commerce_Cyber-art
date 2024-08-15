@@ -17,11 +17,9 @@
     <!-- Open graph meta tags -->
     <meta property="og:title" content="Cyber-Art" >
     <meta property="og:description" content="Ordena y reciba los mejores cuadros decorativos" >
-    <meta property="og:image" content="Ordena y reciba los mejores cuadros decorativos" >
-    <meta property="og:url" content= 'https://cyberart.store/' >
-    <meta property="og:image" content= 'https://cyberart.store/img/logo_cyberArt-horizontal2' >
-    <meta property="og:type" content= 'website' >
-    
+    <meta property="og:url" content="https://cyberart.store/ ">
+    <meta property="og:image" content="https://cyberart.store/img/logo_cyberArt-horizontal2.png" >
+    <meta property="og:type" content="website">
     <!-- Termina meta datos -->
     <link rel="icon" href="/img/logo_cyberArt.ico" type="image/x-icon">
     <title>CyberArt</title>
