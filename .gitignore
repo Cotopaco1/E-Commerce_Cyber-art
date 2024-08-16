@@ -3,6 +3,7 @@ composer.phar
 /node_modules/
 includes/.env
 .htaccess
+/public_html/img/productos/
 
 
 # Commit your application's lock file https://getcomposer.org/doc/01-basic-usage.md#commit-your-composer-lock-file-to-version-control
