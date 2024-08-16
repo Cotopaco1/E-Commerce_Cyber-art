@@ -5,6 +5,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S6YCG8CPV1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-S6YCG8CPV1');
+    </script>
+    <!-- Termina google Tag -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./build/css/app.css">
@@ -21,12 +31,13 @@
     <meta property="og:image" content="https://cyberart.store/img/imagen_metaDatos.png" >
     <meta property="og:type" content="website">
     <!-- Termina meta datos -->
+     
     <link rel="icon" href="/img/logo_cyberArt.ico" type="image/x-icon">
     <title>CyberArt</title>
 </head>
 <body>
     <header class="header">
-        <div class="contenedor headerContenido">
+    <div class="contenedor headerContenido">
             <div class="hamburgerMenu"><img src="menu.png" alt="hamburgerMenu"></div>
             <div class="logo">
                 <a href="/">
