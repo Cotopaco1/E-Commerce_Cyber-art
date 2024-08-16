@@ -688,7 +688,7 @@ class ControllerApi{
                 $imagen = $manager->read($imagen_file['tmp_name']);
                 
                 $nombreImagen = md5( uniqid( rand(), true)) . '.jpeg';
-                $destino = __DIR__ . '/../public/img/productos/'. $nombreImagen;
+                $destino = __DIR__ . '/../public_html/img/productos/'. $nombreImagen;
 
                 $imagen->cover(400,600);
                 $imagen->toJpeg();

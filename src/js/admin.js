@@ -329,7 +329,7 @@ function insertar_formulario_crear(){
                 </div>
            
             <div class="div_producto_dos">
-                <input type="file" name="imagen" />
+                <input type="file" name="imagen" accept=".jpeg, .jpg, .png, .avif, .webp" />
                  <label for="descripcion" >Descripcion:</label>
                   <textarea name="descripcion" id="descripcion" placeholder="Escribe la descripcion" ></textarea>
             </div>
@@ -642,7 +642,7 @@ function insertar_al_modal_producto(producto){
                 </div>
             </div>
             <div class="div_producto_dos">
-                <input type="file" name="imagen" value="${imagen}" />
+                <input type="file" name="imagen" accept=".jpeg, .jpg, .png, .avif, .webp" value="${imagen}" />
                  <label for="descripcion" >Descripcion:</label>
                   <textarea name="descripcion" id="descripcion" >${descripcion}</textarea>
             </div>
