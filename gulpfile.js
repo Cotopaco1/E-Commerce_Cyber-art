@@ -17,7 +17,7 @@ function css(done) {
 
     return src(paths.scss)
       .pipe(sourcemaps.init())
-      .pipe(sass().on('error', sass.logError))
+      .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
       .pipe(sourcemaps.write('.')) 
       .pipe(dest('public_html/build/css'))
     done()

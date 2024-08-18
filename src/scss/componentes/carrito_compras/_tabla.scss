@@ -70,6 +70,24 @@
                 font-weight: 600;
             }
         }
+        &__iconoDiv{
+            all: unset;
+            display: flex;
+            flex-direction: column;
+            margin-top: 1.5rem;
+            justify-content: center;
+            align-items: center;
+            &:hover{
+                cursor: pointer;
+            }
+            i{
+                font-size: 1.5rem;
+                color: v.$negro;
+            }
+            span{
+                color: v.$negro;
+            }
+        }
     }
     
 }

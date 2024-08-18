@@ -144,7 +144,8 @@ function iniciarApp(){
                     </div>
                     <div class="acciones">
                         <button  class="boton-accion btn-agregar">Agregar al carrito</button>
-                        <button  class="boton-accion btn-comprar">Comprar ahora</button>
+                        <a  class="acciones__btn-comprarWp btn-comprarWp" href="https://api.whatsapp.com/send?phone=+573213458210&amp;text=Hola, estoy viendo su pagina Web y estoy interesado en comprar este producto:%0A${nombre} $${parseInt(precio).toLocaleString()}">Ordenar por WhatsApp</a>
+                        <button  class="boton-accion btn-comprar">Comprar por Web Ahora</button>
                     </div>
                 `
                 evento_botones_accion(producto);
@@ -157,6 +158,7 @@ function iniciarApp(){
         const respuesta = await peticion_get('/api/session/get_carrito')
         if(respuesta.resultado){
             carritoDeCompra.productos = respuesta.productos;
+            actualizar_num_carrito();
         }
         
     }
@@ -1329,19 +1331,6 @@ function mostrarCarritoDeCompras(){
         traw.appendChild(td)
         traw.classList.add('tabla__row')
         tbody.appendChild(traw);
-    
-
-       /*  const botonSiguiente = document.createElement('BUTTON');
-        botonSiguiente.classList.add('botonAzul');
-        botonSiguiente.setAttribute('id', 'botonSiguiente')
-        botonSiguiente.textContent = 'Siguiente..'
-        botonSiguiente.onclick = cambiarSeccionAdelante;
-
-        const botonSiguienteDiv = document.createElement('DIV');
-        botonSiguienteDiv.classList.add('botonSiguienteDiv')
-        botonSiguienteDiv.appendChild(botonSiguiente); */
-
-        /* interfaz.appendChild(botonSiguienteDiv) */
 
 
 }
@@ -1520,20 +1509,20 @@ function imprimir_cuadros(json){
         }
 
         const imagenDiv = document.createElement('DIV')
-        imagenDiv.classList.add('imagenCuadroDiv');
+        imagenDiv.classList.add('cuadro__imagen');
         imagenDiv.style.backgroundImage = `url(/img/productos/${imagen})`
         
 
         const infoDiv = document.createElement('DIV');
-        infoDiv.classList.add('cuadro-info');
+        infoDiv.classList.add('cuadro__info-contenedor');
         infoDiv.dataset.idCuadro = id;
 
         const nombreCuadro = document.createElement('P')
-        nombreCuadro.classList.add('nombre-cuadro');
+        nombreCuadro.classList.add('cuadro__texto');
         nombreCuadro.textContent = nombre;
 
         const precioCuadro = document.createElement('P')
-        precioCuadro.classList.add('precio-cuadro');
+        precioCuadro.classList.add('cuadro__texto', 'cuadro__precio');
         precioCuadro.textContent =  `$${parseFloat(precio).toLocaleString()}`
         console.log();
 
@@ -1651,17 +1640,21 @@ function actualizarInterfazCarritoCompra(){
         div.classList.add('carritoVacio')
 
         const parrafo = document.createElement('P');
-        parrafo.classList.add('carritoVacio__parrafo');
+        parrafo.classList.add('carritoVacio__parrafo', 'carritoVacio__parrafo--blanco', 'carritoVacio__parrafo--md');
         parrafo.textContent = 'Todavia no has agregado ningun producto :('
 
         const icono = document.createElement('IMG');
         icono.setAttribute('src', '/img/iconos/cart-x.svg')
-        icono.classList.add('carritoVacio__icono');
+        icono.classList.add('carritoVacio__icono', 'carritoVacio__icono--blanco');
 
         div.appendChild(parrafo)
         div.appendChild(icono)
         console.log(div);
         interfaz.appendChild(div);
+
+        //actualizar href del wp_flotante
+        const btn_flotante = document.querySelector('#btn_compra_wp_flotante');
+        btn_flotante.href = "https://api.whatsapp.com/send?phone=573213458210&text=Estoy viendo su pagina web, y quiero mas informacion";
         return
     }
         
@@ -1670,6 +1663,8 @@ function actualizarInterfazCarritoCompra(){
             interfaz.removeChild(interfaz.firstChild);
         }
         //Crear productos e insertar en interfaz..
+        const contenedor_productos = document.createElement('DIV');
+        contenedor_productos.classList.add('contenedorCarritoCompras__productos', 'contenedorCarritoCompras__contenedor');
         
         carritoDeCompra.productos.forEach(producto =>{
             const {id, nombre, precio, descripcion, size, disponible, imagen, cantidad} = producto;
@@ -1681,66 +1676,147 @@ function actualizarInterfazCarritoCompra(){
             nombreProducto.textContent = nombre;
             nombreProducto.classList.add('nombre-producto')
             const precioProducto = document.createElement('P');
-            precioProducto.textContent = `$${parseInt(precio).toLocaleString()}`;
-            precioProducto.classList.add('precio-producto')
-            const cantidadProducto = document.createElement('P');
-            cantidadProducto.textContent = `Cantidad: ${cantidad}`;
+            precioProducto.innerHTML = `$${parseInt(precio).toLocaleString()}<span> x c/u</span>`;
+            precioProducto.classList.add('tabla__precioCantidad__texto')
+            let precioProducto_total = undefined;
+            if(cantidad > 1){
+                precioProducto_total = document.createElement('P');
+                precioProducto_total.innerHTML = `$${(parseInt(precio) * cantidad).toLocaleString()}<span> x ${cantidad}</span>`;
+                precioProducto_total.classList.add('tabla__precioCantidad__texto')
+            }
 
             const botonMas = document.createElement('BUTTON');
-            botonMas.classList.add('botonChico');
+            botonMas.classList.add('botonesCantidad__boton');
             botonMas.textContent = '+';
             botonMas.onclick = function(){
                 agregarCantidad(producto)
             };
-            /* botonMas.addEventListener('click', function(){
-                agregarCantidad(producto);
-            }) */
 
+            /* Botones cantidad */
             const botonMenos = document.createElement('BUTTON');
-            botonMenos.classList.add('botonChicoRojo');
+            botonMenos.classList.add('botonesCantidad__boton');
             botonMenos.textContent = '-';
             botonMenos.addEventListener('click', function(){
                 restarCantidad(producto);
                 actualizarInterfazCarritoCompra();
             })
 
+            const cantidadProducto = document.createElement('P');
+            cantidadProducto.textContent = `${cantidad}`;
+            cantidadProducto.classList.add('botonesCantidad__texto');
 
+            const botones_div = document.createElement('DIV');
+            botones_div.classList.add('botonesCantidad');
+            botones_div.appendChild(botonMenos);
+            botones_div.appendChild(cantidadProducto);
+            botones_div.appendChild(botonMas);
+            /* termina botones cantidad */
+            const icono_eliminar = document.createElement('I');
+            icono_eliminar.classList.add('fa-solid', 'fa-trash')
+            const span_eliminar = document.createElement('SPAN');
+            span_eliminar.textContent = `Eliminar`;
+            const btn_eliminar = document.createElement('BUTTON');
+            btn_eliminar.classList.add('tabla__precioCantidad__iconoDiv');
+            btn_eliminar.appendChild(icono_eliminar);
+            btn_eliminar.appendChild(span_eliminar);
+            eliminar_producto_del_carrito(btn_eliminar,id,producto);
+
+            const div_precio_cantidad = document.createElement('DIV');
+            div_precio_cantidad.classList.add('tabla__precioCantidad');
+            div_precio_cantidad.appendChild(precioProducto);
             
+            if(typeof precioProducto_total !== 'undefined'){
+                div_precio_cantidad.appendChild(precioProducto_total);
+            }
+            div_precio_cantidad.appendChild(botones_div);
+            div_precio_cantidad.appendChild(btn_eliminar);
 
             const divInfo = document.createElement('DIV');
             divInfo.classList.add('infoProductoCarrito');
             divInfo.appendChild(nombreProducto)
-            divInfo.appendChild(precioProducto)
-            divInfo.appendChild(cantidadProducto)
-            divInfo.appendChild(botonMas)
-            divInfo.appendChild(botonMenos)
-            crearBotonBorrar(divInfo, id, producto );
+            divInfo.appendChild(div_precio_cantidad)            
 
             const imagenProducto = document.createElement('IMG');
             imagenProducto.src = `/img/productos/${imagen}`;
 
             productoDiv.appendChild(divInfo);
             productoDiv.appendChild(imagenProducto);
-            interfaz.appendChild(productoDiv);
+            contenedor_productos.appendChild(productoDiv);
             
         })
+        interfaz.appendChild(contenedor_productos);
         //Muestra el montoTotal en carrito de compras.
         const parrafoMontoTotal = document.createElement('P');
-        parrafoMontoTotal.classList.add('parrafoMontoTotal')
+        parrafoMontoTotal.classList.add('contenedorCarritoCompras__texto')
         /* montoTotal = sumarProductosCarrito(); */
-        parrafoMontoTotal.textContent = `Monto total: $${carritoDeCompra.montoTotal().toLocaleString()}`;
-        interfaz.appendChild(parrafoMontoTotal)
+        parrafoMontoTotal.textContent = `Subtotal: $${carritoDeCompra.montoTotal().toLocaleString()}`;
+
+        //boton de comprar wp
+        const btn_compra_wp = document.createElement('A');
+        btn_compra_wp.id = 'btn_compra_wp'
+        btn_compra_wp.href = '#';
+        btn_compra_wp.classList.add('contenedorCarritoCompras__compra_wp', 'contenedorCarritoCompras__boton');
+        btn_compra_wp.textContent = `Pedido por WhatsApp`;        
 
         //Boton de comprar en interfaz de carrito de compras.
         const botonComprar = document.createElement('BUTTON');
-        botonComprar.classList.add('boton')
-        botonComprar.textContent = `Comprar`
+        botonComprar.classList.add('contenedorCarritoCompras__compra_web', 'contenedorCarritoCompras__boton')
+        botonComprar.textContent = `Comprar por Web`
         botonComprar.addEventListener('click', comprar_carrito )
-        interfaz.appendChild(botonComprar);
+
+        const interfaz_div = document.createElement('DIV')
+        interfaz_div.classList.add('contenedorCarritoCompras__contenedor');
+        interfaz_div.appendChild(parrafoMontoTotal);
+        interfaz_div.appendChild(btn_compra_wp);
+        interfaz_div.appendChild(botonComprar);
+
+        interfaz.appendChild(interfaz_div);
+        //evento para actualizar el link de la compra wp.
+        actualizar_href_btn_compra_wp();
+        //actualizar numero carrito.
+        actualizar_num_carrito();
 }
 function comprar_carrito(){
     guardar_carrito_compras_en_session()
     .then(window.location.href = '/carrito_de_compras')
+}
+function actualizar_num_carrito(){
+    let numProductos = carritoDeCompra.productos.length;
+    const spanAnterior = document.querySelector('#numProductos');
+    console.log(numProductos);
+    if(numProductos > 0){
+        //Si hay productos y no existe span anterior
+        if(!spanAnterior){
+            const spanNum = document.createElement('SPAN');
+            spanNum.id = 'numProductos'
+            spanNum.textContent = numProductos;
+            document.querySelector('#icono_carrito').appendChild(spanNum);
+        }else{
+            spanAnterior.textContent = numProductos;
+        }
+    }else if(spanAnterior){
+        spanAnterior.remove();
+    }
+
+}
+//actualiza el link de compra de wp.
+function actualizar_href_btn_compra_wp(){
+    let mensaje = 'Hola, estoy viendo su pagina Web y estoy interesado en comprar estos productos:%0A'
+
+    carritoDeCompra.productos.forEach(producto=>{
+        const {id, nombre, precio, descripcion, size, disponible, imagen, cantidad} = producto;
+        mensaje += `${nombre} x ${cantidad}%0A`
+    })
+    mensaje += `Subtotal: $${carritoDeCompra.montoTotal().toLocaleString()} %2B Envio`;
+
+    let numeroWhatsApp = "+573213458210"; // Reemplaza con tu número de WhatsApp
+    let url = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${mensaje}`;
+    const div = document.querySelector('#btn_compra_wp');
+    div.href = url;
+    const btn_flotante = document.querySelector('#btn_compra_wp_flotante');
+    btn_flotante.href = url;
+    
+
 }
 function sumarProductosCarrito(){
     let total = 0
@@ -1796,15 +1872,8 @@ function crearModal(){
     body.appendChild(modal);
 }
 
-function crearBotonBorrar(contenedor, id, objetoProducto){
-    //crear boton en el contenedor
-    const botonBorrar = document.createElement('BUTTON');
-    botonBorrar.classList.add('botonBorrar')
-    botonBorrar.textContent = 'Elimina el producto'
-    contenedor.appendChild(botonBorrar);
-
-    //borrar el producto en el carrito que tenga el id pasado...
-    botonBorrar.addEventListener('click', function(){
+function eliminar_producto_del_carrito(element, id, objetoProducto){
+    element.addEventListener('click', function(){
         carritoDeCompra.productos.forEach( producto =>{
             if(producto.id === id){
             const index = carritoDeCompra.productos.indexOf(producto);
@@ -1815,7 +1884,6 @@ function crearBotonBorrar(contenedor, id, objetoProducto){
             }
         })
     })
-
 }
 
 function borrarProductoDeCarritoDeCompra(id, objetoProducto){

@@ -1,5 +1,7 @@
+<h1 class="nombre-pagina">Catalogo</h1>
 <div class="contenedor contenedor_productos">
     <!-- foreach -->
+
     <?php foreach($productos as $producto): ?>
         <?php $producto->precio= number_format($producto->precio, 0, ',', '.'); ?>
         <div class="producto_div" data-id="<?php echo $producto->id ?>">

@@ -34,9 +34,24 @@
         justify-content: space-between;
         .acciones{
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
+            gap: 1rem;
             @include m.tablet{
-                gap: 2rem;
+                gap: 1rem;
+            }
+            button{
+                max-width: 28rem;
+            }
+            &__btn-comprarWp{
+                max-width: 28rem;
+                @include m.boton(v.$verde-claro, v.$blanco);
+                margin: 0;
+                font-size: 1.5rem;
+                border-radius: .5rem;
+                width: 100%;
+                padding: 1rem;
+                
             }
         }
     }    

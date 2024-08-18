@@ -36,6 +36,10 @@
     <title>CyberArt</title>
 </head>
 <body>
+    <a id="btn_compra_wp_flotante" class="contenedor_botonWp" href="https://api.whatsapp.com/send?phone=573213458210&text=Estoy viendo su pagina web, y quiero mas informacion">
+        <i class="fa-brands fa-whatsapp"></i>
+        
+    </a>
     <header class="header">
     <div class="contenedor headerContenido">
             <div class="hamburgerMenu"><img src="menu.png" alt="hamburgerMenu"></div>
@@ -50,7 +54,7 @@
             <div class="buttonsHeader">
                 <!-- <img class="carritoCompra" src="img/iconos/carrito-compras.png" alt="imagenCarrito">
                 <img class="userBoton" src="img/iconos/usuario.png" alt="imagenUsuario"> -->
-                <i class="fa-solid fa-cart-shopping carritoCompra"></i>
+                <i class="fa-solid fa-cart-shopping carritoCompra header__icono_carrito" id="icono_carrito"></i>
                 <!-- <i class="fa-regular fa-user userBoton"></i> -->
                 
                 <?php if($auth ?? false): ?>

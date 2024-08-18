@@ -116,17 +116,56 @@
     .contenedorCarritoCompras{
         width: 80%;
         overflow-y: scroll;
+        position: absolute;
+        right: 0;
+        height: 100%;
+        background-color: #262626;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 42rem;
         @include m.telefono{
             width: 60%;
         }
         @include m.tablet{
             width: 40%;
         }
-        position: absolute;
-        right: 0;
-        height: 100%;
-        background-color: v.$blanco-tw;
-        padding: 4rem;
+        &__productos{
+            display: flex;
+            flex-direction: column;
+            border-radius: 1rem;
+            background-color: v.$blanco;
+        }
+        &__contenedor{
+            padding: 1rem;
+            padding: 1rem;
+            margin: 1rem auto;
+            width: 95%;
+        }
+        &__texto{
+            color: v.$blanco;
+            font-size: 1.5rem;
+            text-align: center
+        }
+        
+        &__compra_wp{
+            @include m.boton(v.$verde-claro, v.$blanco);
+        }
+        &__compra_web{
+            @include m.boton(v.$azul, v.$blanco);
+        }
+        &__boton{
+            margin: 0 0 1rem 0;
+            font-size: 1.5rem;
+            border-radius: .5rem;
+            width: 100%;
+            @include m.telefono{
+                max-width: 30rem;
+                margin: 0 auto 1rem auto;
+            }
+        }
+        
     }
     .interfazCampo{
         /* background-color: rgb(215, 220, 224); */
@@ -134,9 +173,15 @@
         margin-bottom: 3rem;
         padding-bottom: 3rem;
         max-width: 50rem;
-        &:last-of-type{
-            border-bottom: unset;
+        @include m.telefono{
+            max-height: 21rem;
         }
+        &:last-of-type,
+        {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
         display: flex;
         gap: 1rem;
         color: v.$azulClaro;
@@ -144,13 +189,19 @@
             max-width: 50%;
             object-fit: scale-down;
             object-position: center center;
+            border-radius: 1rem;
         }
         .infoProductoCarrito{
-        flex-basis: 50%; 
+            flex-basis: 50%; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
          
         }
         .nombre-producto{
             font-weight: v.$bold;
+            text-align: center;
+            margin: 0;
         }
         .precio-producto{
             color: v.$verde;
@@ -170,12 +221,14 @@
     align-items: center;
     width: 90%;
     margin: 0 auto;
-    
     &__parrafo{
         font-weight: 800;
         &--blanco{
             color: v.$blanco-tw;
             font-size: 3rem;
+        }
+        &--md{
+            font-size: 2rem;
         }
     }
     &__icono{
