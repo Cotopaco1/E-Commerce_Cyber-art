@@ -4,6 +4,9 @@ import gulpSass from 'gulp-sass' //importo la funcion para compilar el sass que 
 import * as dartSass from 'sass' //importo todas las funciones del compilador a la variable dartSass
 import terser from 'gulp-terser';
 import sourcemaps from 'gulp-sourcemaps';
+import autoprefixer from 'autoprefixer';
+import postcss from 'gulp-postcss';
+import cssnano from 'cssnano';
 const sass = gulpSass(dartSass);
 
 //Globs o rutas que voy a utilizar mas adelante para pasar como parametro.
@@ -18,6 +21,7 @@ function css(done) {
     return src(paths.scss)
       .pipe(sourcemaps.init())
       .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
+      .pipe( postcss([autoprefixer(), cssnano()])) //agregar prefijos para dar mas soporte al codigo css
       .pipe(sourcemaps.write('.')) 
       .pipe(dest('public_html/build/css'))
     done()

@@ -16,6 +16,9 @@
     "sass": "^1.77.6"
   },
   "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "cssnano": "^7.0.5",
+    "gulp-postcss": "^10.0.0",
     "gulp-sourcemaps": "^3.0.0"
   }
 }
